@@ -1,0 +1,14 @@
+.Layout-outer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.Layout-inner {
+    flex: 1;
+    display: flex;
+}
+
+.Layout-inner .view {
+    flex: 1;
+}
