@@ -33,7 +33,7 @@ function createWindow() {
     mainWindow.on('closed', () => (mainWindow = null));
 
     let reader = new Reader(mainWindow);
-    //reader.connect();
+    reader.connect();
 }
 
 app.on('ready', createWindow);

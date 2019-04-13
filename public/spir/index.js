@@ -29,7 +29,7 @@ class Reader {
 
         this.socket.on('connect', () => {
             this.socket.setEncoding('utf-8');
-            this.targetWindow.webContents.send('reader:status', { 
+            this.targetWindow.webContents.send('reader:status', {
                 success: true,
                 message: `Connected to spir reader at ${this.address}:${this.port}`
             });
@@ -38,7 +38,7 @@ class Reader {
         });
 
         this.socket.on('error', err => {
-            this.targetWindow.webContents.send('reader:status', { 
+            this.targetWindow.webContents.send('reader:status', {
                 success: false,
                 message: `Error connecting to spir reader: ${err.message}`
             });
@@ -48,8 +48,6 @@ class Reader {
 
         this.socket.on('data', data => {
             this.targetWindow.webContents.send('reader:data', data);
-
-            console.log(data);
         });
 
         this.socket.on('end', () => {
