@@ -5,8 +5,6 @@
 
 **Objetivo del Proyecto:** Facilitar las transacciones entre clientes hacia negocios o empresas ofreciendo una experiencia interactiva mediante aplicación móvil nativa en Android y iOS de una forma flexible y multiuso (adaptivo para las necesidades de la empresa).
 
-![feria2 logo](https://png.pngtree.com/svg/20160920/b4e76c489c.svg)
-
 ## scripts
 ```yarn start``` will start the Electron app and the React app at the same time.  
 ```yarn build``` will build the React app and package it along the Electron app.
