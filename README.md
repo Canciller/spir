@@ -3,7 +3,7 @@
 
 **Nombre del Proyecto:** Sistema de pago de identificación por radiofrecuencia (SPIR).
 
-**Objetivo del Proyecto:** Facilitar las transacciones entre clientes hacia negocios o empresas ofreciendo una experiencia interactiva mediante aplicación móvil nativa en Android y iOS de una forma flexible y multiuso (adaptivo para las necesidades de la empresa).
+**Objetivo del Proyecto:** Ayudar a cada negocio interesado en eficientizar sus procesos de ventas mediante SPIR, ofreciendo herramientas estadísticas, de manejos para registros y que se adapten a las necesidades especificas de cada cliente.
 
 ## Scripts
 ```yarn start``` will start the Electron app and the React app at the same time.  
