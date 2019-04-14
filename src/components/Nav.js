@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Translate } from 'react-localize-redux';
 
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
@@ -72,33 +73,32 @@ export default class Nav extends Component {
     }
 
     render() {
-
         return (
             <List
                 component='nav'
                 disablePadding
             >
                 <NavItem
-                    primary='Payout'
+                    primary={<Translate id='checkout' />}
                     to={routes.HOME} 
                     icon={HomeIcon} />
                 <NavItem
-                    primary='Inventory'
+                    primary={<Translate id='inventory' />}
                     to={routes.INVENTORY}
                     icon={StoreIcon} />
                 <NavItem
-                    primary='Staff'
+                    primary={<Translate id='staff' />}
                     to={routes.STAFF}
                     icon={StaffIcon} />
                 <NavItemExpand
                     expand={this.state.openPartners}
-                    primary='Partners'
+                    primary={<Translate id='partners' />}
                     icon={FaceIcon}
                     onClick={this.handleClickPartners} />
                 <Collapse in={this.state.openPartners} timeout='auto' unmountOnExit>
                     <List component='div' disablePadding>
                         <NavItem
-                            primary='Cards'
+                            primary={<Translate id='cards' />}
                             to={routes.CARDS}
                             icon={CardIcon} />
                     </List>
@@ -110,7 +110,9 @@ export default class Nav extends Component {
                     onClick={this.handleClickSettings} />
                 <Collapse in={this.state.openSettings} timeout='auto' unmountOnExit>
                     <List component='div' disablePadding>
-                        <NavItem primary='Reader' to={routes.READERS} icon={NfcIcon} />
+                        <NavItem primary='Reader'
+                            to={routes.READERS}
+                            icon={NfcIcon} />
                     </List>
                 </Collapse>
             </List>

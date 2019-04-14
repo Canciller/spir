@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { LocalizeProvider } from 'react-localize-redux';
 import Routes from './Routes';
 import Layout from './components/Layout';
 
@@ -8,11 +9,13 @@ import Layout from './components/Layout';
 class App extends Component {
   render() {
     return (
-        <BrowserRouter>
-            <Layout>
-                <Routes />
-            </Layout>
-        </BrowserRouter>
+        <LocalizeProvider>
+            <BrowserRouter>
+                <Layout>
+                    <Routes />
+                </Layout>
+            </BrowserRouter>
+        </LocalizeProvider>
     );
   }
 }
