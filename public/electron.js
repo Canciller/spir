@@ -23,7 +23,8 @@ function createWindow() {
         width: 900, height: 680,
         webPreferences: {
             nodeIntegrationInWorker: true
-        }
+        },
+        //title: 'Sistema de Pago por Identificación de Radiofrecuencias'
     });
     mainWindow.loadURL(
         isDev
