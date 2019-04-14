@@ -1,0 +1,9 @@
+{
+    "HOME": "/",
+    "INVENTORY": "/inventory",
+    "PARTNERS": "/partners",
+    "SETTINGS": "/settings",
+    "READERS": "/settings/reader",
+    "STAFF": "/staff",
+    "CARDS": "/cards"
+}
