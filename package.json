@@ -5,12 +5,22 @@
   "version": "0.0.1",
   "private": false,
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "classnames": "^2.2.6",
     "cross-env": "5.1.6",
     "electron-is-dev": "0.3.0",
     "electron-log": "^2.2.6",
+    "history": "^4.9.0",
     "node-sass": "^4.11.0",
+    "prop-types": "^15.7.2",
     "react": "16.4.0",
     "react-dom": ">=16.4.2",
+    "react-router-dom": "^5.0.0",
+    "react-router-redux": "^4.0.8",
+    "react-transition-group": "^2.9.0",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "update-electron-app": "^1.2.0"
   },
   "devDependencies": {
