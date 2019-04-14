@@ -110,7 +110,7 @@ export default class Nav extends Component {
                     onClick={this.handleClickSettings} />
                 <Collapse in={this.state.openSettings} timeout='auto' unmountOnExit>
                     <List component='div' disablePadding>
-                        <NavItem primary='Readers' to={routes.READERS} icon={NfcIcon} />
+                        <NavItem primary='Reader' to={routes.READERS} icon={NfcIcon} />
                     </List>
                 </Collapse>
             </List>
