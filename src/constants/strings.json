@@ -1,0 +1,16 @@
+{
+    "en": {
+        "APPNAME": "SPIR",
+        "PARTNERS": "Parters",
+        "CARDS": "Cards",
+        "INVENTORY": "Inventory",
+        "PRODUCTS": "Products",
+        "STAFF": "Staff"
+    },
+    "es": {
+        "CARDS": "Tarjetas",
+        "INVENTORY": "Inventario",
+        "PRODUCTS": "Productos",
+        "STAFF": "Staff"
+    }
+}
