@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import Routes from './routes';
+import Routes from './Routes';
 import Layout from './components/Layout';
 
-const {app} = window.require('electron').remote;
+//const {app} = window.require('electron').remote;
 
 class App extends Component {
   render() {
