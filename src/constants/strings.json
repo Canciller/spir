@@ -1,16 +1,27 @@
 {
-    "en": {
-        "APPNAME": "SPIR",
-        "PARTNERS": "Parters",
-        "CARDS": "Cards",
-        "INVENTORY": "Inventory",
-        "PRODUCTS": "Products",
-        "STAFF": "Staff"
-    },
-    "es": {
-        "CARDS": "Tarjetas",
-        "INVENTORY": "Inventario",
-        "PRODUCTS": "Productos",
-        "STAFF": "Staff"
-    }
+    "appname": [
+        "SPIR"
+    ],
+    "checkout": [
+        "Checkout",
+        "Cobrar"
+    ],
+    "partners": [
+        "Partners"
+    ],
+    "cards": [
+        "Cards",
+        "Tarjetas"
+    ],
+    "inventory": [
+        "Inventory",
+        "Inventario"
+    ],
+    "products": [
+        "Products",
+        "Productos"
+    ],
+    "staff": [
+        "Staff"
+    ]
 }
