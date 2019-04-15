@@ -34,7 +34,6 @@ function createWindow() {
     mainWindow.on('closed', () => (mainWindow = null));
 
     let reader = new Reader(mainWindow);
-    reader.connect();
 }
 
 app.on('ready', createWindow);
