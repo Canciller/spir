@@ -1,0 +1,13 @@
+{
+    "company": "SPIR",
+    "section": {
+        "checkout": [ "Checkout", "Cobrar" ],
+        "inventory": [ "Inventory", "Inventario" ],
+        "staff": [ "Staff" ],
+        "products": [ "Products", "Productos" ],
+        "partners": [ "Partners" ],
+        "cards": [ "Cards", "Tarjetas" ],
+        "settings": [ "Settings", "Ajustes" ],
+        "reader": [ "Reader", "Lector" ]
+    }
+}
