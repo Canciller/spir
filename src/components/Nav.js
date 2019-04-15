@@ -18,6 +18,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 
 import CardIcon from '@material-ui/icons/CreditCard';
 import ReaderIcon from '@material-ui/icons/Nfc';
+import LanguageIcon from '@material-ui/icons/Translate';
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -122,9 +123,20 @@ export default class Nav extends Component {
                 ]
             },
             {
-                to: routes.SETTINGS,
                 translation: 'section.settings',
-                icon: SettingsIcon
+                icon: SettingsIcon,
+                items: [
+                    {
+                        to: routes.READERS,
+                        translation: 'section.readers',
+                        icon: ReaderIcon
+                    },
+                    {
+                        to: routes.LANGUAGE,
+                        translation: 'section.language',
+                        icon: LanguageIcon
+                    }
+                ]
             }
         ]
     }

@@ -3,7 +3,8 @@
     "INVENTORY": "/inventory",
     "PARTNERS": "/partners",
     "SETTINGS": "/settings",
-    "READERS": "/settings/reader",
+    "READERS": "/settings/readers",
+    "LANGUAGE": "/settings/language",
     "STAFF": "/staff",
     "CARDS": "/cards"
 }
