@@ -3,11 +3,17 @@
     "section": {
         "checkout": [ "Checkout", "Cobrar" ],
         "inventory": [ "Inventory", "Inventario" ],
-        "staff": [ "Staff" ],
+        "staff": [ "Staff", "Staff" ],
         "products": [ "Products", "Productos" ],
-        "partners": [ "Partners" ],
+        "partners": [ "Partners", "Partners" ],
         "cards": [ "Cards", "Tarjetas" ],
         "settings": [ "Settings", "Ajustes" ],
-        "reader": [ "Reader", "Lector" ]
-    }
+        "readers": [ "Readers", "Lectores" ],
+        "language": [ "Language", "Idioma" ]
+    },
+    "port": [ "Port", "Puerto" ],
+    "address": [ "Address", "Direccion" ],
+    "connect": [ "Connect", "Conectar" ],
+    "accept": [ "Accept", "Aceptar" ],
+    "apply": [ "Apply", "Aplicar" ]
 }

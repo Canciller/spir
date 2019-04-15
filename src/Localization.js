@@ -6,6 +6,8 @@ import { withLocalize } from 'react-localize-redux';
 import globalTranslations from './constants/translations/global.json';
 import languages from './constants/translations/languages.json';
 
+const onMissingTranslation = ({ defaultTranslation }) => 'undefined';
+
 class Initialize extends Component {
     constructor(props) {
         super(props);
@@ -13,7 +15,10 @@ class Initialize extends Component {
         props.initialize({
             languages: languages,
             translation: globalTranslations,
-            options: { renderToStaticMarkup }
+            options: {
+                renderToStaticMarkup,
+                onMissingTranslation
+            }
         });
     }
 
