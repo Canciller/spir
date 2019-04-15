@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Translate } from 'react-localize-redux';
 
@@ -10,28 +10,29 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 
 import HomeIcon from '@material-ui/icons/ShoppingCart';
-import StoreIcon from '@material-ui/icons/Store';
-import FaceIcon from '@material-ui/icons/Face';
-import SettingsIcon from '@material-ui/icons/Settings';
+import InventoryIcon from '@material-ui/icons/Store';
 import StaffIcon from '@material-ui/icons/AssignmentInd';
+
+import PartnersIcon from '@material-ui/icons/Face';
+import SettingsIcon from '@material-ui/icons/Settings';
+
 import CardIcon from '@material-ui/icons/CreditCard';
-import NfcIcon from '@material-ui/icons/Nfc';
+import ReaderIcon from '@material-ui/icons/Nfc';
 
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import routes from '../constants/routes.json';
 
-let NavItem = ({ children, primary, to, icon, onClick }) => {
+let Item = ({ children, to, icon}) => {
     let Icon = icon;
 
     let content = (
-        <ListItem button onClick={onClick}>
+        <ListItem button>
             <ListItemIcon>
                 <Icon />
             </ListItemIcon>
-            <ListItemText inset primary={primary} />
-            {children}
+            <ListItemText inset primary={children} />
         </ListItem>
     )
 
@@ -42,34 +43,90 @@ let NavItem = ({ children, primary, to, icon, onClick }) => {
     )
 
     return (
-        <React.Fragment>
+        <Fragment>
             {content}
-        </React.Fragment>
+        </Fragment>
     )
 }
 
-let NavItemExpand = ({ expand, primary, icon, onClick }) => (
-    <NavItem
-        primary={primary}
-        icon={icon}
-        onClick={onClick}
-    >
-        {expand ? <ExpandLess /> : <ExpandMore />}
-    </NavItem>
-)
+class ItemCollapse extends Component {
+    state = {
+        open: false
+    }
+
+    handleClick = () => {
+        this.setState(state => ({ open: !state.open }));
+    }
+
+    render() {
+        const { children, icon, items } = this.props;
+        const { open } = this.state;
+        let Icon = icon;
+
+        return (
+            <Fragment>
+                <ListItem button onClick={this.handleClick}>
+                    <ListItemIcon>
+                        <Icon />
+                    </ListItemIcon>
+                    <ListItemText inset primary={children} />
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={open} timeout='auto' unmountOnExit>
+                    <List component='div' disablePadding>
+                        {items.map((item, i) => {
+                            return (
+                                <Item
+                                    key={i}
+                                    to={item.to}
+                                    icon={item.icon}
+                                >
+                                    <Translate id={item.translation} />
+                                </Item>
+                            )
+                        })}
+                    </List>
+                </Collapse>
+            </Fragment>
+        )
+    }
+}
 
 export default class Nav extends Component {
     state = {
-        openSettings: false,
-        openPartners: false
-    }
-
-    handleClickPartners = () => {
-        this.setState(state => ({ openPartners: !state.openPartners }));
-    }
-
-    handleClickSettings = () => {
-        this.setState(state => ({ openSettings: !state.openSettings }));
+        items: [
+            {
+                to: routes.HOME,
+                translation: 'section.checkout',
+                icon: HomeIcon
+            },
+            {
+                to: routes.INVENTORY,
+                translation: 'section.inventory',
+                icon: InventoryIcon
+            },
+            {
+                to: routes.STAFF,
+                translation: 'section.staff',
+                icon: StaffIcon,
+            },
+            {
+                translation: 'section.partners',
+                icon: PartnersIcon,
+                items: [
+                    {
+                        to: routes.CARDS,
+                        translation: 'section.cards',
+                        icon: CardIcon
+                    }
+                ]
+            },
+            {
+                to: routes.SETTINGS,
+                translation: 'section.settings',
+                icon: SettingsIcon
+            }
+        ]
     }
 
     render() {
@@ -78,43 +135,30 @@ export default class Nav extends Component {
                 component='nav'
                 disablePadding
             >
-                <NavItem
-                    primary={<Translate id='checkout' />}
-                    to={routes.HOME} 
-                    icon={HomeIcon} />
-                <NavItem
-                    primary={<Translate id='inventory' />}
-                    to={routes.INVENTORY}
-                    icon={StoreIcon} />
-                <NavItem
-                    primary={<Translate id='staff' />}
-                    to={routes.STAFF}
-                    icon={StaffIcon} />
-                <NavItemExpand
-                    expand={this.state.openPartners}
-                    primary={<Translate id='partners' />}
-                    icon={FaceIcon}
-                    onClick={this.handleClickPartners} />
-                <Collapse in={this.state.openPartners} timeout='auto' unmountOnExit>
-                    <List component='div' disablePadding>
-                        <NavItem
-                            primary={<Translate id='cards' />}
-                            to={routes.CARDS}
-                            icon={CardIcon} />
-                    </List>
-                </Collapse>
-                <NavItemExpand
-                    expand={this.state.openSettings}
-                    primary='Settings'
-                    icon={SettingsIcon}
-                    onClick={this.handleClickSettings} />
-                <Collapse in={this.state.openSettings} timeout='auto' unmountOnExit>
-                    <List component='div' disablePadding>
-                        <NavItem primary='Reader'
-                            to={routes.READERS}
-                            icon={NfcIcon} />
-                    </List>
-                </Collapse>
+                {this.state.items.map((item, i) => {
+                    let translation = <Translate id={item.translation} />;
+
+                    if(item.items !== undefined)
+                        return (
+                            <ItemCollapse
+                                key={i}
+                                icon={item.icon}
+                                items={item.items}
+                            >
+                                {translation}
+                            </ItemCollapse>
+                        )
+                    else
+                        return (
+                            <Item
+                                key={i}
+                                to={item.to}
+                                icon={item.icon}
+                            >
+                                {translation}
+                            </Item>
+                        )
+                })}
             </List>
         )
     }
