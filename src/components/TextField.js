@@ -10,7 +10,7 @@ const styles = theme => ({
     }
 })
 
-class TxtField extends Component {
+class TextFieldWrapper extends Component {
     render() {
         const {
             children,
@@ -41,4 +41,4 @@ class TxtField extends Component {
     }
 }
 
-export default withStyles(styles)(TxtField);
+export default withStyles(styles)(TextFieldWrapper);

@@ -11,7 +11,7 @@ const styles = theme => ({
     }
 })
 
-class Btn extends Component {
+class ButtonWrapper extends Component {
     render() {
         const { children, onClick, classes } = this.props;
 
@@ -28,4 +28,4 @@ class Btn extends Component {
     }
 }
 
-export default withStyles(styles)(Btn);
+export default withStyles(styles)(ButtonWrapper);

@@ -19,25 +19,36 @@ const styles = theme => ({
     }
 })
 
-class Slct extends Component {
+class SelectWrapper extends Component {
     state = {
         labelWidth: 0
     }
 
     componentDidMount() {
-        this.labelChanged();
+        this.fixedLabelWidth();
     }
 
-    labelChanged = () => {
+    fixedLabelWidth = () => {
         setTimeout(() => {
             this.setState({
                 labelWidth: ReactDOM.findDOMNode(this.InputLabelRef).offsetWidth,
             });
-        }, 100);
+        }, 10);
+    }
+
+    onChange = e => {
+        this.props.onChange(e);
+        this.fixedLabelWidth();
     }
 
     render() {
-        const { label, value, onChange, items, classes } = this.props;
+        const {
+            id,
+            label,
+            value,
+            items,
+            classes } = this.props;
+
         const { labelWidth } = this.state;
 
         return (
@@ -46,39 +57,35 @@ class Slct extends Component {
                 className={classes.select}
             >
                 <InputLabel
-                    ref={ref => {
-                        this.InputLabelRef = ref;
-                    }}
-                    htmlFor="outlined-select"
+                    ref={ref => { this.InputLabelRef = ref; }}
+                    htmlFor={id}
                 >
                     {label}
                 </InputLabel>
                 <Select
                     value={value}
-                    onChange={(e) => { onChange(e); this.labelChanged(); }}
+                    onChange={this.onChange}
                     input={
                         <OutlinedInput
                             labelWidth={labelWidth}
-                            id="outlined-select"
+                            id={id}
                         />
                     }
                 >
-                    {
-                        items && items.map((item, i) => {
-                            return (
-                                <MenuItem
-                                    key={i}
-                                    value={item.value}
-                                >
-                                    {item.name}
-                                </MenuItem>
-                            )
-                        })
-                    }
+                    { items && items.map((item, i) => {
+                        return (
+                            <MenuItem
+                                key={i}
+                                value={item.value}
+                            >
+                                {item.name}
+                            </MenuItem>
+                        )
+                    })}
                 </Select>
             </FormControl>
         )
     }
 }
 
-export default withStyles(styles)(Slct);
+export default withStyles(styles)(SelectWrapper);
