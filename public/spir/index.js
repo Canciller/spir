@@ -4,95 +4,129 @@ const { ipcMain } = require('electron');
 const DEFAULT_PORT = 3334,
       DEFAULT_ADDRESS = '127.0.0.1';
 
+const translations = {
+    error: 'message.reader.error',
+    not_connected: 'message.reader.not_connected',
+    connected: 'message.reader.connected'
+}
+
+function status(success, translationId, data) {
+    return {
+        success,
+        translationId,
+        data
+    }
+}
+
 class Reader {
+    send(event, data) {
+        if(this.targetWindow) this.targetWindow.webContents.send(event, data);
+    }
+
+    on(event, callback) {
+        ipcMain.on(event, callback);
+    }
+
+    info() {
+        return {
+            address: this.address,
+            port: this.port
+        } 
+    }
+
+    setPort(value) {
+        value = parseInt(value);
+
+        if(!value ||
+            value <= 0 ||
+            value >= 65536) value = DEFAULT_PORT;
+
+        this.port = value;
+    }
+
+    setAddress(value) {
+        if(!value ||
+            value === '') value = DEFAULT_ADDRESS;
+
+        this.address = value;
+    }
+
     constructor(targetWindow) {
-        this.socket = null;
         this.targetWindow = targetWindow;
 
-        ipcMain.on('reader:address', (e, address) => {
-            this.address = address || DEFAULT_ADDRESS;
-        });
+        this.on('reader:address', (e, address) => setAddress(address));
 
-        ipcMain.on('reader:port', (e, port) => {
-            this.port = port || DEFAULT_PORT;
-        });
+        this.on('reader:port', (e, port) => setPort(port));
 
-        ipcMain.on('reader:connect', (e, port, address) => {
-            this.connect(port, address);
-        });
+        this.on('reader:connect', (e, port, address) => this.connect(port, address));
 
-        ipcMain.on('reader:status', () => {
-            this.targetWindow.webContents.send('reader:status', {
-                success: this.socket !== null,
-                message: this.socket ?
-                    `Connected to spir reader at ${this.address}:${this.port}.` :
-                    'Not connected to a spir reader.'
-            })
+        this.on('reader:status', () => {
+            this.send('reader:status', status(
+                this.socket ? true : false,
+                this.socket ? translations.connected : translations.not_connected,
+                this.info()
+            ));
         })
 
-        ipcMain.on('reader', () => {
-            this.targetWindow.webContents.send('reader', {
-                port: this.port,
-                address: this.address
-            });
+        this.on('reader', () => {
+            this.send('reader', info());
         })
     }
 
     connect(port, address) {
-        this.destroy();
-        this._init(port, address);
+        this._reset(port, address);
 
         try {
             this.socket = net.createConnection(this.port, this.address);
 
             this.socket.on('connect', () => {
                 this.socket.setEncoding('utf-8');
-                this.targetWindow.webContents.send('reader:status', {
-                    success: true,
-                    message: `Connected to spir reader at ${this.address}:${this.port}.`
-                });
 
-                console.log(`Connected to spir reader at ${this.address}:${this.port}.`);
+                this.send('reader:status', status(
+                    true,
+                    translations.connected,
+                    this.info()
+                ));
             });
 
             this.socket.on('error', err => {
-                this.targetWindow.webContents.send('reader:status', {
-                    success: false,
-                    message: `Error connecting to spir reader: ${err.message}.`
-                });
+                this.send('reader:status', status(
+                    false,
+                    translations.error,
+                    err.message
+                ));
 
-                console.log(`Error connecting to spir reader: ${err.message}.`);
-                this.destroy();
+                this._reset();
+            });
+
+
+            this.socket.on('end', () => {
+                this.send('reader:status', status(
+                    false,
+                    translations.error
+                ));
+
+                this._reset();
             });
 
             this.socket.on('data', data => {
-                this.targetWindow.webContents.send('reader:data', data);
+                this.send('reader:data', data);
             });
 
-            this.socket.on('end', () => {
-                this.targetWindow.webContents.send('reader:status', {
-                    success: false,
-                    message: 'Error connection to spir reader: connection ended.'
-                });
-
-                console.log('Error connecting to spir reader: connection ended.');
-            });
         } catch(e) {
-            this.targetWindow.webContents.send('reader:status', {
-                success: false,
-                message: `Error connecting to spir reader: ${e.message}`
-            })
+            this.send('reader:status', status(
+                false,
+                translations.error,
+                e.message
+            ));
         }
     }
 
-    destroy() {
+    _reset(port, address) {
         if(this.socket) this.socket.destroy();
         this.socket = null;
-    }
-
-    _init(port, address) {
-        this.address = address || this.address || DEFAULT_ADDRESS;
-        this.port = port || this.port || DEFAULT_PORT;
+        this.setPort(port);
+        this.setAddress(address);
     }
 }
 
