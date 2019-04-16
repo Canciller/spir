@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { Translate } from 'react-localize-redux';
 
+import Link from '@material-ui/core/Link';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -38,9 +39,9 @@ let Item = ({ children, to, icon}) => {
     )
 
     if(to) content = (
-        <NavLink style={{ textDecoration: 'none', color: 'inherit' }} to={to}>
+        <Link component={RouterLink} style={{ textDecoration: 'none', color: 'inherit' }} to={to}>
             {content}
-        </NavLink>
+        </Link>
     )
 
     return (
@@ -128,7 +129,7 @@ export default class Nav extends Component {
                 items: [
                     {
                         to: routes.READERS,
-                        translation: 'section.readers',
+                        translation: 'section.reader',
                         icon: ReaderIcon
                     },
                     {
