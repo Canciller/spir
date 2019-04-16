@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Translate, withLocalize } from 'react-localize-redux';
+import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ class Reader extends Component {
     state = {
         address: '',
         port: '',
-        status: ''
+        status: null
     }
 
     handleAddressChange = event => {
@@ -41,19 +41,12 @@ class Reader extends Component {
     }
 
     componentDidMount() {
+        ipcRenderer.send('reader:status');
+
         ipcRenderer.on('reader:status', (e, status) => {
             this.setState({ status });
+            console.log(status);
         });
-
-        ipcRenderer.send('reader');
-        ipcRenderer.on('reader', (e, reader) => {
-            this.setState({
-                port: reader.port,
-                address: reader.address
-            });
-        });
-
-        ipcRenderer.send('reader:status');
     }
 
     componentWillUnmount() {
@@ -63,34 +56,35 @@ class Reader extends Component {
     render() {
         const { classes } = this.props;
 
-        const { port, address, status } = this.state;
+        const { status } = this.state;
 
         return (
             <Form>
                 <Typography variant='title'>
-                    <Translate id='section.readers'/>
+                    <Translate id='section.reader'/>
                 </Typography>
                 <TextField
                     onChange={this.handleAddressChange}
                     label={<Translate id='address' />}
                     placeholder='127.0.0.1'
-                    value={address}
                 />
                 <TextField
                     onChange={this.handlePortChange}
                     label={<Translate id='port' />}
                     placeholder='3334'
-                    value={port}
                 />
                 <Button onClick={this.handleConnect}>
                     <Translate id='connect' />
                 </Button>
-                <Typography
-                    className={classNames(classes.status, !status.success && classes.statusError)}
-                    variant='caption'
-                >
-                    {status.message}
-                </Typography>
+                { status &&
+                        <Typography
+                            className={classNames(classes.status, status.success || classes.statusError)}
+                            variant='caption'
+                        >
+                            <Translate id={status.translationId} />
+                            {  status.success && ` ${status.data.address}:${status.data.port}` }
+                        </Typography>
+                }
             </Form>
         )
     }
