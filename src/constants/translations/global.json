@@ -1,15 +1,22 @@
 {
-    "company": "SPIR",
     "section": {
         "checkout": [ "Checkout", "Cobrar" ],
         "inventory": [ "Inventory", "Inventario" ],
-        "staff": [ "Staff", "Staff" ],
+        "staff": [ "Staff", "Empleados" ],
         "products": [ "Products", "Productos" ],
         "partners": [ "Partners", "Partners" ],
         "cards": [ "Cards", "Tarjetas" ],
         "settings": [ "Settings", "Ajustes" ],
-        "readers": [ "Readers", "Lectores" ],
+        "reader": [ "Reader", "Lector" ],
         "language": [ "Language", "Idioma" ]
+    },
+    "message": {
+        "reader": {
+            "not_connected": [ "Not connected to a SPIR reader", "No esta conectado a un lector de SPIR" ],
+            "connected": [ "Connected to SPIR reader", "Conectado a lector de SPIR" ],
+            "error": [ "Error connecting to SPIR reader", "Error al conectarse con lector de SPIR" ],
+            "invalid_port": [ "Invalid port", "Puerto Invalido" ]
+        }
     },
     "port": [ "Port", "Puerto" ],
     "address": [ "Address", "Direccion" ],
