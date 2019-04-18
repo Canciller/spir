@@ -43,10 +43,7 @@ class Reader extends Component {
     componentDidMount() {
         ipcRenderer.send('reader:status');
 
-        ipcRenderer.on('reader:status', (e, status) => {
-            this.setState({ status });
-            console.log(status);
-        });
+        ipcRenderer.on('reader:status', (e, status) => this.setState({ status }));
     }
 
     componentWillUnmount() {
