@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import View from '../../components/View';
 import Form from '../../components/Form';
+import Select from '../../components/Select';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -21,6 +22,11 @@ class AddItem extends Component {
         name: '',
         description: '',
         price: 0,
+        category: 0,
+        categories: [
+            { value: 0, name: 'Product' },
+            { value: 1, name: 'Service' }
+        ],
         priceNaN: false
     }
 
@@ -38,7 +44,12 @@ class AddItem extends Component {
 
         if(isNaN(price)) return this.setState({ priceNaN: true });
 
-        this.setState({ price: e.target.value, priceNaN: false });
+        this.setState({ price, priceNaN: false });
+    }
+
+    onChangeCategory = e => {
+        let value = e.target.value;
+        this.setState({ category: value });
     }
 
     handleAdd = () => {
@@ -56,7 +67,9 @@ class AddItem extends Component {
         } = this.props;
 
         const {
-            priceNaN
+            priceNaN,
+            category,
+            categories
         } = this.state;
 
         return (
@@ -96,6 +109,13 @@ class AddItem extends Component {
                             placeholder='00.00'
                         />
                     </FormControl>
+                    <Select
+                        margin
+                        onChange={this.onChangeCategory}
+                        label='Category'
+                        value={category}
+                        items={categories}
+                    />
                     <Button
                         onClick={this.handleAdd}
                         margin
