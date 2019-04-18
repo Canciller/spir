@@ -3,6 +3,7 @@ import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
+import View from '../../components/View';
 import Typography from '@material-ui/core/Typography';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
@@ -15,11 +16,8 @@ class Cards extends Component {
         const { classes } = this.props;
 
         return (
-            <Fragment>
-                <Typography variant='title'>
-                    <Translate id='section.cards' />
-                </Typography>
-            </Fragment>
+            <View title={<Translate id='section.cards' />}>
+            </View>
         )
     }
 }

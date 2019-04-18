@@ -7,13 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import Form from '../../components/Form';
 import TextField from '../../components/TextField';
 import Button from '../../components/Button';
+import View from '../../components/View';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
 const styles = theme => ({
     status: {
         textAlign: 'center',
-        marginTop: 15
+        marginTop: theme.spacing.unit * 2
     },
     statusError: {
         color: 'red'
@@ -56,33 +57,33 @@ class Reader extends Component {
         const { status } = this.state;
 
         return (
-            <Form>
-                <Typography variant='title'>
-                    <Translate id='section.reader'/>
-                </Typography>
-                <TextField
-                    onChange={this.handleAddressChange}
-                    label={<Translate id='address' />}
-                    placeholder='127.0.0.1'
-                />
-                <TextField
-                    onChange={this.handlePortChange}
-                    label={<Translate id='port' />}
-                    placeholder='3334'
-                />
-                <Button onClick={this.handleConnect}>
-                    <Translate id='connect' />
-                </Button>
-                { status &&
+            <View title={<Translate id='section.reader' />}>
+                <Form>
+                    <TextField
+                        onChange={this.handleAddressChange}
+                        label={<Translate id='address' />}
+                        placeholder='127.0.0.1'
+                    />
+                    <TextField
+                        onChange={this.handlePortChange}
+                        label={<Translate id='port' />}
+                        placeholder='3334'
+                        margin
+                    />
+                    <Button onClick={this.handleConnect} margin>
+                        <Translate id='connect' />
+                    </Button>
+                    {status &&
                         <Typography
                             className={classNames(classes.status, status.success || classes.statusError)}
                             variant='caption'
                         >
                             <Translate id={status.translationId} />
-                            {  status.success && ` ${status.data.address}:${status.data.port}` }
+                            {status.success && ` ${status.data.address}:${status.data.port}`}
                         </Typography>
-                }
-            </Form>
+                    }
+                </Form>
+            </View>
         )
     }
 }
