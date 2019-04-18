@@ -22,5 +22,6 @@
     "address": [ "Address", "Direccion" ],
     "connect": [ "Connect", "Conectar" ],
     "accept": [ "Accept", "Aceptar" ],
-    "apply": [ "Apply", "Aplicar" ]
+    "apply": [ "Apply", "Aplicar" ],
+    "add": [ "Add", "Anadir" ]
 }
