@@ -5,8 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
-    textfield: {
-        margin: '15px 0 0 0',
+    spacing: {
+        marginTop: theme.spacing.unit * 2
     }
 })
 
@@ -19,13 +19,14 @@ class TextFieldWrapper extends Component {
             value,
             onChange,
             defaultValue,
-            classes
+            classes,
+            margin
         } = this.props;
 
         return (
             <TextField
                 onChange={onChange}
-                className={classes.textfield}
+                className={classNames(margin && classes.spacing)}
                 fullWidth
                 label={label}
                 defaultValue={defaultValue}

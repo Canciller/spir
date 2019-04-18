@@ -15,7 +15,6 @@ import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
     select: {
-        margin: '15px 0 0 0',
     }
 })
 
@@ -53,7 +52,7 @@ class SelectWrapper extends Component {
 
         return (
             <FormControl 
-                variant="outlined"
+                variant='outlined'
                 className={classes.select}
             >
                 <InputLabel

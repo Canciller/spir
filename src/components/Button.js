@@ -6,19 +6,21 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
     button: {
-        padding: '15px 0',
-        marginTop: 15
+        padding: '16px 0',
+    },
+    spacing: {
+        marginTop: theme.spacing.unit * 2
     }
 })
 
 class ButtonWrapper extends Component {
     render() {
-        const { children, onClick, classes } = this.props;
+        const { children, onClick, classes, margin } = this.props;
 
         return (
             <Button
                 onClick={onClick}
-                className={classes.button}
+                className={classNames(classes.button, margin && classes.spacing)}
                 variant='outlined'
                 color='primary'
             >

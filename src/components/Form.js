@@ -6,7 +6,8 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
     root: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: '100%'
     }
 })
 
