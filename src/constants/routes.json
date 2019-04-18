@@ -1,6 +1,7 @@
 {
     "HOME": "/",
     "INVENTORY": "/inventory",
+    "ADDITEM": "/inventory/add",
     "PARTNERS": "/partners",
     "SETTINGS": "/settings",
     "READERS": "/settings/readers",
