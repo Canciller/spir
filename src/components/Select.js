@@ -14,7 +14,8 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
-    select: {
+    spacing: {
+        marginTop: theme.spacing.unit * 2
     }
 })
 
@@ -36,7 +37,7 @@ class SelectWrapper extends Component {
     }
 
     onChange = e => {
-        this.props.onChange(e);
+        if(this.props.onChange) this.props.onChange(e);
         this.fixedLabelWidth();
     }
 
@@ -46,6 +47,7 @@ class SelectWrapper extends Component {
             label,
             value,
             items,
+            margin,
             classes } = this.props;
 
         const { labelWidth } = this.state;
@@ -53,7 +55,7 @@ class SelectWrapper extends Component {
         return (
             <FormControl 
                 variant='outlined'
-                className={classes.select}
+                className={classNames(margin && classes.spacing)}
             >
                 <InputLabel
                     ref={ref => { this.InputLabelRef = ref; }}
