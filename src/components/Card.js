@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import AlertDialog from './AlertDialog';
 import './Card.css';
 
 import Reptile from '../assets/images/contemplative-reptile.jpg';
@@ -18,6 +19,18 @@ const styles = theme => ({
 })
 
 class CardWrapper extends Component {
+    state = {
+        dialogOpen: false
+    }
+
+    handleDialogOpen = () => {
+        this.setState({ dialogOpen: true });
+    }
+
+    handleDialogClose = () => {
+        this.setState({ dialogOpen: false });
+    }
+
     render() {
         const {
             classes,
@@ -26,6 +39,10 @@ class CardWrapper extends Component {
 
         return (
             <div className='card-container'>
+                <AlertDialog
+                    open={this.state.dialogOpen}
+                    handleClose={this.handleDialogClose}
+                />
                 <Card className='card'>
                     <CardActionArea>
                         <CardMedia
@@ -47,7 +64,7 @@ class CardWrapper extends Component {
                     </CardActionArea>
                     <CardActions>
                         <Button size="small" color="primary">Add to cart</Button>
-                        <Button size="small" color="primary">Delete product</Button>
+                        <Button size="small" color="primary" onClick={this.handleDialogOpen}>Delete product</Button>
                     </CardActions>
                 </Card>
             </div>
