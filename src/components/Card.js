@@ -46,8 +46,8 @@ class CardWrapper extends Component {
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
-                        <Button size="small" color="primary">Edit</Button>
-                        <Button size="small" color="primary">More</Button>
+                        <Button size="small" color="primary">Add to cart</Button>
+                        <Button size="small" color="primary">Delete product</Button>
                     </CardActions>
                 </Card>
             </div>
