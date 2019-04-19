@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import History from './History';
 import Localization from './Localization';
+import SpirApi from './SpirApi';
 import Routes from './Routes';
 import Layout from './components/Layout';
 
@@ -10,11 +11,13 @@ class App extends Component {
   render() {
     return (
         <Localization>
-            <BrowserRouter>
-                <Layout>
-                    <Routes />
-                </Layout>
-            </BrowserRouter>
+            <History>
+                <SpirApi>
+                    <Layout>
+                        <Routes />
+                    </Layout>
+                </SpirApi>
+            </History>
         </Localization>
     );
   }

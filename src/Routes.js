@@ -9,9 +9,10 @@ import Staff from './views/Staff';
 import { Cards } from './views/partners';
 import { Reader, Language } from './views/settings';
 
+
 export default () => (
     <Switch>
-        <Route path={routes.ADDITEM} render={ props => <AddItem {...props} /> } />
+        <Route path={routes.ADDITEM} component={AddItem} />
         <Route path={routes.INVENTORY} component={Inventory} />
 
         <Route path={routes.READERS} component={Reader} />
