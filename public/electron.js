@@ -22,7 +22,8 @@ function createWindow() {
     mainWindow = new BrowserWindow({ 
         width: 900, height: 680,
         webPreferences: {
-            nodeIntegrationInWorker: true
+            nodeIntegrationInWorker: true,
+            'web-security': false
         },
         //title: 'Sistema de Pago por Identificación de Radiofrecuencias'
     });
