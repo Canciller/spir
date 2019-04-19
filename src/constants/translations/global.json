@@ -2,6 +2,7 @@
     "section": {
         "checkout": [ "Checkout", "Cobrar" ],
         "inventory": [ "Inventory", "Inventario" ],
+        "additem": [ "Add Item to Inventory", "Añadir Item a Inventario" ],
         "staff": [ "Staff", "Empleados" ],
         "products": [ "Products", "Productos" ],
         "partners": [ "Partners", "Partners" ],
@@ -23,5 +24,11 @@
     "connect": [ "Connect", "Conectar" ],
     "accept": [ "Accept", "Aceptar" ],
     "apply": [ "Apply", "Aplicar" ],
-    "add": [ "Add", "Anadir" ]
+    "add": [ "Add", "Añadir" ],
+    "name": [ "Name", "Nombre" ],
+    "price": [ "Price", "Precio" ],
+    "description": [ "Description", "Descripcion" ],
+    "category": [ "Category", "Categoria" ],
+    "product": [ "Product", "Producto" ],
+    "service": [ "Service", "Servicio" ]
 }
