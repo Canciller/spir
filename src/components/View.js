@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import { withHistory } from '../util';
 
 const styles = theme => ({
     header: {
@@ -14,12 +15,9 @@ const styles = theme => ({
         right: 0,
         top: -theme.spacing.unit * 1.5
     },
-    title: {
-        marginBottom: theme.spacing.unit * 2
-    },
     content: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     }
 })
 
@@ -35,7 +33,7 @@ class View extends Component {
             children,
             back
         } = this.props;
-        
+
         return (
             <Fragment>
                 <div className={classes.header}>
@@ -62,4 +60,4 @@ class View extends Component {
     }
 }
 
-export default withStyles(styles)(View);
+export default withHistory(withStyles(styles)(View));
