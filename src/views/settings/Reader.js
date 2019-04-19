@@ -57,7 +57,10 @@ class Reader extends Component {
         const { status } = this.state;
 
         return (
-            <View title={<Translate id='section.reader' />}>
+            <View
+                back
+                title={<Translate id='section.reader' />}
+            >
                 <Form>
                     <TextField
                         onChange={this.handleAddressChange}

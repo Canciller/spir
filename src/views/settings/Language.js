@@ -40,7 +40,10 @@ class Language extends Component {
         const { items, language } = this.state;
 
         return (
-            <View title={<Translate id='section.language' />}>
+            <View
+                back
+                title={<Translate id='section.language' />}
+            >
                 <Form>
                     <Select
                         onChange={this.onChange}
