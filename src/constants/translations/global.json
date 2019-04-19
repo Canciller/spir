@@ -30,5 +30,6 @@
     "description": [ "Description", "Descripcion" ],
     "category": [ "Category", "Categoria" ],
     "product": [ "Product", "Producto" ],
-    "service": [ "Service", "Servicio" ]
+    "service": [ "Service", "Servicio" ],
+    "quantity": [ "Quantity", "Cantidad" ]
 }
