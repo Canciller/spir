@@ -23,7 +23,7 @@ import { withSpirApi } from '../../util';
 const styles = theme => ({
     absolute: {
         position: 'fixed',
-        bottom: theme.spacing.unit * 2,
+        bottom: theme.spacing.unit ,
         right: theme.spacing.unit * 2,
     },
     add: {
@@ -58,7 +58,10 @@ class Inventory extends Component {
                 <Grow in={true}>
                     <div className={classes.absolute}>
                         <IconButton aria-label="Delete">
-                            <DeleteIcon />
+                        <Fab color=''>
+                        <DeleteIcon />
+                        </Fab>
+                            
                         </IconButton>
                         <Link component={RouterLink} to={routes.ADDITEM}>
                             <Fab color='primary' className={classes.add}>
