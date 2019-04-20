@@ -1,95 +1,85 @@
 import React, { Component } from 'react';
 import { SpirApiContext } from './context';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { SnackbarProvider, withSnackbar } from 'notistack';
 
-const url = 'https://spir-development.herokuapp.com/api'; // Change this to a config file
+const url = 'https://spir-development.herokuapp.com/api'; // Move this to a config file
 
-const styles = theme => ({
-
-})
-
-class SpirApi extends Component {
-    state =  {
-        notify: false
-    }
-
-    inventory = {
-        add: item => {
-            item = JSON.stringify(item);
-            fetch(`${url}/products`, {
+function defaultApi(route, onAction) {
+    return {
+        add: (data, callback) => {
+            data = JSON.stringify(data);
+            fetch(`${url}/${route}`, {
                 method: 'post',
-                body: item,
+                body: data,
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
                 .then(res => res.json())
-                .then(res => this.setState({ notify: true }))
+                .then(res => {
+                    if(callback) callback(res);
+                    onAction(`debug: called ${route}.add`);
+                })
                 .catch(err => console.log(err));
         },
         get: callback => {
-            fetch(`${url}/products`)
+            fetch(`${url}/${route}`)
                 .then(res => res.json())
-                .then(res => callback(res))
+                .then(res => {
+                    if(callback) callback(res);
+                    onAction(`debug: called ${route}.get`);
+                })
+                .catch(err => console.log(err))
+        },
+        delete: (id, callback) => {
+            fetch(`${url}/${route}/${id}`, {
+                method: 'delete'
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if(callback) callback(res);
+                    onAction(`debug: called ${route}.delete`);
+                })
+                .catch(err => console.log(err))
+        },
+        update: (id, data, callback) => {
+            fetch(`${url}/${route}/${id}`, {
+                method: 'put',
+                body: data,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if(callback) callback(res);
+                    onAction(`debug: called ${route}.update`);
+                })
                 .catch(err => console.log(err))
         }
     }
+}
 
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+class SpirApi extends Component {
+    onAction = message => {
+        this.props.enqueueSnackbar(message);
+    }
 
-        this.setState({ notify: false });
-    };
+    inventory = defaultApi('products', this.onAction);
+    categories = defaultApi('categories', this.onAction);
 
     render() {
-        const { classes } = this.props;
+        const { children } = this.props;
 
         return (
             <SpirApiContext.Provider value={{
-                inventory: this.inventory
+                inventory: this.inventory,
+                categories: this.categories
             }}>
-                <React.Fragment>
-                    {this.props.children}
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={this.state.notify}
-                        autoHideDuration={6000}
-                        onClose={this.handleClose}
-                        ContentProps={{
-                            'aria-describedby': 'message-id',
-                        }}
-                        message={
-                            <span id="message-id">
-                                TEST
-                            </span>}
-                        action={[
-                            <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
-                                UNDO
-                            </Button>,
-                            <IconButton
-                                key="close"
-                                aria-label="Close"
-                                color="inherit"
-                                className={classes.close}
-                                onClick={this.handleClose}
-                            >
-                                <CloseIcon />
-                            </IconButton>,
-                        ]} />
-                </React.Fragment>
+                {children}
             </SpirApiContext.Provider>
         )
     }
 }
 
-export default withStyles(styles)(SpirApi);
+export default withSnackbar(SpirApi);
