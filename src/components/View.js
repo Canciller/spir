@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
@@ -16,8 +17,10 @@ const styles = theme => ({
         top: -theme.spacing.unit * 1.5
     },
     content: {
-        display: 'flex',
-        flexWrap: 'wrap',
+        flex: 1,
+    },
+    spacing: {
+        marginBottom: theme.spacing.unit * 2
     }
 })
 
@@ -31,12 +34,13 @@ class View extends Component {
             classes,
             title,
             children,
-            back
+            back,
+            margin
         } = this.props;
 
         return (
             <Fragment>
-                <div className={classes.header}>
+                <div className={classNames(classes.header, margin && classes.spacing)}>
                     <Typography
                         className={classes.title}
                         variant='title'
