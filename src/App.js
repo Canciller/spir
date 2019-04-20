@@ -4,6 +4,7 @@ import Localization from './Localization';
 import SpirApi from './SpirApi';
 import Routes from './Routes';
 import Layout from './components/Layout';
+import { SnackbarProvider, withSnackbar } from 'notistack';
 
 //const {app} = window.require('electron').remote;
 
@@ -12,11 +13,13 @@ class App extends Component {
     return (
         <Localization>
             <History>
-                <SpirApi>
-                    <Layout>
-                        <Routes />
-                    </Layout>
-                </SpirApi>
+                <SnackbarProvider maxSnack={6}>
+                    <SpirApi>
+                        <Layout>
+                            <Routes />
+                        </Layout>
+                    </SpirApi>
+                </SnackbarProvider>
             </History>
         </Localization>
     );
