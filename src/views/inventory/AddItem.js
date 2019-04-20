@@ -27,10 +27,18 @@ class AddItem extends Component {
         quantityNaN: false,
 
         category_code: 0,
-        categories: [
-            { value: 0, name: 'Product' },
-            { value: 1, name: 'Service' }
-        ],
+        categories: []
+    }
+
+    componentDidMount() {
+        const { spirApi } = this.props;
+
+        spirApi.categories.get(categories => {
+            categories = categories.map(category => {
+                return { value: category.code, name: category.name }
+            });
+            this.setState({ categories });
+        });
     }
 
     formHasError = () => {
@@ -110,11 +118,15 @@ class AddItem extends Component {
                         label={<Translate id='name'/>}
                         onChange={this.handleNameChange}
                     />
-                    <TextField
-                        label={<Translate id='description'/>}
-                        placeholder='No description'
-                        onChange={this.handleDescriptionChange}
-                    />
+                    <Translate>
+                        { ({ translate }) =>
+                            <TextField
+                                label={<Translate id='description'/>}
+                                placeholder={translate('message.inventory.no_description')}
+                                onChange={this.handleDescriptionChange}
+                            />
+                        }
+                    </Translate>
                     <TextField
                         required
                         error={priceNaN}
@@ -124,6 +136,7 @@ class AddItem extends Component {
                         onChange={this.handlePriceChange}
                     />
                     <Select
+                        translate
                         onChange={this.onChangeCategory}
                         label={<Translate id='category'/>}
                         value={category_code}
