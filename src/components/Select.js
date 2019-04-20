@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Translate } from 'react-localize-redux';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -44,6 +45,7 @@ class SelectWrapper extends Component {
             value,
             items,
             required,
+            translate,
             classes } = this.props;
 
         const { labelWidth } = this.state;
@@ -76,7 +78,9 @@ class SelectWrapper extends Component {
                                 key={i}
                                 value={item.value}
                             >
-                                {item.name}
+                                {translate &&
+                                    <Translate id={item.name} /> ||
+                                    item.name}
                             </MenuItem>
                         )
                     })}
