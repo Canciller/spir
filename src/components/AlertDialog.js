@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import { Translate } from 'react-localize-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -6,29 +8,56 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-class AlertDialog extends React.Component {
+const styles = theme => ({
+    paper: {
+        boxShadow: 'none'
+    }
+})
+
+class AlertDialog extends Component {
+    onAgree = () => {
+        const { onClose, onAgree } = this.props;
+        if(onAgree) onAgree();
+        if(onClose) onClose();
+    }
+
+    onDisagree = () => {
+        const { onClose, onDisagree } = this.props;
+        if(onDisagree) onDisagree();
+        if(onClose) onClose();
+    }
+
     render() {
-        const { open, handleClose } = this.props;
+        const {
+            open,
+            title,
+            children,
+            onClose,
+            classes
+        } = this.props;
 
         return (
             <Dialog
+                PaperProps={{
+                    className: classes.paper
+                }}
                 open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+                onClose={onClose}
+                aria-labelledby='dialog-title'
+                aria-describedby='dialog-description'
             >
-                <DialogTitle id="alert-dialog-title">{"Delete product?"}</DialogTitle>
+                <DialogTitle id='dialog-title'>{title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete this product from the page?
+                    <DialogContentText id='dialog-description'>
+                        {children}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Disagree
+                    <Button onClick={this.onDisagree} color='primary' autoFocus>
+                        <Translate id='no' />
                     </Button>
-                    <Button onClick={handleClose} color="primary" autoFocus>
-                        Agree
+                    <Button onClick={this.onAgree} color='primary'>
+                        <Translate id='yes' />
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -36,4 +65,4 @@ class AlertDialog extends React.Component {
     }
 }
 
-export default AlertDialog;
+export default withStyles(styles)(AlertDialog);
