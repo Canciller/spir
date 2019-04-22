@@ -10,11 +10,7 @@
         "settings": [ "Settings", "Ajustes" ],
         "reader": [ "Reader", "Lector" ],
         "language": [ "Language", "Idioma" ],
-<<<<<<< HEAD
-        "deposit": [ "Deposit", "Deposito" ]
-=======
         "deposit": [ "Deposit", "Depósito" ]
->>>>>>> bdb25e73cee363660521f8f41c9d06545e50d560
     },
     "message": {
         "reader": {
