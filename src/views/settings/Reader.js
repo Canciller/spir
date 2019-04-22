@@ -63,17 +63,22 @@ class Reader extends Component {
             >
                 <Form>
                     <TextField
+                        autoFocus
+                        gutterTop
                         onChange={this.handleAddressChange}
                         label={<Translate id='address' />}
                         placeholder='127.0.0.1'
                     />
                     <TextField
+                        gutterTop
                         onChange={this.handlePortChange}
                         label={<Translate id='port' />}
                         placeholder='3334'
-                        margin
                     />
-                    <Button onClick={this.handleConnect} margin>
+                    <Button
+                        gutterTop
+                        onClick={this.handleConnect}
+                    >
                         <Translate id='connect' />
                     </Button>
                     {status &&

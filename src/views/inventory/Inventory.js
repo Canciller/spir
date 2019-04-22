@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Translate } from 'react-localize-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 
 import Fab from '@material-ui/core/Fab';
 import Link from '@material-ui/core/Link';
@@ -42,14 +43,17 @@ class Inventory extends Component {
         const { items } = this.state;
         let itemsFiltered = items.filter(it => it._id !== item._id);
         this.setState({ items: itemsFiltered });
+        this.props.enqueueSnackbar(`${item.name} was deleted`, {
+            variant: 'success'
+        })
     }
 
     componentDidMount() {
         const { spirApi } = this.props;
-        spirApi.inventory.get(items => {
+        spirApi.inventory.get((error, items) => {
             this.setState({ items });
         });
-        spirApi.categories.get(categories => {
+        spirApi.categories.get((error, categories) => {
             this.setState({ categories });
         });
     }
@@ -63,21 +67,19 @@ class Inventory extends Component {
                 <ItemGrid>
                     {this.state.items.map((item, i) => <Item categories={categories} onDelete={this.onDeleteItem} key={item._id} data={item} />)}
                 </ItemGrid>
-                <Grow in>
-                    <div className={classes.absolute}>
-                        <Fab size='small' color='inherit' className={classes.deleteItems}>
-                            <DeleteIcon />
+                <div className={classes.absolute}>
+                    <Fab size='small' color='inherit' className={classes.deleteItems}>
+                        <DeleteIcon />
+                    </Fab>
+                    <Link component={RouterLink} to={routes.ADDITEM}>
+                        <Fab color='primary' className={classes.addItem}>
+                            <AddIcon />
                         </Fab>
-                        <Link component={RouterLink} to={routes.ADDITEM}>
-                            <Fab color='primary' className={classes.addItem}>
-                                <AddIcon />
-                            </Fab>
-                        </Link>
-                    </div>
-                </Grow>
+                    </Link>
+                </div>
             </View>
         )
     }
 }
 
-export default withStyles(styles)(withSpirApi(Inventory));
+export default withStyles(styles)(withSpirApi(withSnackbar(Inventory)));

@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import ReactDOM from 'react-dom';
 import { Translate } from 'react-localize-redux';
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
+import { withLocalize } from "react-localize-redux";
 
 import View from '../../components/View';
 import Form from '../../components/Form';
@@ -16,95 +17,105 @@ const styles = theme => ({})
 class AddItem extends Component {
     state = {
         name: '',
-        nameEmpty: false,
-
         description: '',
-
         price: 0,
-        priceNaN: false,
-
         quantity: 1,
-        quantityNaN: false,
-
-        category_code: 0,
+        category: 0,
         categories: []
     }
 
     componentDidMount() {
-        const { spirApi } = this.props;
-
-        spirApi.categories.get(categories => {
-            categories = categories.map(category => {
-                return { value: category.code, name: category.name }
-            });
+        this.props.spirApi.categories.get((error, categories) => {
+            categories = categories.map(category => ({ value: category.code, name: category.name }));
             this.setState({ categories });
         });
     }
 
-    formHasError = () => {
-        const { nameEmpty, priceNaN, quantityNaN } = this.state;
-        return nameEmpty || priceNaN || quantityNaN;
+    hasError = () => {
+        let {
+            name,
+            price,
+            quantity
+        } = this.state;
+
+        let nameError = name === '',
+            priceError = Number.isNaN(price) || price <= 0,
+            quantityError = false;
+
+        if(quantity === '') quantity = 1;
+        else quantityError = Number.isNaN(quantity) || quantity <= 0;
+
+        this.setState({
+            nameError,
+            priceError,
+            quantityError
+        });
+
+        return nameError || priceError || quantityError;
     }
 
-    handleNameChange = e => {
-        let value = e.target.value;
-        this.setState({ name: value, nameEmpty: value === '' });
-    }
-
-    handleDescriptionChange = e => {
-        this.setState({ description: e.target.value });
-    }
-
-    handlePriceChange = e => {
-        let value = e.target.value, price = 0;
-        if(value !== '') price = parseFloat(value);
-
-        if(isNaN(price)) return this.setState({ priceNaN: true });
-
-        this.setState({ price, priceNaN: price <= 0 });
-    }
-
-    handleQuantityChange = e => {
-        let value = e.target.value, quantity = 1;
-        if(value !== '') quantity = parseInt(value);
-
-        if(isNaN(quantity)) return this.setState({ quantityNaN: true });
-
-        this.setState({ quantity, quantityNaN: quantity <= 0 });
+    onChange = (value, target, error) => {
+        this.setState({
+            [target]: value,
+            [`${target}Error`]: error
+        });
     }
 
     onChangeCategory = e => {
         let value = e.target.value;
-        this.setState({ category_code: value });
+        this.setState({ category: value });
     }
 
-    handleAdd = () => {
-        let { name, description, price, quantity, category_code } = this.state;
-        let { spirApi } = this.props;
+    onClickAddButton = () => {
+        const {
+            name,
+            description,
+            price,
+            quantity,
+            category
+        } = this.state;
 
-        this.setState({
-            nameEmpty: name === '',
-            priceNaN: price <= 0,
-            quantityNaN: quantity <= 0
-        }, () => {
-            if(!this.formHasError()) {
-                let item = { name, description, price, quantity, category_code }
-                spirApi.inventory.add(item);
+        // TODO: Change category_code to category in Product Model
+        const category_code = category;
+
+        const {
+            spirApi,
+            translate,
+            enqueueSnackbar
+        } = this.props;
+
+        if(!this.hasError()) {
+            const item = {
+                name, 
+                description,
+                price,
+                quantity,
+                category_code
             }
-        });
 
+            spirApi.inventory.add(item, (error, added) => {
+                enqueueSnackbar(`${added.name} was successfully added to inventory`, {
+                    variant: 'success'
+                });
+            });
+        } else this.props.enqueueSnackbar('Check for errors in the form', {
+            variant: 'error',
+            preventDuplicate: true
+        });
     }
 
     render() {
-        const { classes } = this.props;
+        const {
+            nameError,
+            priceError,
+            quantityError,
+            category,
+            categories,
+        } = this.state;
 
         const {
-            nameEmpty,
-            priceNaN,
-            quantityNaN,
-            category_code,
-            categories
-        } = this.state;
+            translate
+        } = this.props;
 
         return (
             <View
@@ -113,46 +124,55 @@ class AddItem extends Component {
             >
                 <Form>
                     <TextField
+                        autoFocus
+                        gutterTop
                         required
-                        error={nameEmpty}
-                        label={<Translate id='name'/>}
-                        onChange={this.handleNameChange}
+                        error={nameError}
+                        target='name'
+                        label={translate('name')}
+                        onChange={this.onChange}
                     />
-                    <Translate>
-                        { ({ translate }) =>
-                            <TextField
-                                label={<Translate id='description'/>}
-                                placeholder={translate('message.inventory.no_description')}
-                                onChange={this.handleDescriptionChange}
-                            />
-                        }
-                    </Translate>
                     <TextField
+                        gutterTop
+                        target='description'
+                        onChange={this.onChange}
+                        label={translate('description')}
+                        placeholder={translate('message.inventory.no_description')}
+                    />
+                    <TextField
+                        gutterTop
                         required
-                        error={priceNaN}
-                        label={<Translate id='price'/>}
+                        number='+'
+                        error={priceError}
+                        target='price'
                         adorment='$'
                         placeholder='0.00'
-                        onChange={this.handlePriceChange}
+                        onChange={this.onChange}
+                        label={translate('price')}
                     />
                     <Select
-                        translate
-                        onChange={this.onChangeCategory}
-                        label={<Translate id='category'/>}
-                        value={category_code}
+                        gutterTop
+                        translateItems
+                        value={category}
                         items={categories}
+                        onChange={this.onChangeCategory}
+                        label={translate('category')}
                     />
                     <TextField
-                        error={quantityNaN}
-                        label={<Translate id='quantity'/>}
+                        gutterTop
+                        number='+'
+                        error={quantityError}
+                        target='quantity'
+                        defaultValue={1}
                         placeholder='1'
-                        onChange={this.handleQuantityChange}
+                        onChange={this.onChange}
+                        label={translate('quantity')}
                     />
                     <Button
-                        margin
-                        onClick={this.handleAdd}
+                        gutterTop
+                        onClick={this.onClickAddButton}
                     >
-                        <Translate id='add' />
+                        {translate('add')}
                     </Button>
                 </Form>
             </View>
@@ -160,4 +180,4 @@ class AddItem extends Component {
     }
 }
 
-export default withStyles(styles)(withSpirApi(AddItem));
+export default withStyles(styles)(withSpirApi(withSnackbar(withLocalize(AddItem))));

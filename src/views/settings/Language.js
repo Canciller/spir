@@ -46,6 +46,7 @@ class Language extends Component {
             >
                 <Form>
                     <Select
+                        gutterTop
                         onChange={this.onChange}
                         label={<Translate id='section.language' />}
                         items={items}
