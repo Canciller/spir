@@ -9,7 +9,8 @@
         "cards": [ "Cards", "Tarjetas" ],
         "settings": [ "Settings", "Ajustes" ],
         "reader": [ "Reader", "Lector" ],
-        "language": [ "Language", "Idioma" ]
+        "language": [ "Language", "Idioma" ],
+        "deposit": [ "Deposit", "Deposito" ]
     },
     "message": {
         "reader": {
