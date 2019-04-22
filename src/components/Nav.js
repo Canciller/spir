@@ -15,9 +15,10 @@ import InventoryIcon from '@material-ui/icons/Store';
 import StaffIcon from '@material-ui/icons/AssignmentInd';
 
 import PartnersIcon from '@material-ui/icons/Face';
-import SettingsIcon from '@material-ui/icons/Settings';
-
 import CardIcon from '@material-ui/icons/CreditCard';
+import DepositIcon from '@material-ui/icons/LocalAtm';
+
+import SettingsIcon from '@material-ui/icons/Settings';
 import ReaderIcon from '@material-ui/icons/Nfc';
 import LanguageIcon from '@material-ui/icons/Translate';
 
@@ -120,6 +121,11 @@ export default class Nav extends Component {
                         to: routes.CARDS,
                         translation: 'section.cards',
                         icon: CardIcon
+                    },
+                    {
+                        to: routes.DEPOSIT,
+                        translation: 'section.deposit',
+                        icon: DepositIcon
                     }
                 ]
             },
