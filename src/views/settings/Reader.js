@@ -28,12 +28,12 @@ class Reader extends Component {
         status: null
     }
 
-    handleAddressChange = event => {
-        this.setState({ address: event.target.value });
+    handleAddressChange = value => {
+        this.setState({ address: value });
     }
 
-    handlePortChange = event => {
-        this.setState({ port: event.target.value });
+    handlePortChange = value => {
+        this.setState({ port: value });
     }
 
     handleConnect = () => {
