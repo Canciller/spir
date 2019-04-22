@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Translate } from 'react-localize-redux';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { withSpirApi } from '../../util';
 
@@ -73,7 +72,7 @@ class Item extends Component {
 
     handleDelete = () => {
         const { onDelete, spirApi, data } = this.props;
-        spirApi.inventory.delete(data._id, deleted => {
+        spirApi.inventory.delete(data._id, (error, deleted) => {
             if(onDelete) onDelete(deleted);
         });
     }
