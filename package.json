@@ -23,6 +23,7 @@
     "react-transition-group": "^2.9.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "styled-components": "^4.2.0",
     "update-electron-app": "^1.2.0"
   },
   "devDependencies": {
