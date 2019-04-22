@@ -7,7 +7,7 @@ const styles = theme => ({
     root: {
         display: 'flex',
         flexDirection: 'column',
-        width: '100%'
+        flex: 1
     }
 })
 
@@ -16,9 +16,9 @@ class Form extends Component {
         const { children, classes } = this.props;
 
         return (
-            <form className={classes.root}>
+            <div className={classes.root}>
                 {children}
-            </form>
+            </div>
         )
     }
 }
