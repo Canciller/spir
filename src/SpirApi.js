@@ -26,7 +26,7 @@ function defaultApi(route) {
             return fetch(`${url}/${route}`)
                 .then(res => res.json())
                 .then(res => callback(null, res))
-                .catch(err => callback(err, null));
+                .catch(err => callback(err, []));
         },
         getOne: (id, callback) => {
             if(!callback) return;
