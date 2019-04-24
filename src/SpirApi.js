@@ -29,6 +29,7 @@ class SpirApi extends Component {
     onError = err => this.props.enqueueSnackbar(err.message, { variant: 'error' });
 
     onSuccess = (data, callback) => {
+        if(data.errors) return this.onError(new Error('There was an error with the server'));
         if(callback) callback(data);
     }
 
