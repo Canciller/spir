@@ -38,7 +38,7 @@ class Reader extends Component {
 
     handleConnect = () => {
         const { port, address } = this.state;
-        ipcRenderer.send('reader:connect', port, address);
+        ipcRenderer.send('reader:connect', port === ''? 3334 : port, address === ''? '127.0.0.1' : address);
     }
 
     componentDidMount() {
@@ -68,12 +68,14 @@ class Reader extends Component {
                         onChange={this.handleAddressChange}
                         label={<Translate id='address' />}
                         placeholder='127.0.0.1'
+                        defaultValue='127.0.0.1'
                     />
                     <TextField
                         gutterTop
                         onChange={this.handlePortChange}
                         label={<Translate id='port' />}
                         placeholder='3334'
+                        defaultValue='3334'
                     />
                     <Button
                         gutterTop

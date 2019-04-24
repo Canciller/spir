@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Translate } from 'react-localize-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { withSpirApi } from '../../util';
 
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -11,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import AlertDialog from '../AlertDialog';
+import AlertDialog from './AlertDialog';
 
 const styles = theme => ({
     container: {
@@ -33,33 +32,12 @@ const styles = theme => ({
     itemActions: {
         borderTop: '1px solid',
         borderColor: theme.palette.divider
-    },
-    badge: {
-        top: 10,
-        right: 0,
-        position: 'absolute',
-        color: theme.palette.primary.main,
-        padding: '0 10px',
-        cursor: 'pointer',
-        userSelect: 'none'
     }
-})
+});
 
 class Item extends Component {
     state = {
         deleteDialogOpen: false
-    }
-
-    getCategoryName = () => {
-        const { categories, data } = this.props;
-
-        let unknown = <Translate id='unknown' />
-        if(!categories) return unknown;
-
-        let category = categories[data.category_code];
-        if(!category) return unknown;
-
-        return <Translate id={category.name} />
     }
 
     onOpenDeleteDialog = () => {
@@ -71,41 +49,31 @@ class Item extends Component {
     }
 
     handleDelete = () => {
-        const { onDelete, spirApi, data } = this.props;
-
-        spirApi.inventory.delete(data._id, deleted => {
-            if(onDelete) onDelete(deleted);
-        });
+        const { onDelete, index } = this.props;
+        if(onDelete) onDelete(index);
     }
 
     handleEdit = () => {
-        const { onEdit, data } = this.props;
-        if(onEdit) onEdit(data);
+        const { onEdit, index } = this.props;
+        if(onEdit) onEdit(index);
     }
 
     handleClickItem = () => {
-        const { onClick, data } = this.props;
-        if(onClick) onClick(data);
+        const { onClick, index } = this.props;
+        if(onClick) onClick(index);
     }
 
     render() {
         const {
-            classes,
-            data
+            children,
+            title,
+            image,
+            classes
         } = this.props;
 
         const {
             deleteDialogOpen
         } = this.state;
-
-        const {
-            name,
-            quantity,
-            image
-        } = data;
-
-        let price = data.price.toFixed(2);
-        let description = data.description === '' ? <Translate id='message.inventory.no_description' /> : data.description;
 
         return (
             <div className={classes.container}>
@@ -114,23 +82,16 @@ class Item extends Component {
                         {image &&
                             <CardMedia
                                 component="img"
-                                alt={name}
+                                alt={title}
                                 className={classes.itemMedia}
                                 height='140'
                                 image={image}
-                                title={name}
+                                title={title}
                             />
                         }
                         <CardContent className={classes.itemContent}>
-                            <Typography gutterBottom variant='title'>{name}</Typography>
-                            <Typography gutterBottom variant='subtitle1'>${price}</Typography>
-                            <Typography gutterBottom variant='caption'>{description}</Typography>
-                            <Typography variant='caption'><Translate id='category' />{': '}{this.getCategoryName()}</Typography>
-                            <div className={classes.badge}>
-                                <Tooltip title={<Translate id='quantity'/>} placement='bottom'>
-                                    <Typography color='inherit'>{quantity}</Typography>
-                                </Tooltip>
-                            </div>
+                            <Typography gutterBottom variant='title'>{title}</Typography>
+                            {children}
                         </CardContent>
                     </CardActionArea>
                     <CardActions className={classes.itemActions}>
@@ -163,4 +124,4 @@ class Item extends Component {
     }
 }
 
-export default withStyles(styles)(withSpirApi(Item));
+export default withStyles(styles)(Item);
