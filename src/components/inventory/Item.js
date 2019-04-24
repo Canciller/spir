@@ -72,7 +72,8 @@ class Item extends Component {
 
     handleDelete = () => {
         const { onDelete, spirApi, data } = this.props;
-        spirApi.inventory.delete(data._id, (error, deleted) => {
+
+        spirApi.inventory.delete(data._id, deleted => {
             if(onDelete) onDelete(deleted);
         });
     }

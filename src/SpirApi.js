@@ -1,83 +1,75 @@
 import React, { Component } from 'react';
+import { withSnackbar } from 'notistack';
 import { SpirApiContext } from './context';
 
 const url = 'https://spir-development.herokuapp.com/api'; // Move this to a config file
 
-function defaultApi(route) {
-    return {
-        add: (data, callback) => {
-            if(!callback) return;
+async function fetchWrapper(url, method, extra = {}) {
+    let { body, headers, ...other } = extra;
 
-            data = JSON.stringify(data);
-            return fetch(`${url}/${route}`, {
-                method: 'post',
-                body: data,
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then(res => res.json())
-                .then(res => callback(null, res))
-                .catch(err => callback(err, null));
-        },
-        get: callback => {
-            if(!callback) return;
+    if(body) body = JSON.stringify(body);
+    if(!headers) headers = {};
 
-            return fetch(`${url}/${route}`)
-                .then(res => res.json())
-                .then(res => callback(null, res))
-                .catch(err => callback(err, []));
-        },
-        getOne: (id, callback) => {
-            if(!callback) return;
-            
-            return fetch(`${url}/${route}/${id}`)
-                .then(res => res.json())
-                .then(res => callback(null, res))
-                .catch(err => callback(err, null));
-        },
-        delete: (id, callback) => {
-            if(!callback) return;
+    let res = await fetch(url, {
+        method,
+        body,
+        headers: body ? {
+            ...headers,
+            'Content-Type': 'application/json',
+        } : undefined,
+        ...other
+    });
 
-            return fetch(`${url}/${route}/${id}`, {
-                method: 'delete'
-            })
-                .then(res => res.json())
-                .then(res => callback(null, res))
-                .catch(err => callback(err, null));
-        },
-        update: (id, data, callback) => {
-            data = JSON.stringify(data);
+    let data = await res.json();
 
-            return fetch(`${url}/${route}/${id}`, {
-                method: 'put',
-                body: data,
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then(res => res.json())
-                .then(res => callback(null, res))
-                .catch(err => callback(err, null));
-        }
-    }
+    return data;
 }
 
 class SpirApi extends Component {
-    inventory = defaultApi('products');
-    categories = defaultApi('categories');
-    cards = defaultApi('cards');
-    partners = defaultApi('partners');
+    onError = err => this.props.enqueueSnackbar(err.message, { variant: 'error' });
+
+    onSuccess = (data, callback) => {
+        if(callback) callback(data);
+    }
+
+    defaultApi = route => {
+        const { enqueueSnackbar } = this.props;
+        const snackbarError = { variant: 'error' };
+
+        const u = `${url}/${route}`;
+
+        return {
+            get: callback => fetchWrapper(u, 'get')
+            .then(data => this.onSuccess(data, callback))
+            .catch(this.onError),
+
+            getOne: (id, callback) => fetchWrapper(`${u}/${id}`, 'get')
+            .then(data => this.onSuccess(data, callback))
+            .catch(this.onError),
+
+            add: (body, callback) => fetchWrapper(u, 'post', { body })
+            .then(data => this.onSuccess(data, callback))
+            .catch(this.onError),
+
+            delete: (id, callback) => fetchWrapper(`${u}/${id}`, 'delete')
+            .then(data => this.onSuccess(data, callback))
+            .catch(this.onError),
+
+            update: (id, body, callback) => fetchWrapper(`${u}/${id}`, 'put', { body })
+            .then(data => this.onSuccess(data, callback))
+            .catch(this.onError)
+        }
+    }
 
     render() {
         const { children } = this.props;
 
         return (
             <SpirApiContext.Provider value={{
-                inventory: this.inventory,
-                categories: this.categories,
-                cards: this.cards,
-                partners: this.partners
+                inventory: this.defaultApi('products'),
+                categories: this.defaultApi('categories'),
+                cards: this.defaultApi('cards'),
+                partners: this.defaultApi('partners')
             }}>
                 {children}
             </SpirApiContext.Provider>
@@ -85,4 +77,4 @@ class SpirApi extends Component {
     }
 }
 
-export default SpirApi;
+export default withSnackbar(SpirApi);

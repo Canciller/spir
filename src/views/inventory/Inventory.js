@@ -43,19 +43,22 @@ class Inventory extends Component {
         const { items } = this.state;
         let itemsFiltered = items.filter(it => it._id !== item._id);
         this.setState({ items: itemsFiltered });
+
         this.props.enqueueSnackbar(`${item.name} was deleted`, {
             variant: 'success'
-        })
+        });
     }
+
+    setItems = items => this.setState({ items });
+
+    setCategories = categories => this.setState({ categories });
 
     componentDidMount() {
         const { spirApi } = this.props;
-        spirApi.inventory.get((error, items) => {
-            this.setState({ items });
-        });
-        spirApi.categories.get((error, categories) => {
-            this.setState({ categories });
-        });
+
+        spirApi.inventory.get(items => this.setItems(items));
+
+        spirApi.categories.get(categories => this.setCategories(categories));
     }
 
     render() {

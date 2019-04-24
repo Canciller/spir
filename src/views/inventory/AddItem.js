@@ -25,7 +25,7 @@ class AddItem extends Component {
     }
 
     componentDidMount() {
-        this.props.spirApi.categories.get((error, categories) => {
+        this.props.spirApi.categories.get(categories => {
             categories = categories.map(category => ({ value: category.code, name: category.name }));
             this.setState({ categories });
         });
@@ -93,7 +93,7 @@ class AddItem extends Component {
                 category_code
             }
 
-            spirApi.inventory.add(item, (error, added) => {
+            spirApi.inventory.add(item, added => {
                 enqueueSnackbar(`${added.name} was successfully added to inventory`, {
                     variant: 'success'
                 });

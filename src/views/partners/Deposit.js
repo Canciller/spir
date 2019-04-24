@@ -6,6 +6,7 @@ import { withSnackbar } from 'notistack';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
+import View from '../../components/View';
 import Form from '../../components/Form';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
@@ -56,7 +57,7 @@ class Deposit extends Component {
     setInfo = (card, partner) => {
         card = card === undefined ? null : card;
         partner = partner === undefined ? null : partner;
-        
+
         this.setState({ card, partner, loaded: card && partner });
     }
 
@@ -66,11 +67,11 @@ class Deposit extends Component {
             enqueueSnackbar
         } = this.props;
 
-        spirApi.cards.get((err, cards) => {
+        spirApi.cards.get(cards => {
             const card = cards.find(card => card.tag === tag);
             if(!card) return this.setInfo();
 
-            spirApi.partners.getOne(card.partner, (err, partner) => {
+            spirApi.partners.getOne(card.partner, partner => {
                 this.setInfo(card, partner);
                 enqueueSnackbar('Card detected', {
                     variant: 'success'
@@ -104,7 +105,7 @@ class Deposit extends Component {
         }
 
         // Update balance on server
-        spirApi.cards.update(card._id, { balance: card.balance += amount }, (err, updated) => {
+        spirApi.cards.update(card._id, { balance: card.balance += amount }, updated => {
             enqueueSnackbar(`$${amount.toFixed(2)} deposited to ${partner.first_name}`, {
                 variant: 'success'
             });
@@ -135,7 +136,7 @@ class Deposit extends Component {
         return (
             <Fragment>
                 {loaded &&
-                    <div className={classes.root}>
+                    <View>
                         <div className={classes.main}>
                             <Card
                                 partner={partner}
@@ -177,7 +178,7 @@ class Deposit extends Component {
                                 Cancel
                             </Button>
                         </div>
-                    </div> ||
+                    </View> ||
                     <div className={classes.waiting}>
                         <CircularProgress
                             size={85}

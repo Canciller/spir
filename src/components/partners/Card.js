@@ -15,10 +15,10 @@ const iconSize = 60;
 const absolute = {
     position: 'absolute'
 }
-      
+
 const styles = theme => {
     const spacing = theme.spacing.unit * 3;
-    
+
     return {
         root: {
             position: 'relative',
