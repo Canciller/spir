@@ -1,13 +1,21 @@
-import React, { Component, Fragment } from 'react';
-import { Translate } from 'react-localize-redux';
-import Typography from '@material-ui/core/Typography';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+
 import View from '../components/View';
 
-export default class Home extends Component {
+const styles = theme => ({
+
+})
+
+class Home extends Component {
     render() {
         return (
-            <View title={<Translate id='section.checkout' />}>
+            <View
+                title='Checkout'
+            >
             </View>
         )
     }
 }
+
+export default withStyles(styles)(Home);

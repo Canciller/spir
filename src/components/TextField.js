@@ -1,33 +1,31 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
-import { gutters } from '../util';
-
+import Gutters from './Gutters';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
-const styles = theme => ({
-    ...gutters.createGutterStyles(theme.spacing.unit * 2),
-})
+const styles = theme => ({})
 
 class TextFieldWrapper extends Component {
     state = {
-        labelWidth: 0,
-        hasError: false,
-        value: ''
+        hasError: false
     }
 
     fixLabelWidth = () => {
+        /*
         setTimeout(() => {
             this.setState({
                 labelWidth: ReactDOM.findDOMNode(this.labelRef).offsetWidth,
             });
         }, 10);
+        */
+        this.setState({
+            labelWidth: ReactDOM.findDOMNode(this.labelRef).offsetWidth,
+        });
     }
 
     onChange = e => {
@@ -35,29 +33,30 @@ class TextFieldWrapper extends Component {
             target,
             onChange,
             required,
-            number,
-            defaultValue
+            number
         } = this.props;
+
+        //let defaultValue = undefined;
 
         let value = e.target.value,
             hasError = false;
 
         if(value === '') {
-            hasError = required;
-            if(number) value = NaN;
-            if(defaultValue) value = defaultValue;
+            hasError = required !== undefined;
         } else if (number) {
-            value = parseFloat(value);
-            hasError = Number.isNaN(value);
+            let valueNumber = Number(value);
+            hasError = Number.isNaN(valueNumber);
 
             if(!hasError) {
-                if(number === '+') hasError = value <= 0;
-                else if(number === '-') hasError = value >= 0;
+                if(number === '+') hasError = valueNumber <= 0;
+                else if(number === '-') hasError = valueNumber >= 0;
             }
         }
 
         this.setState({ value, hasError }, () => {
-            if(onChange) onChange(value, target, hasError);
+            if(onChange) onChange(e, value, {
+                target, error: hasError, empty: value === ''
+            });
         });
 
         this.fixLabelWidth();
@@ -71,16 +70,12 @@ class TextFieldWrapper extends Component {
         const {
             id, label, adorment,
             required, error, target,
+            defaultValue,
+            fullWidth,
             onChange,
             number,
-            defaultValue,
-            gutterVertical,
-            gutterHorizontal,
-            gutterTop,
-            gutterBottom,
-            gutterLeft,
-            gutterRight,
             classes,
+            gutters,
             ...other
         } = this.props;
 
@@ -89,36 +84,32 @@ class TextFieldWrapper extends Component {
         } = this.state;
 
         return (
-            <FormControl
-                variant='outlined'
-                error={hasError || error}
-                required={required}
-                className={
-                    classNames(
-                        classes.root,
-                        gutterVertical && classes.gutterVertical,
-                        gutterHorizontal && classes.gutterHorizontal,
-                        gutterTop && classes.gutterTop,
-                        gutterRight && classes.gutterRight,
-                        gutterBottom && classes.gutterBottom,
-                        gutterLeft && classes.gutterLeft,
-                    )
-                }
+            <Gutters
+                fullWidth={fullWidth}
+                {...gutters}
             >
-                <InputLabel
-                    ref={ref => { this.labelRef = ReactDOM.findDOMNode(ref); }}
-                    htmlFor={id}
+                <FormControl
+                    fullWidth={fullWidth}
+                    variant='outlined'
+                    error={hasError || error}
+                    required={required}
+                    classes={{ root: classes.root }}
                 >
-                    {label}
-                </InputLabel>
-                <OutlinedInput
-                    id={id}
-                    labelWidth={this.labelRef ? this.labelRef.offsetWidth : 0}
-                    startAdornment={adorment && <InputAdornment position='start'>{adorment}</InputAdornment> || ' '}
-                    onChange={this.onChange}
-                    {...other}
-                />
-            </FormControl>
+                    <InputLabel
+                        ref={ref => { this.labelRef = ReactDOM.findDOMNode(ref); }}
+                        htmlFor={id}
+                    >
+                        {label}
+                    </InputLabel>
+                    <OutlinedInput
+                        id={id}
+                        labelWidth={this.labelRef ? this.labelRef.offsetWidth : 0}
+                        startAdornment={adorment ? <InputAdornment position='start'>{adorment}</InputAdornment> : ' '}
+                        onChange={this.onChange}
+                        {...other}
+                    />
+                </FormControl>
+            </Gutters>
         )
     }
 }

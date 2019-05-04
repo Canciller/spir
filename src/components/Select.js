@@ -1,53 +1,56 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Translate } from 'react-localize-redux';
-
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 
-import { gutters } from '../util';
-
+import Gutters from './Gutters';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-const styles = theme => ({
-    ...gutters.createGutterStyles(theme.spacing.unit * 2),
-})
+const styles = theme => ({})
 
 class SelectWrapper extends Component {
-    state = {
-        labelWidth: 0
-    }
-
-    createItems = () => {
-        const { items, translateItems } = this.props;
-
-        if(!items) return <MenuItem value={-1}>No Selection</MenuItem>
-        return items.map((item, i) =>
-            <MenuItem
-                key={i}
-                value={item.value}
-            >
-                {translateItems && <Translate id={item.name} /> || item.name}
-            </MenuItem>
-        )
-    }
-
     fixLabelWidth = () => {
+        /*
         setTimeout(() => {
             this.setState({
                 labelWidth: ReactDOM.findDOMNode(this.labelRef).offsetWidth,
             });
         }, 10);
+        */
+        this.setState({
+            labelWidth: ReactDOM.findDOMNode(this.labelRef).offsetWidth,
+        });
     }
 
     onChange = e => {
-        const { onChange } = this.props;
-        if(onChange) onChange(e);
+        const { onChange, target } = this.props;
+        if(onChange) onChange(e, e.target.value, { target, error: false });
+
         this.fixLabelWidth();
+    }
+
+    validItems = () => {
+        const { items } = this.props;
+
+        return items !== undefined && items.length > 0;
+    }
+
+    createSelectItems = () => {
+        const { items } = this.props;
+
+        if(!this.validItems()) return;
+
+        return items.map((item, i) => (
+            <MenuItem
+                key={i}
+                value={i}
+            >
+                {item}
+            </MenuItem>
+        ))
     }
 
     componentDidMount() {
@@ -57,55 +60,49 @@ class SelectWrapper extends Component {
     render() {
         const {
             id, label,
-            error, required,
-            items, translateItems,
+            error, required, disabled,
+            fullWidth,
+            items, value,
             onChange,
-            gutterVertical,
-            gutterHorizontal,
-            gutterTop,
-            gutterBottom,
-            gutterLeft,
-            gutterRight,
             classes,
+            gutters,
             ...other
         } = this.props;
 
         return (
-            <FormControl
-                variant='outlined'
-                error={error}
-                required={required}
-                className={
-                    classNames(
-                        classes.root,
-                        gutterVertical && classes.gutterVertical,
-                        gutterHorizontal && classes.gutterHorizontal,
-                        gutterTop && classes.gutterTop,
-                        gutterRight && classes.gutterRight,
-                        gutterBottom && classes.gutterBottom,
-                        gutterLeft && classes.gutterLeft,
-                    )
-                }
+            <Gutters
+                fullWidth={fullWidth}
+                {...gutters}
             >
-                <InputLabel
-                    ref={ref => { this.labelRef = ReactDOM.findDOMNode(ref); }}
-                    htmlFor={id}
+                <FormControl
+                    fullWidth={fullWidth}
+                    variant='outlined'
+                    error={error}
+                    required={required}
+                    classes={{ root: classes.root }}
                 >
-                    {label}
-                </InputLabel>
-                <Select
-                    onChange={this.onChange}
-                    input={
-                        <OutlinedInput
-                            id={id}
-                            labelWidth={this.labelRef ? this.labelRef.offsetWidth : 0}
-                        />
-                    }
-                    {...other}
-                >
-                    { this.createItems() }
-                </Select>
-            </FormControl>
+                    <InputLabel
+                        ref={ref => { this.labelRef = ReactDOM.findDOMNode(ref); }}
+                        htmlFor={id}
+                    >
+                        {label}
+                    </InputLabel>
+                    <Select
+                        value={value || 0}
+                        onChange={this.onChange}
+                        disabled={!this.validItems() || disabled}
+                        input={
+                            <OutlinedInput
+                                id={id}
+                                labelWidth={this.labelRef ? this.labelRef.offsetWidth : 0}
+                            />
+                        }
+                        {...other}
+                    >
+                        {this.createSelectItems()}
+                    </Select>
+                </FormControl>
+            </Gutters>
         )
     }
 }

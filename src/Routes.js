@@ -1,27 +1,49 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import routes from './constants/routes.json';
+import configRoutes from './config/routes';
 
-import Home from './views/Home';
-import Inventory, { AddItem } from './views/inventory';
-import Staff from './views/Staff';
-import { Cards, Deposit } from './views/partners';
-import { Reader, Language } from './views/settings';
+import ErrorView from './components/ErrorView';
 
-export default () => (
-    <Switch>
-        <Route path={routes.ADDITEM} component={AddItem} />
-        <Route path={routes.INVENTORY} component={Inventory} />
+export default class Routes extends Component {
+    createRoutes = () => {
+        const values = Object.values(configRoutes).reverse();
+        let routes = [];
 
-        <Route path={routes.READERS} component={Reader} />
-        <Route path={routes.LANGUAGE} component={Language} />
+        for(let i = 0; i < values.length; ++i) {
+            const {
+                path,
+                component
+            } = values[i];
 
-        <Route path={routes.DEPOSIT} component={Deposit} />
-        <Route path={routes.CARDS} component={Cards} />
+            if(!path || !component) continue;
 
-        <Route path={routes.STAFF} component={Staff} />
+            routes.push(
+                <Route
+                    key={i}
+                    path={path}
+                    component={component}
+                />
+            )
+        }
 
-        <Route path={routes.HOME} component={Home} />
-    </Switch>
-)
+        return routes;
+    }
+
+    render() {
+        const routes = this.createRoutes();
+
+        if(!routes || routes.length === 0)
+            return (
+                <ErrorView
+                    message='Routes are not configured.'
+                />
+            )
+        else
+            return (
+                <Switch>
+                    {routes}
+                </Switch>
+            )
+    }
+}

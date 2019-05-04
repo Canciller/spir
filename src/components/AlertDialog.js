@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { Translate } from 'react-localize-redux';
+
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,16 +15,29 @@ const styles = theme => ({
 })
 
 class AlertDialog extends Component {
-    onAgree = () => {
-        const { onClose, onAgree } = this.props;
-        if(onAgree) onAgree();
+    onAction = callback => {
+        const { onClose } = this.props;
         if(onClose) onClose();
+        if(callback) callback();
     }
 
-    onDisagree = () => {
-        const { onClose, onDisagree } = this.props;
-        if(onDisagree) onDisagree();
-        if(onClose) onClose();
+    createActions = () => {
+        const { actions } = this.props;
+
+        return (
+            <DialogActions>
+                { actions.map((action, i) =>
+                    <Button
+                        key={i}
+                        color='primary'
+                        onClick={e => this.onAction(action.callback)}
+                        autoFocus={action.autoFocus}
+                    >
+                        {action.name}
+                    </Button>
+                )}
+            </DialogActions>
+        )
     }
 
     render() {
@@ -52,14 +65,7 @@ class AlertDialog extends Component {
                         {children}
                     </DialogContentText>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.onDisagree} color='primary' autoFocus>
-                        <Translate id='no' />
-                    </Button>
-                    <Button onClick={this.onAgree} color='primary'>
-                        <Translate id='yes' />
-                    </Button>
-                </DialogActions>
+                {this.createActions()}
             </Dialog>
         );
     }
