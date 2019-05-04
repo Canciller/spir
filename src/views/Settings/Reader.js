@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import Typography from '@material-ui/core/Typography';
 import FormView from '../../components/FormView';
 
 const ipcRenderer = window.require('electron').ipcRenderer;

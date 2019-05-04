@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import Link from './Link';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -120,8 +119,6 @@ class Data extends Component {
         const {
             title,
             image,
-            editPath,
-            data,
             deleteDialog,
             classes
         } = this.props;
