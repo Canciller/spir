@@ -58,7 +58,7 @@ class AddStaff extends Component {
                     },
                     {
                         type: 'textfield',
-                        required: true
+                        required: true,
                         target: 'phone_no'
                     }
                 ]}
