@@ -68,6 +68,7 @@ class EditStaff extends Component {
                         target: 'email',
                         value: data.email
                     },
+                    /*
                     {
                         type: 'textfield',
                         label: 'Password',
@@ -75,6 +76,7 @@ class EditStaff extends Component {
                         target: 'password',
                         value: data.password
                     },
+                    */
                     {
                         type: 'textfield',
                         required: true,
