@@ -43,9 +43,44 @@ class EditStaff extends Component {
                         type: 'textfield',
                         required: true,
                         autoFocus: true,
+                        label: 'First name',
+                        target: 'first_name',
+                        value: data.first_name
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
+                        label: 'Last name',
+                        target: 'last_name',
+                        value: data.last_name
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
                         label: 'Username',
                         target: 'username',
                         value: data.username
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
+                        label: 'Email',
+                        target: 'email',
+                        value: data.email
+                    },
+                    {
+                        type: 'textfield',
+                        label: 'Password',
+                        required: true,
+                        target: 'password',
+                        value: data.password
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
+                        target: 'phone_no',
+                        label: 'Phone number',
+                        value: data.phone_no
                     },
                     {
                         label: 'Staff Member ID',
