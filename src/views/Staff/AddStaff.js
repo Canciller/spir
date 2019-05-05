@@ -28,13 +28,6 @@ class AddStaff extends Component {
                     {
                         type: 'textfield',
                         required: true,
-                        autoFocus: true,
-                        label: 'Username',
-                        target: 'username'
-                    },
-                    {
-                        type: 'textfield',
-                        required: true,
                         label: 'First name',
                         target: 'first_name'
                     },
@@ -47,6 +40,13 @@ class AddStaff extends Component {
                     {
                         type: 'textfield',
                         required: true,
+                        autoFocus: true,
+                        label: 'Username',
+                        target: 'username'
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
                         label: 'e-mail',
                         target: 'email'
                     },
@@ -55,6 +55,11 @@ class AddStaff extends Component {
                         label: 'Password',
                         required: true,
                         target: 'password'
+                    },
+                    {
+                        type: 'textfield',
+                        required: true
+                        target: 'phone_no'
                     }
                 ]}
                 actions={[
