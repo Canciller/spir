@@ -200,3 +200,142 @@ class Deposit extends Component {
 
 export default withStyles(styles)(withSpirApi(withSnackbar(Deposit)));
 */
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import { withSpir } from '../../context';
+import { withSnackbar } from 'notistack';
+
+import View from '../../components/View';
+import LoadingView from '../../components/LoadingView';
+import Form from '../../components/Form';
+import Button from '../../components/Button';
+import TextField from '../../components/TextField';
+import Card from '../../components/Card';
+import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const ipcRenderer = window.require('electron').ipcRenderer;
+
+const styles = theme => ({
+    main: {
+        display: 'flex',
+        width: '100%'
+    },
+    content: {
+        marginTop: theme.spacing.unit * 2
+    },
+    form: {
+        marginLeft: theme.spacing.unit * 2
+    },
+    actionButtons: {
+        marginTop: theme.spacing.unit * 2,
+        display: 'flex'
+    },
+    actionButton: {
+        flex: 1
+    },
+    waiting: {
+        color: theme.palette.grey[600],
+        margin: 'auto 0',
+        alignSelf: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        userSelect: 'none'
+    },
+    progress: {
+        alignSelf: 'center',
+        marginBottom: theme.spacing.unit * 3
+    },
+})
+
+class Deposit extends Component {
+    state = {}
+
+    onError = err => {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(err.message, { variant: 'error' });
+    }
+
+    clearCardAndPartner = () => this.setState({
+        cart: undefined,
+        partner: undefined,
+        loaded: false
+    });
+
+    setCardAndPartner = (card, partner) => this.setState({
+        card, partner, loaded: card && partner
+    });
+
+    findCard = tag => {
+        const {
+            spir,
+            enqueueSnackbar
+        } = this.props;
+
+        this.clearCardAndPartner();
+
+        spir.cards.get()
+            .then(cards => {
+                const card = cards.find(card => card.tag === tag);
+                if(!card) return;
+
+                spir.partners.getOne(card.partner)
+                    .then(partner => {
+                        if(!partner) return;
+
+                        this.setCardAndPartner(card, partner);
+                        enqueueSnackbar('Card detected', { variant: 'success' });
+                    })
+                    .catch(this.onError);
+            })
+            .catch(this.onError);
+    }
+
+    componentDidMount() {
+        /*
+        ipcRenderer.on('reader:data', (e, tag) => this.findCard(tag));
+        */
+        this.findCard('0000826796');
+    }
+
+    componentWillUnmount() {
+        ipcRenderer.removeAllListeners();
+    }
+
+    render() {
+        const { classes } = this.props;
+
+        const {
+            card,
+            partner,
+            loaded
+        } = this.state;
+
+        if(!loaded)
+            return (
+                <LoadingView
+                    loading={{
+                        message: 'Waiting for card reading...'
+                    }}
+                />
+            )
+        else
+            return (
+                <View
+                    title='Deposit'
+                    onRefresh={this.clearCardAndPartner}
+                    classes={{
+                        content: classes.content
+                    }}
+                >
+                    <Card
+                        card={card}
+                        partner={partner}
+                    />
+                </View>
+        )
+    }
+}
+
+export default withSpir(withSnackbar(withStyles(styles)(Deposit)));

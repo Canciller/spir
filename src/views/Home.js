@@ -40,13 +40,13 @@ class Checkout extends Component {
         const actions = ReactDOM.findDOMNode(this.actionsRef);
 
         if(!actions) return;
-        this.setState({ height: window.innerHeight - actions.offsetHeight - 152 })
+        this.setState({ height: window.innerHeight - actions.offsetHeight - 140 });
 
         window.addEventListener('resize', e => {
             const actions = ReactDOM.findDOMNode(this.actionsRef);
 
             if(!actions) return;
-            this.setState({ height: window.innerHeight - actions.offsetHeight - 152 })
+            this.setState({ height: window.innerHeight - actions.offsetHeight - 140 });
             this.forceUpdate();
         })
     }

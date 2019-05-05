@@ -31,7 +31,7 @@ export default class SpirProvider extends Component {
         return {
             get: () => fetchWrapper(url, 'get')
             .then(data => {
-                if(data.errors) {
+                if(data && data.errors) {
                     console.log(data.errors);
                     throw new Error('There was an error with the SPIR server');
                 }
@@ -40,10 +40,8 @@ export default class SpirProvider extends Component {
 
             getOne: id => fetchWrapper(`${url}/${id}`, 'get')
             .then(data => {
-                if(data.errors) {
-                    console.log(data.errors);
-                    throw new Error('There was an error with the SPIR server');
-                }
+                if(!data) throw new Error('Data fetched from server is null');
+                else if(data.errors) throw new Error(data.errors.error.message);
                 else return data;
             }),
 
