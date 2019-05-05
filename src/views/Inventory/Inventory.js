@@ -25,16 +25,21 @@ class Inventory extends Component {
                 dataFormat={{
                     name: {
                         variant: 'title',
+                        index: 0
                     },
                     price: {
-                        variant: 'subtitle1',
+                        variant: 'subheading',
                         gutterBottom: true,
                         label: 'Price',
                         format: '${}.00',
+                        index: 1
                     },
                     description: {
-                        variant: 'caption',
+                        variant: 'subtitle2',
                         defaultValue: 'No description',
+                        align: 'justify',
+                        gutterBottom: true,
+                        index: 2
                     },
                     category_code: {
                         variant: 'caption',
@@ -42,11 +47,13 @@ class Inventory extends Component {
                         format: value => {
                             if(value === 1) return 'Service';
                             return 'Product';
-                        }
+                        },
+                        index: 3
                     },
                     quantity: {
                         variant: 'caption',
                         label: 'Quantity',
+                        index: 4
                     },
                     _id: { visible: false },
                     __v: { visible: false }

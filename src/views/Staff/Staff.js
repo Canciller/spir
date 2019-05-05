@@ -24,6 +24,33 @@ class Staff extends Component {
                 }}
 
                 dataFormat={{
+                    first_name: {
+                        variant: 'title'
+                    },
+                    last_name: {
+                        variant: 'title',
+                        gutterBottom: true
+                    },
+                    username: {
+                        variant: 'subheading'
+                    },
+                    password: { visible: false },
+                    email: {
+                        variant: 'subheading'
+                    },
+                    phone_no: {
+                        label: 'Phone',
+                        variant: 'subheading',
+                        gutterBottom: true
+                    },
+                    createdAt: {
+                        label: 'Creation date',
+                        variant: 'caption'
+                    },
+                    updatedAt: {
+                        label: 'Latest update',
+                        variant: 'caption'
+                    },
                     _id: { visible: false },
                     __v: { visible: false }
                 }}
