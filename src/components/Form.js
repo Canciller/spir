@@ -255,7 +255,6 @@ class Form extends Component {
                 [`${field.target}_error`] : false,
                 [`${field.target}_empty`] : field.value !== undefined ? false : true
             });
-            console.log(field)
         }
 
         this.fieldsLoaded = true;

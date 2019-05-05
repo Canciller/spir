@@ -7,9 +7,11 @@ import StorageContext from './StorageContext';
 const notificationOptions = {
     autoHideDuration: 800,
     preventDuplicate: false,
+    /*
     transitionDuration: {
         enter: 400, exit: 250
     }
+    */
 }
 
 class StorageProvider extends Component {
