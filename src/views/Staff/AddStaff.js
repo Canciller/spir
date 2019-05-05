@@ -59,7 +59,8 @@ class AddStaff extends Component {
                     {
                         type: 'textfield',
                         required: true,
-                        target: 'phone_no'
+                        target: 'phone_no',
+                        label: 'Phone number'
                     }
                 ]}
                 actions={[
