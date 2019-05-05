@@ -40,6 +40,14 @@ const routes = {
         path: '/staff',
         component: Staff
     },
+    editStaff: {
+        path: '/staff/edit',
+        component: EditStaff
+    },
+    addStaff: {
+        path: '/staff/add',
+        component: AddStaff
+    },
     settings: {
         path: '/settings',
         component: undefined
