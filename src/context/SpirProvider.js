@@ -31,31 +31,46 @@ export default class SpirProvider extends Component {
         return {
             get: () => fetchWrapper(url, 'get')
             .then(data => {
-                if(data.errors) throw new Error('There was an error with the SPIR server');
+                if(data.errors) {
+                    console.log(data.errors);
+                    throw new Error('There was an error with the SPIR server');
+                }
                 else return data;
             }),
 
             getOne: id => fetchWrapper(`${url}/${id}`, 'get')
             .then(data => {
-                if(data.errors) throw new Error('There was an error with the SPIR server');
+                if(data.errors) {
+                    console.log(data.errors);
+                    throw new Error('There was an error with the SPIR server');
+                }
                 else return data;
             }),
 
             add: body => fetchWrapper(url, 'post', { body })
             .then(data => {
-                if(data.errors) throw new Error('There was an error with the SPIR server');
+                if(data.errors) {
+                    console.log(data.errors);
+                    throw new Error('There was an error with the SPIR server');
+                }
                 else return data;
             }),
 
             delete: id => fetchWrapper(`${url}/${id}`, 'delete')
             .then(data => {
-                if(data.errors) throw new Error('There was an error with the SPIR server');
+                if(data.errors) {
+                    console.log(data.errors);
+                    throw new Error('There was an error with the SPIR server');
+                }
                 else return data;
             }),
 
             update: (id, body) => fetchWrapper(`${url}/${id}`, 'put', { body })
             .then(data => {
-                if(data.errors) throw new Error('There was an error with the SPIR server');
+                if(data.errors) {
+                    console.log(data.errors);
+                    throw new Error('There was an error with the SPIR server');
+                }
                 else return data;
             }),
         }
