@@ -5,10 +5,15 @@ import View from './View';
 import Loading from './Loading';
 
 const styles = theme => ({
+    root: {},
     content: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    actions: {},
+    headerActions: {
+
     }
 })
 
@@ -23,7 +28,10 @@ class LoadingView extends Component {
         return (
             <View
                 classes={{
-                    content: classes.content
+                    root: classes.root,
+                    content: classes.content,
+                    actions: classes.actions,
+                    headerActions: classes.headerActions
                 }}
                 {...other}
             >

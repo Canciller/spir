@@ -9,8 +9,12 @@ const styles = theme => {
     return {
         root: {
             position: 'fixed',
+            bottom: theme.spacing.unit * 2,
             right: theme.spacing.unit * 2,
-            bottom: theme.spacing.unit,
+            zIndex: theme.zIndex.appBar
+        },
+        hide: {
+            display: 'none'
         },
         iconButton: {
             background: 'rgba(255, 255, 255, 0.8)',
@@ -72,11 +76,15 @@ class ViewActions extends Component {
 
     render() {
         const {
-            classes
+            classes,
+            actions
         } = this.props;
 
         return (
-            <div className={classes.root}>
+            <div className={classNames(
+                classes.root,
+                !actions && classes.hide
+            )}>
                 {this.createActions()}
             </div>
         )

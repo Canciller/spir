@@ -1,44 +1,155 @@
 import React, { Component } from 'react';
+import { withSnackbar } from 'notistack';
+import withSpir from './withSpir';
 
 import StorageContext from './StorageContext';
 
-export default class StorageProvider extends Component {
-    state = {}
+const notificationOptions = {
+    autoHideDuration: 800,
+    preventDuplicate: false,
+    transitionDuration: {
+        enter: 400, exit: 250
+    }
+}
 
-        /*
-    set = (state, callback) => {
-        this.setState(state, () => {
-            if(callback instanceof Function)
-                callback(state);
-        })
+class StorageProvider extends Component {
+    state = {
+        categories: [],
+        cart: []
     }
 
-    setOne = (key, value, callback) => this.set({ [key]: value }, callback)
-
-    get = key => {
-        if(this.state.hasOwnProperty(key))
-            return this.state[key];
-        return undefined;
+    category = value => {
+        const category = this.state.categories[value];
+        if(category) return category.name;
+        else return 'unknown';
     }
 
-    clear = (key, callback) => {
-        if(this.state.hasOwnProperty(key))
-            this.setOne(key, undefined, callback);
+    items = () => {
+        const {
+            spir,
+            enqueueSnackbar
+        } = this.props;
+
+        if(!this.fetching) {
+            this.fetching = true;
+
+            spir.inventory.get()
+                .then(items => {
+                    const cart = this.cart.get();
+
+                    for(let i = items.length - 1; i >= 0; --i) {
+                        let item = items[i];
+
+                        const index = cart.findIndex(it => it._id === item._id);
+                        if(index < 0) continue;
+
+                        item.quantity -= cart[index].quantity;
+                        if(item.quantity <= 0) {
+                            items.splice(i, 1);
+                            continue;
+                        }
+
+                        items[i] = item;
+                    }
+
+                    this.setState({ items });
+                })
+                .catch(err => console.log(err));
+        }
+
+        return this.state.items;
     }
 
-    create = (key, type, callback) => {
-        if(!(callback instanceof Function)) return;
+    delete = item => {
+        const { items } = this.state;
+        if(!items) return;
 
-        const current = this.get(key);
-        if(current !== undefined) callback(current);
-        else this.setOne(key, new type(), state => callback(state[key]));
+        this.setState({ items: items.filter(it => it._id !== item._id) })
     }
-    */
+
+    refresh = () => {
+        this.fetching = false;
+        this.setState({ items: undefined });
+    }
+
+    cart = {
+        get: () => this.state.cart,
+        add: item => {
+            let items = this.state.items,
+                cart = this.cart.get();
+
+            const cartIndex = cart.findIndex(it => it._id === item._id),
+                  itemsIndex = items.findIndex(it => it._id === item._id);
+
+            if(itemsIndex >= 0) {
+                let fetched = items[itemsIndex];
+
+                fetched.quantity -= 1;
+                if(fetched.quantity <= 0) items.splice(itemsIndex, 1);
+            }
+
+            if(cartIndex >= 0) {
+                let found = cart[cartIndex];
+                found.quantity += 1;
+                cart[cartIndex] = found;
+            } else {
+                const {
+                    quantity,
+                    ...other
+                } = item;
+
+                cart.push({ quantity: 1, ...other });
+            }
+
+
+            this.setState({ cart, items }, () =>
+                this.props.enqueueSnackbar(`${item.name} added to cart`, {
+                    variant: 'success',
+                    ...notificationOptions
+                }));
+        },
+        remove: item => {
+            let cart = this.cart.get();
+
+            const cartIndex = cart.findIndex(it => it._id === item._id);
+
+            if(cartIndex >= 0) {
+                let found = cart[cartIndex];
+                found.quantity -= 1;
+                if(found.quantity === 0) cart.splice(cartIndex, 1);
+                else cart[cartIndex] = found;
+            }
+
+            this.setState({ cart }, () =>
+                this.props.enqueueSnackbar(`${item.name} removed from cart`, {
+                    variant: 'info',
+                    ...notificationOptions
+                }));
+        },
+        refresh: () => this.setState({ cart: [] })
+    }
+
+    componentDidMount() {
+        const {
+            spir,
+            enqueueSnackbar
+        } = this.props;
+
+        spir.categories.get()
+            .then(categories => this.setState({ categories }))
+            .catch(err => console.log(err));
+    }
 
     render() {
         return (
             <StorageContext.Provider
                 value={{
+                    category: this.category,
+                    items: this.items,
+                    cart: this.cart,
+                    refresh: this.refresh,
+                    delete: this.delete,
+                    add: this.add
                 }}
             >
                 {this.props.children}
@@ -46,3 +157,5 @@ export default class StorageProvider extends Component {
         )
     }
 }
+
+export default withSpir(withSnackbar(StorageProvider));

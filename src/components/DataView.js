@@ -12,11 +12,14 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => {
     return {
+        root: {},
         content: {
             display: 'flex',
             flexWrap: 'wrap',
-            alignContent: 'flex-start'
+            alignContent: 'flex-start',
+            marginTop: theme.spacing.unit
         },
+        actions: {},
         deleteCheckbox: {
 
         },
@@ -25,7 +28,8 @@ const styles = theme => {
         },
         addAction: {
             marginLeft: theme.spacing.unit * 2
-        }
+        },
+        headerActions: {}
     }
 }
 
@@ -125,22 +129,31 @@ class DataView extends Component {
         ]
 
         let V = ErrorView,
-            message = emptyMessage || 'Nothing here.'
+            message = emptyMessage || 'Nothing here.',
+            children = undefined;
 
         if(!dataGrid) {
             V = LoadingView;
             message = loadingMessage;
         }
-        else if(!this.isDataEmpty()) V = View;
-
+        else if(!this.isDataEmpty()) {
+            children = this.props.children;
+            V = View;
+        }
         return (
             <V
                 title={title}
                 actions={actions}
                 message={message}
                 {...other}
-                classes={{ content: classes.content }}
+                classes={{
+                    root: classes.root,
+                    content: classes.content,
+                    actions: classes.actions,
+                    headerActions: classes.headerActions
+                }}
             >
+                {children}
                 {dataGrid}
             </V>
         )

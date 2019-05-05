@@ -9,11 +9,13 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 const iconSize = 100;
 
 const styles = theme => ({
+    root: {},
     content: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
     },
+    actions: {},
     message: {
         display: 'flex',
         flexDirection: 'column',
@@ -24,6 +26,9 @@ const styles = theme => ({
         width: iconSize,
         height: iconSize,
         marginBottom: theme.spacing.unit * 2
+    },
+    headerActions: {
+
     }
 })
 
@@ -38,7 +43,10 @@ class ErrorView extends Component {
         return (
             <View
                 classes={{
-                    content: classes.content
+                    root: classes.root,
+                    content: classes.content,
+                    actions: classes.actions,
+                    headerActions: classes.headerActions
                 }}
                 {...other}
             >

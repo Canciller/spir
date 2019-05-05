@@ -14,6 +14,7 @@ const styles = theme => ({
         flexGrow: 1
     },
     header: {},
+    headerActions: {},
     content: {},
     actions: {}
 })
@@ -25,7 +26,9 @@ class View extends Component {
             actions,
             title,
             error,
+            back,
             onRefresh,
+            style,
             classes,
         } = this.props;
 
@@ -37,11 +40,18 @@ class View extends Component {
 
         //else
             return (
-                <div className={classes.root}>
+                <div
+                    style={style}
+                    className={classes.root}
+                >
                     <ViewHeader
+                        back={back}
                         title={title}
                         onRefresh={onRefresh}
-                        classes={{ root: classes.header }}
+                        classes={{
+                            root: classes.header,
+                            actions: classes.headerActions
+                        }}
                     />
                     <ViewContent
                         classes={{ root: classes.content }}

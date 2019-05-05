@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 
 import FormView from '../../components/FormView';
 
@@ -8,14 +9,23 @@ const ipcRenderer = window.require('electron').ipcRenderer;
 const styles = theme => ({})
 
 class Reader extends Component {
-    onConnect = (e, { port, address }) => {
-        console.log(port, address);
 
-        //ipcRenderer.send('reader:connect', port, address);
+    onConnect = (e, { port, address }) => {
+        ipcRenderer.send('reader:connect', port, address);
     }
 
     componentDidMount() {
-        //ipcRenderer.on('reader:status', (e, status) => console.log(status));
+        const { enqueueSnackbar } = this.props;
+
+        ipcRenderer.on('reader:status', (e, status) => enqueueSnackbar(status.message, {
+            variant: status.success ? 'success' : 'error',
+            preventDuplicate: true
+        }));
+
+        ipcRenderer.send('reader:status', (e, status) => enqueueSnackbar(status.message, {
+            variant: status.success ? 'success' : 'error',
+            preventDuplicate: true
+        }));
     }
 
     componentWillUnmount() {
@@ -143,4 +153,4 @@ class Reader extends Component {
 }
 */
 
-export default withStyles(styles)(Reader);
+export default withSnackbar(withStyles(styles)(Reader));

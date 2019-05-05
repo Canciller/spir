@@ -12,8 +12,11 @@ class DatabaseView extends Component {
     fetchData = () => {
         const {
             spir,
-            collection
+            collection,
+            data
         } = this.props;
+
+        if(data) return;
 
         this.setState({
             data: undefined
@@ -28,7 +31,8 @@ class DatabaseView extends Component {
     onDelete = value => {
         const {
             spir,
-            collection
+            collection,
+            onDelete
         } = this.props;
 
         if(collection === undefined) return;
@@ -37,8 +41,10 @@ class DatabaseView extends Component {
 
         spir[collection].delete(value._id)
             .then(value => {
-                this.setState({ data: data.filter(it => it._id !== value._id) })
-                //Item deleted message
+                if(this.props.data && onDelete instanceof Function)
+                    onDelete(value)
+                else
+                    this.setState({ data: data.filter(it => it._id !== value._id) })
             })
             .catch(err => console.log(err));
     }
@@ -52,7 +58,7 @@ class DatabaseView extends Component {
     componentDidMount() {
         this._isMounted = true;
 
-        this.fetchData();
+        if(!this.props.data) this.fetchData();
     }
 
     componentWillUnmount() {
@@ -67,15 +73,14 @@ class DatabaseView extends Component {
 
         return (
             <DataView
+                data={data}
+                onRefresh={this.fetchData}
                 {...this.props}
 
                 error={error}
 
                 onDelete={this.onDelete}
-                onRefresh={this.fetchData}
                 onClick={this.onClick}
-
-                data={data}
             />
         )
     }

@@ -9,7 +9,13 @@ import DatabaseView from '../../components/DatabaseView';
 const styles = theme => ({})
 
 class Inventory extends Component {
+    componentDidMount() {
+        this.props.storage.refresh();
+    }
+
     render() {
+        const { storage } = this.props;
+
         return (
             <DatabaseView
                 title='Inventory'
@@ -22,6 +28,11 @@ class Inventory extends Component {
                     message: 'Are you sure you want to delete this item?'
                 }}
 
+                onClick={storage.cart.add}
+                onRefresh={storage.refresh}
+                onDelete={storage.delete}
+
+                data={storage.items()}
                 dataFormat={{
                     name: {
                         variant: 'title',
@@ -31,7 +42,7 @@ class Inventory extends Component {
                         variant: 'subheading',
                         gutterBottom: true,
                         label: 'Price',
-                        format: '${}.00',
+                        format: '${}',
                         index: 1
                     },
                     description: {
@@ -44,10 +55,7 @@ class Inventory extends Component {
                     category_code: {
                         variant: 'caption',
                         label: 'Category',
-                        format: value => {
-                            if(value === 1) return 'Service';
-                            return 'Product';
-                        },
+                        format: storage.category,
                         index: 3
                     },
                     quantity: {

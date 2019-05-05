@@ -12,15 +12,14 @@ import AlertDialog from './AlertDialog';
 
 const styles = theme => ({
     root: {
-        paddingRight: theme.spacing.unit,
-        paddingTop: theme.spacing.unit,
+        padding: theme.spacing.unit / 2,
         flex: 1,
         minWidth: 300
     },
     card: {
         boxShadow: 'none',
         border: '1px solid',
-        borderColor: theme.palette.divider,
+        borderColor: theme.palette.divider
     },
     cardMedia: {
         objectFit: 'cover'
@@ -119,13 +118,16 @@ class Data extends Component {
         const {
             title,
             image,
-            deleteDialog,
             classes
         } = this.props;
 
         const {
             isDialogVisible
         } = this.state;
+
+        let deleteDialog = this.props.deleteDialog;
+
+        if(!deleteDialog) deleteDialog = {}
 
         return (
             <div className={classes.root}>

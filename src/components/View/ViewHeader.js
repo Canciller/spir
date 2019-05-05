@@ -16,6 +16,9 @@ const styles = theme => ({
         top: 64 + theme.spacing.unit,
         zIndex: theme.zIndex.appBar
     },
+    title: {
+        paddingLeft: theme.spacing.unit / 2
+    },
     iconButton: {
         background: 'rgba(255, 255, 255, 0.8)',
         padding: 5
@@ -44,10 +47,14 @@ class ViewHeader extends Component {
             classes
         } = this.props;
 
+        let back = this.props.back;
+        if(back === undefined) back = true;
+
         return (
             <div className={classes.root}>
                 <Typography
                     variant='title'
+                    className={classes.title}
                 >
                     {title}
                 </Typography>
@@ -61,18 +68,20 @@ class ViewHeader extends Component {
                                 <Refresh />
                             </IconButton>
                     }
-                    <IconButton
-                        aria-label='back'
-                        onClick={this.onClickArrowBack}
-                        className={
-                            classNames(
-                                classes.margin,
-                                classes.iconButton
-                            )
-                        }
-                    >
-                        <ArrowBack />
-                    </IconButton>
+                    {back &&
+                            <IconButton
+                                aria-label='back'
+                                onClick={this.onClickArrowBack}
+                                className={
+                                    classNames(
+                                        classes.margin,
+                                        classes.iconButton
+                                    )
+                                }
+                            >
+                                <ArrowBack />
+                            </IconButton>
+                    }
                 </div>
             </div>
         )

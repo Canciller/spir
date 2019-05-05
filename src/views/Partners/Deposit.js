@@ -1,3 +1,4 @@
+/*
 import React, { Component, Fragment } from 'react';
 import { Translate } from 'react-localize-redux';
 import { withSpirApi } from '../../util';
@@ -198,3 +199,4 @@ class Deposit extends Component {
 }
 
 export default withStyles(styles)(withSpirApi(withSnackbar(Deposit)));
+*/
