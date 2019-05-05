@@ -1,6 +1,6 @@
 import Home from '../views/Home';
 import Inventory, { AddItem, EditItem } from '../views/Inventory';
-import Staff from '../views/Staff';
+import Staff, { AddStaff, EditStaff } from '../views/Staff';
 /*
 import { Cards, Deposit } from '../views/Partners';
 */

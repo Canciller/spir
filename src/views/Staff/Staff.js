@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { withSpir } from '../context';
 
-import routes from '../config/routes';
+import routes from '../../config/routes';
 
-import DatabaseView from '../components/DatabaseView';
+import DatabaseView from '../../components/DatabaseView';
 
 const styles = theme => ({})
 
@@ -30,4 +29,4 @@ class Staff extends Component {
     }
 }
 
-export default withSpir(withStyles(styles)(Staff));
+export default withStyles(styles)(Staff);
