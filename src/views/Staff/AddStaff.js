@@ -44,4 +44,4 @@ class AddStaff extends Component {
     }
 }
 
-export default withSpir(withStyles(styles)(AddItem));
+export default withSpir(withStyles(styles)(AddStaff));

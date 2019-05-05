@@ -17,6 +17,7 @@ class Staff extends Component {
                 collection='staff'
 
                 editPath={routes.editStaff.path}
+                addPath={routes.addStaff.path}
 
                 deleteDialog={{
                     message: 'Are you sure you want to delete this staff member?'
