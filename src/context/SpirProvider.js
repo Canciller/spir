@@ -25,13 +25,6 @@ async function fetchWrapper(url, method, extra = {}) {
 }
 
 export default class SpirProvider extends Component {
-    onError = err => console.log(err);
-
-    onSuccess = (data, callback) => {
-        if(data.errors) this.onError(new Error('There was an error with the server'));
-        else if(callback) callback(data);
-    }
-
     defaultApi = route => {
         const url = `${spir.url}/${route}`;
 

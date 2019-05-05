@@ -66,9 +66,14 @@ class DataView extends Component {
         if(onDelete instanceof Function) onDelete(data);
     }
 
+    onClick = data => {
+        const { onClick } = this.props;
+
+        if(onClick instanceof Function) onClick(data);
+    }
+
     createDataGrid = () => {
         const {
-            onClick,
             data, dataFormat,
             deleteDialog
         } = this.props;
@@ -80,7 +85,7 @@ class DataView extends Component {
                 key={i}
                 data={el}
                 format={dataFormat}
-                onClick={onClick}
+                onClick={this.onClick}
                 onDelete={this.onDelete}
                 onEdit={this.onEdit}
                 deleteDialog={deleteDialog}

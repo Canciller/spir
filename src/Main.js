@@ -6,6 +6,7 @@ import Routes from './Routes';
 import {
     HistoryProvider,
     SpirProvider,
+    StorageProvider,
     IntlProvider,
 } from './context';
 
@@ -19,9 +20,11 @@ export default class Main extends Component {
         <HistoryProvider>
             <IntlProvider>
                 <SpirProvider>
-                    <Layout>
-                        <Routes />
-                    </Layout>
+                    <StorageProvider>
+                        <Layout>
+                            <Routes />
+                        </Layout>
+                    </StorageProvider>
                 </SpirProvider>
             </IntlProvider>
         </HistoryProvider>

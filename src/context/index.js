@@ -6,6 +6,10 @@ import SpirContext from './SpirContext';
 import SpirProvider from './SpirProvider';
 import withSpir from './withSpir';
 
+import StorageContext from './StorageContext';
+import StorageProvider from './StorageProvider';
+import withStorage from './withStorage';
+
 import IntlProvider from './IntlProvider';
 
 export {
@@ -16,6 +20,10 @@ export {
     SpirContext,
     SpirProvider,
     withSpir,
+
+    StorageContext,
+    StorageProvider,
+    withStorage,
 
     IntlProvider
 }

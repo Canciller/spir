@@ -13,7 +13,8 @@ const styles = theme => ({
     actions: {
         position: 'fixed',
         right: theme.spacing.unit * 2,
-        top: 64 + theme.spacing.unit
+        top: 64 + theme.spacing.unit,
+        zIndex: theme.zIndex.appBar
     },
     iconButton: {
         background: 'rgba(255, 255, 255, 0.8)',
