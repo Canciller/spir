@@ -31,6 +31,30 @@ class AddStaff extends Component {
                         autoFocus: true,
                         label: 'Username',
                         target: 'username'
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
+                        label: 'First name',
+                        target: 'first_name'
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
+                        label: 'Last name',
+                        target: 'last_name'
+                    },
+                    {
+                        type: 'textfield',
+                        required: true,
+                        label: 'e-mail',
+                        target: 'email'
+                    },
+                    {
+                        type: 'textfield',
+                        label: 'Password',
+                        required: true,
+                        target: 'password'
                     }
                 ]}
                 actions={[
