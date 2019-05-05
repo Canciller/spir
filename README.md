@@ -1,4 +1,4 @@
-# spir
+# SPIR
 **Facultad de Ingenieria Mecanica y Electrica - Proyecto de Programación Orientada Objetos**
 
 **Empresa afiliada:** Asociación de Clubes de Golf del Norte A.C.
