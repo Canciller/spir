@@ -4,7 +4,7 @@ import { withSpir } from '../context';
 
 import routes from '../config/routes';
 
-import DatabaseView from '../components/DataView';
+import DatabaseView from '../components/DatabaseView';
 
 const styles = theme => ({})
 

@@ -41,7 +41,7 @@ class Checkout extends Component {
                         variant: 'caption',
                         label: 'Category',
                         format: value => {
-                            if(value == 1) return 'Service';
+                            if(value === 1) return 'Service';
                             return 'Product';
                         }
                     },

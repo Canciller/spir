@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { withSpir, withStorage } from '../../context';
+import { withStorage } from '../../context';
 
 import routes from '../../config/routes';
 
@@ -40,7 +40,7 @@ class Inventory extends Component {
                         variant: 'caption',
                         label: 'Category',
                         format: value => {
-                            if(value == 1) return 'Service';
+                            if(value === 1) return 'Service';
                             return 'Product';
                         }
                     },
