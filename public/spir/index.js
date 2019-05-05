@@ -10,10 +10,10 @@ const translations = {
     connected: 'message.reader.connected'
 }
 
-function status(success, translationId, data) {
+function status(success, message, data) {
     return {
         success,
-        translationId,
+        message,
         data
     }
 }
@@ -63,7 +63,7 @@ class Reader {
         this.on('reader:status', () => {
             this.send('reader:status', status(
                 this.socket ? true : false,
-                this.socket ? translations.connected : translations.not_connected,
+                this.socket ? 'Connected to SPIR reader' : 'Not connected to SPIR reader',
                 this.info()
             ));
         })
@@ -84,7 +84,7 @@ class Reader {
 
                 this.send('reader:status', status(
                     true,
-                    translations.connected,
+                    'Connected to SPIR reader',
                     this.info()
                 ));
             });
@@ -92,7 +92,6 @@ class Reader {
             this.socket.on('error', err => {
                 this.send('reader:status', status(
                     false,
-                    translations.error,
                     err.message
                 ));
 
@@ -103,7 +102,7 @@ class Reader {
             this.socket.on('end', () => {
                 this.send('reader:status', status(
                     false,
-                    translations.error
+                    'Connection to SPIR reader ended'
                 ));
 
                 this._reset();
@@ -116,7 +115,6 @@ class Reader {
         } catch(e) {
             this.send('reader:status', status(
                 false,
-                translations.error,
                 e.message
             ));
         }
