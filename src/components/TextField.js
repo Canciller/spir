@@ -70,7 +70,6 @@ class TextFieldWrapper extends Component {
         const {
             id, label, adorment,
             required, error, target,
-            defaultValue,
             fullWidth,
             onChange,
             number,

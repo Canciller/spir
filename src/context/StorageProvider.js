@@ -118,13 +118,31 @@ class StorageProvider extends Component {
                 found.quantity -= 1;
                 if(found.quantity === 0) cart.splice(cartIndex, 1);
                 else cart[cartIndex] = found;
+
+                this.setState({ cart }, () =>
+                    this.props.enqueueSnackbar(`${item.name} removed from cart`, {
+                        variant: 'info',
+                        ...notificationOptions
+                    }));
             }
 
-            this.setState({ cart }, () =>
-                this.props.enqueueSnackbar(`${item.name} removed from cart`, {
-                    variant: 'info',
-                    ...notificationOptions
-                }));
+
+        },
+        removeAll: item => {
+            let cart = this.cart.get();
+
+            const cartIndex = cart.findIndex(it => it._id === item._id);
+
+            if(cartIndex >= 0) {
+                cart.splice(cartIndex, 1);
+
+                this.setState({ cart }, () =>
+                    this.props.enqueueSnackbar(`${item.name} removed from cart`, {
+                        variant: 'info',
+                        ...notificationOptions
+                    }));
+            }
+
         },
         refresh: () => this.setState({ cart: [] })
     }

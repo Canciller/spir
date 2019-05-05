@@ -89,7 +89,7 @@ class Checkout extends Component {
                     emptyMessage='Nothing in cart.'
 
                     onClick={storage.cart.remove}
-                    onDelete={storage.cart.remove}
+                    onDelete={storage.cart.removeAll}
 
                     data={storage.cart.get()}
                     dataFormat={{

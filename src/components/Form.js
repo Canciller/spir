@@ -65,31 +65,7 @@ class Form extends Component {
                 gutters={{ top: true }}
                 fullWidth
                 {...other}
-                value={currentValue.toString()}
-                error={this.getState(`${target}_error`)}
-                target={target}
-                onChange={this.onChange}
-            />
-        )
-    }
-
-    createTextField = props => {
-        const {
-            key,
-            target,
-            value,
-            ...other
-        } = props;
-
-        let currentValue = this.getState(target) || '';
-
-        return (
-            <TextField
-                key={key}
-                gutters={{ top: true }}
-                fullWidth
-                {...other}
-                value={currentValue.toString()}
+                defaultValue={currentValue.toString()}
                 error={this.getState(`${target}_error`)}
                 target={target}
                 onChange={this.onChange}
@@ -259,6 +235,8 @@ class Form extends Component {
     setStateFromFields = () => {
         const { fields } = this.props;
 
+        this.fieldsLoaded = false;
+
         for(let field of fields) {
             let value = field.value;
 
@@ -276,8 +254,11 @@ class Form extends Component {
                 [field.target]: value,
                 [`${field.target}_error`] : false,
                 [`${field.target}_empty`] : field.value !== undefined ? false : true
-            })
+            });
+            console.log(field)
         }
+
+        this.fieldsLoaded = true;
     }
 
     componentDidMount() {
@@ -289,10 +270,7 @@ class Form extends Component {
             classes,
         } = this.props;
 
-        const fields = this.createFields(),
-              actions = this.createActions();
-
-        if(!fields)
+        if(!this.fieldsLoaded)
             return (
                 <Loading
                     message='Loading form fields...'
@@ -302,8 +280,8 @@ class Form extends Component {
                 <div
                     className={classes.root}
                 >
-                    {fields}
-                    {actions}
+                    {this.createFields()}
+                    {this.createActions()}
                 </div>
             )
     }
