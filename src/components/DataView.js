@@ -79,13 +79,17 @@ class DataView extends Component {
     createDataGrid = () => {
         const {
             data, dataFormat,
+            dataComponent,
             deleteDialog
         } = this.props;
 
         if(!data) return undefined;
 
+        let DataComponent = Data;
+        if(dataComponent) DataComponent = dataComponent;
+
         return data.map((el, i) =>
-            <Data
+            <DataComponent
                 key={i}
                 data={el}
                 format={dataFormat}
@@ -102,6 +106,7 @@ class DataView extends Component {
             title,
             data,
             dataFormat,
+            dataComponent,
             onClick,
             onDelete,
             onEdit,

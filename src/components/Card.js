@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import classNames from 'classnames';
+import { withSpir } from '../context';
 
 import Typography from '@material-ui/core/Typography';
 import CardIcon from '@material-ui/icons/Nfc';
@@ -62,55 +63,75 @@ const CardStyled = styled.div`
 `
 
 class Card extends Component {
+    state = {}
+
+    componentDidMount() {
+        const {
+            spir,
+            data
+        } = this.props;
+
+        spir.partners.getOne(data.partner)
+            .then(partner => {
+                if(!partner) return;
+                this.setState({ partner });
+            })
+            .catch(this.onError);
+    }
+
     render() {
         const {
             classes,
-            card,
-            partner
+            data
         } = this.props;
 
-        return (
-            <CardStyled className={classes.root}>
-                <div className={classes.center}>
-                </div>
-                <div className={classes.topLeft}>
-                    <Typography
-                        variant='title'
-                        color='inherit'
-                        className={classes.textSeparation}
-                    >
-                        SPIR
-                    </Typography>
-                    <Typography
-                        variant='subtitle1'
-                        color='inherit'
-                        className={classes.textSeparation}
-                    >
-                        {`${partner.first_name} ${partner.last_name}`}
-                    </Typography>
-                    <Typography
-                        variant='subtitle1'
-                        color='inherit'
-                        className={classes.textSeparation}
-                    >
-                        {`$${card.balance.toFixed(2)}`}
-                    </Typography>
-                </div>
-                <div className={classes.bottomLeft}>
-                    <CardIcon className={classes.icon}/>
-                </div>
-                <div className={classes.bottomRight}>
-                    <Typography
-                        variant='title'
-                        color='inherit'
-                        className={classes.textSeparation}
-                    >
-                        {card.tag}
-                    </Typography>
-                </div>
-            </CardStyled>
-        )
+        const { partner } = this.state;
+
+        if(!data || !partner)
+            return ''
+        else
+            return (
+                <CardStyled className={classes.root}>
+                    <div className={classes.center}>
+                    </div>
+                    <div className={classes.topLeft}>
+                        <Typography
+                            variant='title'
+                            color='inherit'
+                            className={classes.textSeparation}
+                        >
+                            SPIR
+                        </Typography>
+                        <Typography
+                            variant='subtitle1'
+                            color='inherit'
+                            className={classes.textSeparation}
+                        >
+                            {`${partner.first_name} ${partner.last_name}`}
+                        </Typography>
+                        <Typography
+                            variant='subtitle1'
+                            color='inherit'
+                            className={classes.textSeparation}
+                        >
+                            {`$${data.balance.toFixed(2)}`}
+                        </Typography>
+                    </div>
+                    <div className={classes.bottomLeft}>
+                        <CardIcon className={classes.icon}/>
+                    </div>
+                    <div className={classes.bottomRight}>
+                        <Typography
+                            variant='title'
+                            color='inherit'
+                            className={classes.textSeparation}
+                        >
+                            {data.tag}
+                        </Typography>
+                    </div>
+                </CardStyled>
+            )
     }
 }
 
-export default withStyles(styles)(Card);
+export default withSpir(withStyles(styles)(Card));

@@ -49,63 +49,68 @@ class EditItem extends Component {
             )
         else
             return (
-            <FormView
-                title='Edit Item'
-                fields={[
-                    {
-                        type: 'textfield',
-                        required: true,
-                        autoFocus: true,
-                        label: 'Name',
-                        target: 'name',
-                        value: data.name
-                    },
-                    {
-                        type: 'textfield',
-                        label: 'Description',
-                        target: 'description',
-                        placeholder: 'No description',
-                        value: data.description
-                    },
-                    {
-                        type: 'textfield',
-                        label: 'Price',
-                        target: 'price',
-                        number: '+',
-                        required: true,
-                        placeholder: '0.00',
-                        adorment: '$',
-                        value: data.price
-                    },
-                    {
-                        type: 'select',
-                        items: categories,
-                        label: 'Category',
-                        target: 'category_code',
-                        value: data.category_code
-                    },
-                    {
-                        type: 'textfield',
-                        label: 'Quantity',
-                        target: 'quantity',
-                        number: '+',
-                        placeholder: '1',
-                        defaultValue: 1,
-                        value: data.quantity
-                    },
-                    {
-                        label: 'Item ID',
-                        disabled: true,
-                        target: 'id',
-                        value: data._id
-                    }
-                ]}
-                actions={[
-                    {
-                        name: 'Save',
+                <FormView
+                    title='Edit Item'
+                    fields={{
+                        name: {
+                            control: 'textfield',
+                            required: true,
+                            label: 'Name',
+                            target: 'name',
+                            value: data.name,
+                            autoFocus: true
+                        },
+                        description: {
+                            control: 'textfield',
+                            label: 'Description',
+                            target: 'description',
+                            value: data.description,
+                            placeholder: 'No description'
+                        },
+                        price: {
+                            control: 'textfield',
+                            label: 'Price',
+                            required: true,
+                            placeholder: '0.00',
+                            adorment: '$',
+                            value: data.price,
+                            valueOptions: {
+                                type: Number,
+                                validate: value => {
+                                    if(Number.isNaN(value)) return false;
+                                    return value > 0;
+                                }
+                            }
+                        },
+                        category_code: {
+                            control: 'select',
+                            items: categories,
+                            value: data.category_code,
+                            label: 'Category',
+                        },
+                        quantity: {
+                            control: 'textfield',
+                            label: 'Quantity',
+                            placeholder: '1',
+                            value: data.quantity,
+                            valueOptions: {
+                                type: Number,
+                                default: 1,
+                                validate: value => {
+                                    if(Number.isNaN(value)) return false;
+                                    return value >= 0;
+                                }
+                            }
+                        },
+                        id: {
+                            value: data._id
+                        }
+                    }}
+                actions={{
+                    save: {
                         callback: this.onSave
                     }
-                ]}
+                }}
             />
         )
     }

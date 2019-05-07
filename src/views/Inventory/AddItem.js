@@ -9,7 +9,7 @@ const styles = theme => ({})
 class AddItem extends Component {
     state = {}
 
-    onAdd = (e, item) => {
+    onCreate = (e, item) => {
         this.props.spir.inventory.add(item)
             .then(added => console.log(added))
             .catch(err => console.log(err));
@@ -31,51 +31,59 @@ class AddItem extends Component {
 
         return (
             <FormView
-                title='Add Item'
-                fields={[
-                        {
-                            type: 'textfield',
+                title='Create Item'
+                fields={{
+                        name: {
+                            control: 'textfield',
                             required: true,
                             label: 'Name',
                             target: 'name',
                             autoFocus: true
                         },
-                        {
-                            type: 'textfield',
+                        description: {
+                            control: 'textfield',
                             label: 'Description',
                             target: 'description',
                             placeholder: 'No description'
                         },
-                        {
-                            type: 'textfield',
+                        price: {
+                            control: 'textfield',
                             label: 'Price',
-                            target: 'price',
                             required: true,
-                            number: '+',
                             placeholder: '0.00',
-                            adorment: '$'
+                            adorment: '$',
+                            valueOptions: {
+                                type: Number,
+                                validate: value => {
+                                    if(Number.isNaN(value)) return false;
+                                    return value > 0;
+                                }
+                            }
                         },
-                        {
-                            type: 'select',
+                        category_code: {
+                            control: 'select',
                             items: categories,
                             label: 'Category',
-                            target: 'category_code'
                         },
-                        {
-                            type: 'textfield',
+                        quantity: {
+                            control: 'textfield',
                             label: 'Quantity',
-                            target: 'quantity',
-                            number: '+',
                             placeholder: '1',
-                            defaultValue: 1
-                        },
-                    ]}
-                actions={[
-                    {
-                        name: 'Add',
-                        callback: this.onAdd
+                            valueOptions: {
+                                type: Number,
+                                default: 1,
+                                validate: value => {
+                                    if(Number.isNaN(value)) return false;
+                                    return value >= 0;
+                                }
+                            }
+                        }
+                    }}
+                actions={{
+                    create: {
+                        callback: this.onCreate
                     }
-                ]}
+                }}
             />
         )
     }

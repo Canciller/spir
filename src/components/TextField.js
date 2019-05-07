@@ -75,6 +75,8 @@ class TextFieldWrapper extends Component {
             number,
             classes,
             gutters,
+            validate,
+            valueType,
             ...other
         } = this.props;
 

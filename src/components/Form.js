@@ -54,18 +54,24 @@ class Form extends Component {
             key,
             target,
             value,
+            disabled,
             ...other
         } = props;
 
-        let currentValue = this.getState(target) || '';
+        let currentValue = this.getState(target) || value || '';
+
+        let valueProp = { defaultValue: currentValue.toString() }
+
+        if(disabled) valueProp = { value: currentValue.toString() }
 
         return (
             <TextField
                 key={key}
                 gutters={{ top: true }}
                 fullWidth
+                disabled={disabled}
                 {...other}
-                defaultValue={currentValue.toString()}
+                {...valueProp}
                 error={this.getState(`${target}_error`)}
                 target={target}
                 onChange={this.onChange}

@@ -330,8 +330,7 @@ class Deposit extends Component {
                     }}
                 >
                     <Card
-                        card={card}
-                        partner={partner}
+                        data={card}
                     />
                 </View>
         )
