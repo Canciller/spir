@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withSpir } from '../../context';
+import { withSnackbar } from 'notistack';
 
 import FormView from '../../components/FormView';
 import ErrorView from '../../components/ErrorView';
@@ -13,11 +14,49 @@ const styles = theme => ({})
 class AddCard extends Component {
     state = {}
 
-    onCreate = (e, data) => {
-        console.log(data);
+    onError = err => {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(err.message, {
+            variant: 'error',
+            preventDuplicate: true
+        });
     }
 
-    onCardRead = tag => this.setState({ tag });
+    onSuccess = message => {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(message, {
+            variant: 'success',
+            preventDuplicate: true
+        });
+    }
+
+    onCreate = (e, data) => {
+        const { spir } = this.props;
+
+        let {
+            card,
+            partner,
+            address
+        } = data;
+
+        spir.addresses.add(address)
+            .then(address => {
+                partner.address = address._id;
+                spir.partners.add(partner)
+                    .then(partner => {
+                        card.partner = partner._id;
+                        spir.cards.add(card)
+                            .then(() => this.onSuccess('Card created'))
+                            .catch(this.onError)
+                    })
+                    .catch(this.onError)
+            })
+            .catch(this.onError)
+    }
+
+    onCardRead = tag => this.setState({ tag }, () => {
+        this.onSuccess('Card detected');
+    });
 
     componentDidMount() {
         ipcRenderer.on('reader:data', (e, tag) => this.onCardRead(tag));
@@ -51,13 +90,13 @@ class AddCard extends Component {
                             first_name: {
                                 control: 'textfield',
                                 label: 'First name',
-                                required: true
+                                required: true,
+                                autoFocus: true
                             },
                             last_name: {
                                 control: 'textfield',
                                 label: 'Last name',
-                                required: true,
-                                autoFocus: true
+                                required: true
                             },
                             email: {
                                 control: 'textfield',
@@ -104,4 +143,4 @@ class AddCard extends Component {
     }
 }
 
-export default withSpir(withStyles(styles)(AddCard));
+export default withSnackbar(withSpir(withStyles(styles)(AddCard)));

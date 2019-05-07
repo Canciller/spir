@@ -31,44 +31,36 @@ export default class SpirProvider extends Component {
         return {
             get: () => fetchWrapper(url, 'get')
             .then(data => {
-                if(data && data.errors) {
-                    console.log(data.errors);
-                    throw new Error('There was an error with the SPIR server');
-                }
+                if(!data) throw new Error('Data fetched from server is null');
+                else if(data.errors) throw new Error(data.errors.message);
                 else return data;
             }),
 
             getOne: id => fetchWrapper(`${url}/${id}`, 'get')
             .then(data => {
                 if(!data) throw new Error('Data fetched from server is null');
-                else if(data.errors) throw new Error(data.errors.error.message);
+                else if(data.errors) throw new Error(data.errors.message);
                 else return data;
             }),
 
             add: body => fetchWrapper(url, 'post', { body })
             .then(data => {
-                if(data.errors) {
-                    console.log(data.errors);
-                    throw new Error('There was an error with the SPIR server');
-                }
+                if(!data) throw new Error('Data fetched from server is null');
+                else if(data.errors) throw new Error(data.errors.message);
                 else return data;
             }),
 
             delete: id => fetchWrapper(`${url}/${id}`, 'delete')
             .then(data => {
-                if(data.errors) {
-                    console.log(data.errors);
-                    throw new Error('There was an error with the SPIR server');
-                }
+                if(!data) throw new Error('Data fetched from server is null');
+                else if(data.errors) throw new Error(data.errors.message);
                 else return data;
             }),
 
             update: (id, body) => fetchWrapper(`${url}/${id}`, 'put', { body })
             .then(data => {
-                if(data.errors) {
-                    console.log(data.errors);
-                    throw new Error('There was an error with the SPIR server');
-                }
+                if(!data) throw new Error('Data fetched from server is null');
+                else if(data.errors) throw new Error(data.errors.message);
                 else return data;
             }),
         }
@@ -83,7 +75,8 @@ export default class SpirProvider extends Component {
                 categories: this.defaultApi('categories'),
                 cards: this.defaultApi('cards'),
                 partners: this.defaultApi('partners'),
-                staff: this.defaultApi('staff')
+                staff: this.defaultApi('staff'),
+                addresses: this.defaultApi('addresses')
             }}>
                 {children}
             </SpirContext.Provider>
