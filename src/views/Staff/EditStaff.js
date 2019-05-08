@@ -38,65 +38,57 @@ class EditStaff extends Component {
             return (
             <FormView
                 title='Edit Staff Member'
-                fields={[
-                    {
-                        type: 'textfield',
+                fields={{
+                    first_name: {
+                        control: 'textfield',
                         required: true,
                         autoFocus: true,
                         label: 'First name',
-                        target: 'first_name',
                         value: data.first_name
                     },
-                    {
-                        type: 'textfield',
+                    last_name: {
+                        control: 'textfield',
                         required: true,
                         label: 'Last name',
-                        target: 'last_name',
                         value: data.last_name
                     },
-                    {
-                        type: 'textfield',
+                    username: {
+                        control: 'textfield',
                         required: true,
                         label: 'Username',
-                        target: 'username',
                         value: data.username
                     },
-                    {
-                        type: 'textfield',
+                    email: {
+                        control: 'textfield',
                         required: true,
                         label: 'Email',
-                        target: 'email',
                         value: data.email
                     },
-                    /*
-                    {
-                        type: 'textfield',
+                    password: {
+                        control: 'textfield',
+                        type: 'password',
                         label: 'Password',
                         required: true,
-                        target: 'password',
                         value: data.password
                     },
-                    */
-                    {
-                        type: 'textfield',
+                    phone_no: {
+                        control: 'textfield',
                         required: true,
-                        target: 'phone_no',
                         label: 'Phone number',
                         value: data.phone_no
                     },
-                    {
-                        label: 'Staff Member ID',
-                        disabled: true,
-                        target: 'id',
-                        value: data._id
+                    id: {
+                        label: 'Identifier',
+                        control: 'textfield',
+                        value: data._id,
+                        disabled: true
                     }
-                ]}
-                actions={[
-                    {
-                        name: 'Save',
+                }}
+                actions={{
+                    save: {
                         callback: this.onSave
                     }
-                ]}
+                }}
             />
         )
     }

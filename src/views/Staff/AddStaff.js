@@ -10,7 +10,7 @@ const styles = theme => ({})
 class AddStaff extends Component {
     state = {}
 
-    onAdd = (e, staff) => {
+    onCreate = (e, staff) => {
         this.props.spir.staff.add(staff)
             .then(added => console.log(added))
             .catch(err => console.log(err));
@@ -23,52 +23,46 @@ class AddStaff extends Component {
 
         return (
             <FormView
-                title='Add Staff member'
-                fields={[
-                    {
-                        type: 'textfield',
+                title='Create Staff member'
+                fields={{
+                    first_name: {
+                        control: 'textfield',
                         required: true,
                         autoFocus: true,
                         label: 'First name',
-                        target: 'first_name'
                     },
-                    {
-                        type: 'textfield',
+                    last_name: {
+                        control: 'textfield',
                         required: true,
-                        label: 'Last name',
-                        target: 'last_name'
+                        label: 'Last name'
                     },
-                    {
-                        type: 'textfield',
+                    username: {
+                        control: 'textfield',
                         required: true,
-                        label: 'Username',
-                        target: 'username'
+                        label: 'Username'
                     },
-                    {
-                        type: 'textfield',
+                    email: {
+                        control: 'textfield',
                         required: true,
                         label: 'Email',
-                        target: 'email'
                     },
-                    {
-                        type: 'textfield',
+                    password: {
+                        control: 'textfield',
+                        type: 'password',
                         label: 'Password',
                         required: true,
-                        target: 'password'
                     },
-                    {
-                        type: 'textfield',
+                    phone_no: {
+                        control: 'textfield',
                         required: true,
-                        target: 'phone_no',
                         label: 'Phone number'
                     }
-                ]}
-                actions={[
-                    {
-                        name: 'Add',
-                        callback: this.onAdd
+                }}
+                actions={{
+                    create: {
+                        callback: this.onCreate
                     }
-                ]}
+                }}
             />
         )
     }

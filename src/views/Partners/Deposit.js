@@ -293,10 +293,7 @@ class Deposit extends Component {
     }
 
     componentDidMount() {
-        /*
         ipcRenderer.on('reader:data', (e, tag) => this.findCard(tag));
-        */
-        this.findCard('0000826796');
     }
 
     componentWillUnmount() {

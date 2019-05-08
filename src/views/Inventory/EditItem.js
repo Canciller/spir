@@ -103,6 +103,8 @@ class EditItem extends Component {
                             }
                         },
                         id: {
+                            control: 'textfield',
+                            label: 'Identifier',
                             value: data._id
                         }
                     }}
