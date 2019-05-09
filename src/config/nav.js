@@ -12,6 +12,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ReaderIcon from '@material-ui/icons/Nfc';
 import LanguageIcon from '@material-ui/icons/Translate';
 
+import TestingIcon from '@material-ui/icons/BugReport';
+
 function getPath(key) {
     if(routes.hasOwnProperty(key)) return routes[key].path;
     return undefined
@@ -64,6 +66,11 @@ const nav = [
                 path: getPath('language')
             }
         ]
+    },
+    {
+        name: 'Testing',
+        icon: TestingIcon,
+        path: getPath('test')
     }
 ]
 

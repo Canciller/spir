@@ -28,7 +28,7 @@ export default class ItemCollapse extends Component {
             <Fragment>
                 <ListItem button onClick={this.handleClick}>
                     <ListItemIcon>
-                        <Icon />
+                        {icon && <Icon /> }
                     </ListItemIcon>
                     <ListItemText inset primary={children} />
                     {open ? <ExpandLess /> : <ExpandMore />}

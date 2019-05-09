@@ -11,7 +11,7 @@ let Item = ({ children, to, icon}) => {
     let content = (
         <ListItem button>
             <ListItemIcon>
-                <Icon />
+                {icon && <Icon /> }
             </ListItemIcon>
             <ListItemText inset primary={children} />
         </ListItem>

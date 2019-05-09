@@ -4,6 +4,8 @@ import Staff, { AddStaff, EditStaff } from '../views/Staff';
 import { AddCard, Cards, Deposit } from '../views/Partners';
 import { Reader, Language } from '../views/Settings';
 
+import Test from '../views/Test';
+
 const routes = {
     home: {
         path: '/',
@@ -60,6 +62,10 @@ const routes = {
     language: {
         path: '/settings/language',
         component: Language
+    },
+    test: {
+        path: '/testing',
+        component: Test
     }
 }
 
