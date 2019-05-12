@@ -11,6 +11,9 @@ import Button from '../components/Button';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
+    actions: {
+        position: 'relative'
+    },
     cartRoot: {
         marginBottom: theme.spacing.unit * 2,
         overflow: 'auto',
@@ -27,6 +30,13 @@ const styles = theme => ({
     cartActions: {
         bottom: 110,
         marginRight: theme.spacing.unit * 2
+    },
+    cartTotal: {
+        position: 'absolute',
+        bottom: 0,
+        top: -50,
+        left: theme.spacing.unit * 2,
+        zIndex: theme.zIndex.appBar
     }
 })
 
@@ -137,6 +147,12 @@ class Checkout extends Component {
                 <div
                     className={classes.actions}
                 >
+                    <Typography
+                        variant='display1'
+                        className={classes.cartTotal}
+                    >
+                        Total: ${storage.cart.total().toFixed(2)}
+                    </Typography>
                     <Button
                         fullWidth
                         variant='contained'

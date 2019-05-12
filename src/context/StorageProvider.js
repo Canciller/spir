@@ -151,7 +151,14 @@ class StorageProvider extends Component {
             }
 
         },
-        refresh: () => this.setState({ cart: [] })
+        refresh: () => this.setState({ cart: [] }),
+        total: () => {
+            const cart = this.cart.get();
+            let total = 0;
+            for(const item of cart)
+                total += item.quantity * item.price;
+            return total;
+        }
     }
 
     componentDidMount() {
