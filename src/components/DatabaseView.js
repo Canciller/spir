@@ -159,22 +159,6 @@ class DatabaseView extends Component {
             .catch(err => enqueueSnackbar(err.message, { variant: 'error' }));
     }
 
-    onEdit = (e, value) => {
-        const {
-            editPath,
-            onEdit,
-            history
-        } = this.props;
-
-        if(editPath !== undefined)
-            history.push({
-                pathname: editPath,
-                state: { data: value }
-            });
-        else if(onEdit instanceof Function)
-            onEdit(e, value);
-    }
-
     componentDidMount() {
         this._isMounted = true;
 
@@ -214,8 +198,7 @@ class DatabaseView extends Component {
 
                 dataCardProps={{
                     ...dataCardProps,
-                    onDelete: this.onDelete,
-                    onEdit: this.onEdit
+                    onDelete: this.onDelete
                 }}
 
                 error={error}

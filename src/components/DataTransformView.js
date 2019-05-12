@@ -6,7 +6,11 @@ import DataGridView from './DataGridView';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const styles = theme => ({})
+const styles = theme => ({
+    root: {},
+    content: {},
+    actions: {}
+})
 
 class DataTransformView extends Component {
     state = {}
@@ -22,8 +26,25 @@ class DataTransformView extends Component {
         else if(onAdd instanceof Function) onAdd(e);
     }
 
+    onEdit = (e, value) => {
+        const {
+            editPath,
+            onEdit,
+            history
+        } = this.props;
+
+        if(editPath !== undefined)
+            history.push({
+                pathname: editPath,
+                state: { data: value }
+            });
+        else if(onEdit instanceof Function)
+            onEdit(e, value);
+    }
+
     render() {
         let {
+            classes,
             actions,
             dataCardProps,
             deleteIcon,
@@ -38,13 +59,18 @@ class DataTransformView extends Component {
 
         const {
             onDelete,
-            onEdit,
             ...otherDataCardProps
         } = dataCardProps;
 
         return (
             <DataGridView
                 {...other}
+
+                classes={{
+                    root: classes.root,
+                    content: classes.content,
+                    actions: classes.actions
+                }}
 
                 dataCardProps={{
                     ...otherDataCardProps,
@@ -55,7 +81,7 @@ class DataTransformView extends Component {
                         },
                         {
                             name: 'Edit',
-                            callback: onEdit
+                            callback: this.onEdit
                         }
                     ])
                 }}

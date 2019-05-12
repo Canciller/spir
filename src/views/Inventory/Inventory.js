@@ -4,6 +4,7 @@ import { withStorage } from '../../context';
 
 import routes from '../../config/routes';
 
+import Typography from '@material-ui/core/Typography';
 import DataTransformView from '../../components/DataTransformView';
 
 const styles = theme => ({})
@@ -27,10 +28,23 @@ class Inventory extends Component {
                     message: 'Are you sure you want to delete this item?'
                 }}
 
+                emptyViewProps={{
+                    message: 'Nothing here.'
+                }}
+
                 onRefresh={storage.refresh}
 
                 data={storage.items()}
                 dataCardProps={{
+                    absolute: value => {
+                        return (
+                            <Typography
+                                variant='title'
+                            >
+                                {value.quantity}
+                            </Typography>
+                        )
+                    },
                     onClick: (e, value) => storage.cart.add(value),
                     onDelete: (e, value) => storage.delete(value),
                     format: {
@@ -45,17 +59,18 @@ class Inventory extends Component {
                         },
                         description: {
                             variant: 'subtitle2',
-                            defaultValue: 'No description',
-                            align: 'justify'
+                            align: 'justify',
+                            transform: value => {
+                                if(value.length === 0) return 'No description';
+                                return value;
+                            }
                         },
                         category_code: {
                             variant: 'subtitle2',
                             label: 'Category',
+                            transform: value => storage.category(value)
                         },
-                        quantity: {
-                            variant: 'subtitle2',
-                            label: 'Quantity'
-                        },
+                        quantity: { visible: false },
                         _id: { visible: false },
                         __v: { visible: false }
                     }

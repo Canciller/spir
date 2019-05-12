@@ -54,10 +54,7 @@ class DataGridView extends Component {
                 <DataCard
                     key={key}
                     data={value}
-                    format={dataCardProps.format}
-                    actions={dataCardProps.actions}
-                    width={dataCardProps.width}
-                    onClick={dataCardProps.onClick}
+                    {...dataCardProps}
                     classes={{
                         root: classes.dataCard
                     }}
@@ -113,7 +110,8 @@ class DataGridView extends Component {
                 classes={{
                     root: classes.root,
                     content: classes.content,
-                    headerActions: classes.headerActions
+                    headerActions: classes.headerActions,
+                    actions: classes.actions
                 }}
             >
                 {this.createDataGrid()}

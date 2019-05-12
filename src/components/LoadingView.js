@@ -14,7 +14,8 @@ const styles = theme => ({
     actions: {},
     headerActions: {
 
-    }
+    },
+    header: {}
 })
 
 class LoadingView extends Component {
@@ -23,6 +24,7 @@ class LoadingView extends Component {
             classes,
             message,
             progress,
+            viewClasses,
             ...other
         } = this.props;
 
@@ -32,7 +34,7 @@ class LoadingView extends Component {
                     root: classes.root,
                     content: classes.content,
                     actions: classes.actions,
-                    headerActions: classes.headerActions
+                    headerActions: classes.headerActions,
                 }}
                 {...other}
             >

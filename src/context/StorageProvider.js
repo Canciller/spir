@@ -21,9 +21,9 @@ class StorageProvider extends Component {
     }
 
     category = value => {
-        const category = this.state.categories[value];
-        if(category) return category.name;
-        else return 'unknown';
+        let c = this.state.categories[value];
+        c = c ? c.name : 'unknown';
+        return c.charAt(0).toUpperCase() + c.slice(1);
     }
 
     items = () => {

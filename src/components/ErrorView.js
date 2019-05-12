@@ -31,12 +31,13 @@ const styles = theme => ({
     },
     headerActions: {
 
-    }
+    },
+    header: {}
 })
 
 class ErrorView extends Component {
     render() {
-        const {
+        let {
             icon,
             message,
             classes,
@@ -51,7 +52,7 @@ class ErrorView extends Component {
                     root: classes.root,
                     content: classes.content,
                     actions: classes.actions,
-                    headerActions: classes.headerActions
+                    headerActions: classes.headerActions,
                 }}
                 {...other}
             >

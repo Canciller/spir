@@ -105,6 +105,7 @@ class EditItem extends Component {
                         id: {
                             control: 'textfield',
                             label: 'Identifier',
+                            disabled: true,
                             value: data._id
                         }
                     }}

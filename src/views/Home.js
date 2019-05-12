@@ -8,6 +8,7 @@ import routes from '../config/routes';
 import DataGridView from '../components/DataGridView';
 import View from '../components/View';
 import Button from '../components/Button';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     cartRoot: {
@@ -34,7 +35,6 @@ class Checkout extends Component {
 
     onCheckout = () => {
     }
-
 
     componentDidMount() {
         const actions = ReactDOM.findDOMNode(this.actionsRef);
@@ -76,6 +76,7 @@ class Checkout extends Component {
                         content: classes.cartContent,
                         actions: classes.cartActions
                     }}
+
                     style={{
                         height: this.state.height
                     }}
@@ -93,6 +94,15 @@ class Checkout extends Component {
                     }}
 
                     dataCardProps={{
+                        absolute: value => {
+                            return (
+                                <Typography
+                                    variant='title'
+                                >
+                                    {value.quantity}
+                                </Typography>
+                            )
+                        },
                         onClick: (e, value) => storage.cart.remove(value),
                         format: {
                             name: {
@@ -107,16 +117,18 @@ class Checkout extends Component {
                             description: {
                                 variant: 'subtitle2',
                                 defaultValue: 'No description',
-                                align: 'justify'
+                                align: 'justify',
+                                transform: value => {
+                                    if(value.length === 0) return 'No description';
+                                    return value;
+                                }
                             },
                             category_code: {
                                 variant: 'subtitle2',
                                 label: 'Category',
+                                transform: value => storage.category(value)
                             },
-                            quantity: {
-                                variant: 'subtitle2',
-                                label: 'Quantity'
-                            },
+                            quantity: { visible: false },
                             _id: { visible: false },
                             __v: { visible: false }
                         }

@@ -272,7 +272,7 @@ class DataCard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps != this.props)
+        if(nextProps !== this.props)
             this.load(nextProps);
     }
 
@@ -287,11 +287,13 @@ class DataCard extends Component {
             width,
             title,
             image,
+            data,
             classes
         } = this.props;
 
         let actions = this.createCardActions(),
-            content = this.createCardContent();
+            content = this.createCardContent(),
+            absoluteContent = absolute instanceof Function ? absolute(data) : '';
 
         if(this.state.loading)
             content = (
@@ -329,7 +331,7 @@ class DataCard extends Component {
                             {content}
                             {children}
                             <div className={classes.cardAbsoluteContent}>
-                                {absolute}
+                                {absoluteContent}
                             </div>
                         </CardContent>
                     </CardActionArea>

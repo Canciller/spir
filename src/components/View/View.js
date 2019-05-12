@@ -54,6 +54,7 @@ class View extends Component {
             return (
                 <ErrorView
                     {...errorViewProps}
+                    classes={classes}
                     title={title}
                     onRefresh={onRefresh}
                     style={style}
@@ -63,6 +64,7 @@ class View extends Component {
             return (
                 <LoadingView
                     {...loadingViewProps}
+                    classes={classes}
                     title={title}
                     onRefresh={onRefresh}
                     actions={actions}
@@ -73,6 +75,7 @@ class View extends Component {
             return (
                 <ErrorView
                     {...emptyViewProps}
+                    classes={classes}
                     title={title}
                     onRefresh={onRefresh}
                     actions={actions}
