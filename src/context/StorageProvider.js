@@ -63,10 +63,15 @@ class StorageProvider extends Component {
     }
 
     delete = item => {
+        const { spir } = this.props;
         const { items } = this.state;
         if(!items) return;
 
-        this.setState({ items: items.filter(it => it._id !== item._id) })
+        spir.inventory.delete(item._id)
+            .then(deleted => {
+                this.setState({ items: items.filter(it => it._id !== item._id) })
+            })
+            .catch(err => console.log(err));
     }
 
     refresh = () => {
