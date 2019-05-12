@@ -8,22 +8,16 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
+import WindowControls from './components/WindowControls';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import CloseIcon from '@material-ui/icons/Close';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
 
 import Nav from './components/Nav';
 import Header from './components/Header';
 
-var remote = window.require('electron').remote; 
-
-const drawerWidth = 240,
-      controlIconSize = 20,
-      controlSize = 24;
+const drawerWidth = 240;
 
 const styles = theme => ({
     root: {
@@ -50,22 +44,6 @@ const styles = theme => ({
     menuButton: {
         marginRight: theme.spacing.unit,
         marginLeft: theme.spacing.unit, appRegion: 'no-drag'
-    },
-    windowControls: {
-        appRegion: 'no-drag',
-        position: 'absolute',
-        right: theme.spacing.unit,
-        top: theme.spacing.unit
-    },
-    control: {
-        height: controlSize,
-        width: controlSize,
-        padding: 0,
-        marginLeft: 2
-    },
-    controlIcon: {
-        height: controlIconSize,
-        width: controlIconSize
     },
     hide: {
         display: 'none'
@@ -139,34 +117,7 @@ class Layout extends Component {
                         </IconButton>
                         <Header />
                     </Toolbar>
-                    <div
-                        className={classes.windowControls}
-                    >
-                    <IconButton
-                        color='inherit'
-                        className={classes.control}
-                    >
-                        <RemoveIcon
-                            className={classes.controlIcon}
-                        />
-                    </IconButton>
-                    <IconButton
-                        color='inherit'
-                        className={classes.control}
-                    >
-                        <AddIcon
-                            className={classes.controlIcon}
-                        />
-                    </IconButton>
-                    <IconButton
-                        color='inherit'
-                        className={classes.control}
-                    >
-                        <CloseIcon
-                            className={classes.controlIcon}
-                        />
-                    </IconButton>
-                    </div>
+                    <WindowControls />
                 </AppBar>
                 <Drawer
                     className={classes.drawer}

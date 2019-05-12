@@ -125,6 +125,10 @@ class AddCard extends Component {
                                 control: 'textfield',
                                 label: 'Country'
                             },
+                            city: {
+                                control: 'textfield',
+                                label: 'City'
+                            },
                             line_1: {
                                 control: 'textfield',
                                 label: 'Line 1'
@@ -132,10 +136,6 @@ class AddCard extends Component {
                             line_2: {
                                 control: 'textfield',
                                 label: 'Line 2'
-                            },
-                            city: {
-                                control: 'textfield',
-                                label: 'City'
                             },
                             postal_code: {
                                 control: 'textfield',
