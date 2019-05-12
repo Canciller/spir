@@ -17,7 +17,7 @@ const styles = theme => {
             display: 'none'
         },
         iconButton: {
-            background: 'rgba(255, 255, 255, 0.8)',
+            background: theme.palette.background.paper,
             marginLeft: theme.spacing.unit / 2,
             padding: theme.spacing.unit
         },
@@ -49,6 +49,7 @@ class ViewActions extends Component {
             let iconButton = (
                 <IconButton
                     key={i}
+                    color='primary'
                     className={classes.iconButton}
                     onClick={e => {
                         if(action.callback) action.callback(e);

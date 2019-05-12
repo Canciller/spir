@@ -25,10 +25,13 @@ const styles = theme => {
             width: cardWidth,
             height: cardHeight,
             borderRadius: theme.shape.borderRadius,
-            boxShadow: theme.shadows[4],
-            color: theme.palette.common.white,
+            //boxShadow: theme.shadows[4],
+            //color: theme.palette.common.white,
             display: 'flex',
-            userSelect: 'none'
+            userSelect: 'none',
+            border: '1px solid',
+            borderColor: theme.palette.divider,
+            background: theme.palette.background.paper
         },
         textSeparation: {
             letterSpacing: 2
@@ -82,44 +85,46 @@ class Card extends Component {
             return ( <Fragment /> )
         else
             return (
-                <CardStyled className={classes.root}>
+                <div className={classes.root}>
                     <div className={classes.center}>
                     </div>
                     <div className={classes.topLeft}>
                         <Typography
                             variant='title'
-                            color='inherit'
                             className={classes.textSeparation}
                         >
                             SPIR
                         </Typography>
                         <Typography
                             variant='subtitle1'
-                            color='inherit'
                             className={classes.textSeparation}
                         >
                             {`${partner.first_name} ${partner.last_name}`}
                         </Typography>
                         <Typography
                             variant='subtitle1'
-                            color='inherit'
                             className={classes.textSeparation}
                         >
                             {`$${card.balance.toFixed(2)}`}
                         </Typography>
                     </div>
                     <div className={classes.bottomLeft}>
+                        <Typography
+                            variant='title'
+                            className={classes.textSeparation}
+                        >
+                            {['Platinum', 'Gold'][card.level]}
+                        </Typography>
                     </div>
                     <div className={classes.bottomRight}>
                         <Typography
                             variant='title'
-                            color='inherit'
                             className={classes.textSeparation}
                         >
                             {card.tag}
                         </Typography>
                     </div>
-                </CardStyled>
+                </div>
             )
     }
 }

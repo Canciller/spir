@@ -15,7 +15,10 @@ class Inventory extends Component {
     }
 
     render() {
-        const { storage } = this.props;
+        const {
+            classes,
+            storage 
+        } = this.props;
 
         return (
             <DataTransformView
@@ -39,7 +42,8 @@ class Inventory extends Component {
                     absolute: value => {
                         return (
                             <Typography
-                                variant='title'
+                                variant='subtitle1'
+                                color='primary'
                             >
                                 {value.quantity}
                             </Typography>

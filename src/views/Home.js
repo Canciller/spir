@@ -33,9 +33,8 @@ const styles = theme => ({
     },
     cartTotal: {
         position: 'absolute',
-        bottom: 0,
         top: -30,
-        left: theme.spacing.unit * 2,
+        left: theme.spacing.unit,
         zIndex: theme.zIndex.appBar
     }
 })
@@ -107,7 +106,8 @@ class Checkout extends Component {
                         absolute: value => {
                             return (
                                 <Typography
-                                    variant='title'
+                                    variant='subtitle1'
+                                    color='primary'
                                 >
                                     {value.quantity}
                                 </Typography>

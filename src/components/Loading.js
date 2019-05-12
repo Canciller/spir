@@ -12,7 +12,7 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        color: theme.palette.grey[500]
+        //color: theme.palette.grey[500]
     },
     text: {
         marginTop: theme.spacing.unit * 2
@@ -42,7 +42,6 @@ class Loading extends Component {
                     { message &&
                         <Typography
                             variant='title'
-                            color='inherit'
                             className={classes.text}
                         >
                             {message}

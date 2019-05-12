@@ -7,6 +7,7 @@ import {
     SpirProvider,
     StorageProvider,
     IntlProvider,
+    ThemeProvider,
 } from './context';
 
 import { SnackbarProvider } from 'notistack';
@@ -18,19 +19,21 @@ import Layout from './Layout';
 export default class Main extends Component {
   render() {
     return (
-        <HistoryProvider>
-            <SnackbarProvider maxSnack={6}>
-                <IntlProvider>
-                    <SpirProvider>
-                        <StorageProvider>
-                            <Layout>
-                                <Routes />
-                            </Layout>
-                        </StorageProvider>
-                    </SpirProvider>
-                </IntlProvider>
-            </SnackbarProvider>
-        </HistoryProvider>
+        <ThemeProvider>
+            <HistoryProvider>
+                <SnackbarProvider maxSnack={6}>
+                    <IntlProvider>
+                        <SpirProvider>
+                            <StorageProvider>
+                                <Layout>
+                                    <Routes />
+                                </Layout>
+                            </StorageProvider>
+                        </SpirProvider>
+                    </IntlProvider>
+                </SnackbarProvider>
+            </HistoryProvider>
+        </ThemeProvider>
     )
   }
 }

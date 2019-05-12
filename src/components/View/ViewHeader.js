@@ -20,7 +20,7 @@ const styles = theme => ({
         paddingLeft: theme.spacing.unit / 2
     },
     iconButton: {
-        background: 'rgba(255, 255, 255, 0.8)',
+        background: theme.palette.background.paper,
         padding: 5
     },
     margin: {
@@ -61,6 +61,7 @@ class ViewHeader extends Component {
                 <div className={classes.actions}>
                     {onRefresh &&
                             <IconButton
+                                color='primary'
                                 aria-label='refresh'
                                 onClick={this.onClickRefresh}
                                 className={classes.iconButton}
@@ -70,6 +71,7 @@ class ViewHeader extends Component {
                     }
                     {back &&
                             <IconButton
+                                color='primary'
                                 aria-label='back'
                                 onClick={this.onClickArrowBack}
                                 className={

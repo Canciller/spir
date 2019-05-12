@@ -12,6 +12,8 @@ import withStorage from './withStorage';
 
 import IntlProvider from './IntlProvider';
 
+import ThemeProvider from './ThemeProvider';
+
 export {
     HistoryContext,
     HistoryProvider,
@@ -25,5 +27,7 @@ export {
     StorageProvider,
     withStorage,
 
-    IntlProvider
+    IntlProvider,
+
+    ThemeProvider
 }

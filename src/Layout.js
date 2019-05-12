@@ -22,7 +22,9 @@ const drawerWidth = 240;
 const styles = theme => ({
     root: {
         display: 'flex',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        background: theme.palette.background.default,
+        color: theme.palette.text.primary
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -32,6 +34,7 @@ const styles = theme => ({
         boxShadow: 'none',
         userSelect: 'none',
         appRegion: 'drag',
+        background: theme.palette.background.paper
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -108,7 +111,7 @@ class Layout extends Component {
                 >
                     <Toolbar disableGutters={!open}>
                         <IconButton
-                            color="inherit"
+                            color="action"
                             aria-label="Open drawer"
                             onClick={this.handleDrawerOpen}
                             className={classNames(classes.menuButton, open && classes.hide)}
@@ -118,6 +121,7 @@ class Layout extends Component {
                         <Header />
                     </Toolbar>
                     <WindowControls />
+                    <Divider />
                 </AppBar>
                 <Drawer
                     className={classes.drawer}

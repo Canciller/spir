@@ -9,8 +9,8 @@ import MinimizeIcon from '@material-ui/icons/Remove';
 
 const remote = window.require('electron').remote; 
 
-const controlIconSize = 20,
-      controlSize = 24;
+const controlIconSize = 25,
+      controlSize = 30;
 
 const styles = theme => ({
     windowControls: {
@@ -22,8 +22,7 @@ const styles = theme => ({
     control: {
         height: controlSize,
         width: controlSize,
-        padding: 0,
-        marginLeft: 2
+        padding: 0
     },
     controlIcon: {
         height: controlIconSize,
@@ -57,7 +56,6 @@ class WindowControls extends Component {
                 className={classes.windowControls}
             >
                 <IconButton
-                    color='inherit'
                     className={classes.control}
                     onClick={this.onMinimize}
                 >
@@ -66,7 +64,6 @@ class WindowControls extends Component {
                     />
                 </IconButton>
                 <IconButton
-                    color='inherit'
                     className={classes.control}
                     onClick={this.onMaximize}
                 >
@@ -75,7 +72,7 @@ class WindowControls extends Component {
                     />
                 </IconButton>
                 <IconButton
-                    color='inherit'
+                    color='secondary'
                     className={classes.control}
                     onClick={this.onClose}
                 >

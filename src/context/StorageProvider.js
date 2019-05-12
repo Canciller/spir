@@ -5,13 +5,11 @@ import withSpir from './withSpir';
 import StorageContext from './StorageContext';
 
 const notificationOptions = {
-    autoHideDuration: 800,
+    autoHideDuration: 1000,
     preventDuplicate: false,
-    /*
     transitionDuration: {
-        enter: 400, exit: 250
+        enter: 600, exit: 400
     }
-    */
 }
 
 class StorageProvider extends Component {
