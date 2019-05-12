@@ -21,7 +21,8 @@ class LoadingView extends Component {
     render() {
         const {
             classes,
-            loading,
+            message,
+            progress,
             ...other
         } = this.props;
 
@@ -36,7 +37,8 @@ class LoadingView extends Component {
                 {...other}
             >
                 <Loading
-                    {...loading}
+                    message={message}
+                    progress={progress}
                 />
             </View>
         )

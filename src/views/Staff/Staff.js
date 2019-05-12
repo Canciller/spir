@@ -14,7 +14,20 @@ class Staff extends Component {
         return (
             <DatabaseView
                 title='Staff'
+
                 collection='staff'
+
+                pipeline={{
+                    staff: {
+                        pass: 'address',
+                        as: 'address',
+                        from: 'addresses'
+                    }
+                }}
+
+                messages={{
+                    delete: value => `${value.first_name} ${value.last_name} successfully deleted from staff`
+                }}
 
                 editPath={routes.editStaff.path}
                 addPath={routes.addStaff.path}
@@ -23,36 +36,41 @@ class Staff extends Component {
                     message: 'Are you sure you want to delete this staff member?'
                 }}
 
-                dataFormat={{
-                    first_name: {
-                        variant: 'title'
+                dataCardProps={{
+                    format: {
+                        first_name: {
+                            variant: 'title'
+                        },
+                        last_name: {
+                            variant: 'title',
+                            gutterBottom: true
+                        },
+                        username: {
+                            variant: 'subheading',
+                            label: 'Username'
+                        },
+                        email: {
+                            variant: 'subheading',
+                            label: 'Email'
+                        },
+                        phone_no: {
+                            label: 'Phone',
+                            variant: 'subheading',
+                            gutterBottom: true
+                        },
+                        createdAt: {
+                            label: 'Created at',
+                            variant: 'caption'
+                        },
+                        updatedAt: {
+                            label: 'Updated at',
+                            variant: 'caption'
+                        },
+                        password: { visible: false },
+                        _id: { visible: false },
+                        __v: { visible: false },
                     },
-                    last_name: {
-                        variant: 'title',
-                        gutterBottom: true
-                    },
-                    username: {
-                        variant: 'subheading'
-                    },
-                    password: { visible: false },
-                    email: {
-                        variant: 'subheading'
-                    },
-                    phone_no: {
-                        label: 'Phone',
-                        variant: 'subheading',
-                        gutterBottom: true
-                    },
-                    createdAt: {
-                        label: 'Creation date',
-                        variant: 'caption'
-                    },
-                    updatedAt: {
-                        label: 'Latest update',
-                        variant: 'caption'
-                    },
-                    _id: { visible: false },
-                    __v: { visible: false }
+                    //width: '100%'
                 }}
             />
         )

@@ -5,6 +5,9 @@ import ViewHeader from './ViewHeader';
 import ViewContent from './ViewContent';
 import ViewActions from './ViewActions';
 
+import LoadingView from '../LoadingView';
+import ErrorView from '../ErrorView';
+
 const styles = theme => ({
     root: {
         position: 'relative',
@@ -21,24 +24,62 @@ const styles = theme => ({
 
 class View extends Component {
     render() {
-        const {
+        let {
             children,
             actions,
             title,
-            error,
+
             back,
             onRefresh,
+
+            loading,
+            loadingViewProps,
+
+            empty,
+            emptyViewProps,
+
+            error,
+            errorViewProps,
+
             style,
             classes,
+            ...other
         } = this.props;
 
-        /*
+        emptyViewProps = emptyViewProps || {};
+        loadingViewProps = loadingViewProps || {};
+        errorViewProps = errorViewProps || {};
+
         if(error)
             return (
+                <ErrorView
+                    {...errorViewProps}
+                    title={title}
+                    onRefresh={onRefresh}
+                    style={style}
+                />
             )
-            */
-
-        //else
+        else if(loading)
+            return (
+                <LoadingView
+                    {...loadingViewProps}
+                    title={title}
+                    onRefresh={onRefresh}
+                    actions={actions}
+                    style={style}
+                />
+            )
+        else if(empty)
+            return (
+                <ErrorView
+                    {...emptyViewProps}
+                    title={title}
+                    onRefresh={onRefresh}
+                    actions={actions}
+                    style={style}
+                />
+            )
+        else
             return (
                 <div
                     style={style}

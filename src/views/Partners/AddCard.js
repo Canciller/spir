@@ -81,6 +81,15 @@ class AddCard extends Component {
                                 placeholder: 'Waiting for card reading...',
                                 disabled: true,
                                 value: this.state.tag
+                            },
+                            level: {
+                                control: 'select',
+                                label: 'Level',
+                                autoFocus: true,
+                                items: [
+                                    'Platinum',
+                                    'Gold'
+                                ]
                             }
                         }
                     },
@@ -91,7 +100,6 @@ class AddCard extends Component {
                                 control: 'textfield',
                                 label: 'First name',
                                 required: true,
-                                autoFocus: true
                             },
                             last_name: {
                                 control: 'textfield',
@@ -113,6 +121,10 @@ class AddCard extends Component {
                     address: {
                         label: 'Address',
                         fields: {
+                            country: {
+                                control: 'textfield',
+                                label: 'Country'
+                            },
                             line_1: {
                                 control: 'textfield',
                                 label: 'Line 1'

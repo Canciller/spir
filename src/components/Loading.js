@@ -14,8 +14,8 @@ const styles = theme => ({
         alignItems: 'center',
         color: theme.palette.grey[500]
     },
-    progress: {
-        marginBottom: theme.spacing.unit * 2
+    text: {
+        marginTop: theme.spacing.unit * 2
     }
 })
 
@@ -38,14 +38,16 @@ class Loading extends Component {
                     <CircularProgress
                         {...progress}
                         size={size}
-                        className={classes.progress}
                     />
-                    <Typography
-                        variant='title'
-                        color='inherit'
-                    >
-                        {message || 'Loading...'}
-                    </Typography>
+                    { message &&
+                        <Typography
+                            variant='title'
+                            color='inherit'
+                            className={classes.text}
+                        >
+                            {message}
+                        </Typography>
+                    }
                 </div>
             </div>
         )

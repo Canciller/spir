@@ -25,7 +25,9 @@ const styles = theme => ({
     icon: {
         width: iconSize,
         height: iconSize,
-        marginBottom: theme.spacing.unit * 2
+    },
+    text: {
+        marginTop: theme.spacing.unit * 2
     },
     headerActions: {
 
@@ -35,10 +37,13 @@ const styles = theme => ({
 class ErrorView extends Component {
     render() {
         const {
+            icon,
             message,
             classes,
             ...other
         } = this.props;
+
+        let Icon = icon || SentimentDissatisfiedIcon;
 
         return (
             <View
@@ -53,15 +58,18 @@ class ErrorView extends Component {
                 <div
                     className={classes.message}
                 >
-                    <SentimentDissatisfiedIcon
+                    <Icon
                         className={classes.icon}
                     />
-                    <Typography
-                        variant='title'
-                        color='inherit'
-                    >
-                        {message || 'Error'}
-                    </Typography>
+                    {message &&
+                        <Typography
+                            variant='title'
+                            color='inherit'
+                            className={classes.text}
+                        >
+                            {message}
+                        </Typography>
+                    }
                 </div>
             </View>
         )

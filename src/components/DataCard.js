@@ -79,7 +79,7 @@ class DataCard extends Component {
                 actions.push(
                     <Button
                         onClick={ e => {
-                            if(callback instanceof Function) callback(e);
+                            if(callback instanceof Function) callback(e, this.props.data);
                         } }
                         {...other}
                         key={i}
@@ -99,12 +99,20 @@ class DataCard extends Component {
 
         const {
             label,
+            visible,
+            transform,
             ...other
         } = props;
 
+        if(visible !== undefined && !visible)
+            return undefined;
+
+        if(transform instanceof Function)
+            value = transform(value);
+
         return (
             <Typography
-                {...props}
+                {...other}
                 key={key}
             >
                 {label &&
@@ -124,6 +132,7 @@ class DataCard extends Component {
             label,
             gutterTop,
             gutterBottom,
+            transform,
             ...other
         } = props;
 
@@ -188,6 +197,8 @@ class DataCard extends Component {
             }
             else {
                 const field = this.createCardField(format[key], completeKey, value);
+
+                if(field === undefined) continue;
 
                 if(index !== undefined)
                     contentFormatted[index] = field;
@@ -273,6 +284,7 @@ class DataCard extends Component {
         const {
             children,
             absolute,
+            width,
             title,
             image,
             classes
@@ -293,7 +305,12 @@ class DataCard extends Component {
             return ( <Fragment /> )
 
         return (
-            <div className={classes.root}>
+            <div className={classes.root}
+                style={{
+                    minWidth: width,
+                    maxWidth: width
+                }}
+            >
                 <Card className={classes.card}>
                     <CardActionArea
                         className={classes.cardActionArea}

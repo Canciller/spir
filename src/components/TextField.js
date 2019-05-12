@@ -33,24 +33,20 @@ class TextFieldWrapper extends Component {
             target,
             onChange,
             required,
-            number
+            validate,
+            valueType
         } = this.props;
-
-        //let defaultValue = undefined;
 
         let value = e.target.value,
             hasError = false;
 
-        if(value === '') {
+        if(value === '')
             hasError = required !== undefined;
-        } else if (number) {
-            let valueNumber = Number(value);
-            hasError = Number.isNaN(valueNumber);
 
-            if(!hasError) {
-                if(number === '+') hasError = valueNumber <= 0;
-                else if(number === '-') hasError = valueNumber >= 0;
-            }
+        if(!hasError && validate instanceof Function) {
+            let parsedValue = valueType ? valueType(value) : value;
+            hasError = !validate(parsedValue);
+            if(hasError === undefined) hasError = false;
         }
 
         this.setState({ value, hasError }, () => {

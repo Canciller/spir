@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
+    root: {},
     content: {
         display: 'flex',
         flexDirection: 'column',
@@ -317,7 +318,8 @@ class FormView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.loadForm(nextProps);
+        if(nextProps != this.props)
+            this.loadForm(nextProps);
     }
 
     componentDidMount() {

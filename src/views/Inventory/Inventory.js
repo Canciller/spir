@@ -4,7 +4,7 @@ import { withStorage } from '../../context';
 
 import routes from '../../config/routes';
 
-import DatabaseView from '../../components/DatabaseView';
+import DataTransformView from '../../components/DataTransformView';
 
 const styles = theme => ({})
 
@@ -17,9 +17,8 @@ class Inventory extends Component {
         const { storage } = this.props;
 
         return (
-            <DatabaseView
+            <DataTransformView
                 title='Inventory'
-                collection='inventory'
 
                 editPath={routes.editItem.path}
                 addPath={routes.addItem.path}
@@ -28,43 +27,38 @@ class Inventory extends Component {
                     message: 'Are you sure you want to delete this item?'
                 }}
 
-                onClick={storage.cart.add}
                 onRefresh={storage.refresh}
-                onDelete={storage.delete}
 
                 data={storage.items()}
-                dataFormat={{
-                    name: {
-                        variant: 'title',
-                        index: 0
-                    },
-                    price: {
-                        variant: 'subheading',
-                        gutterBottom: true,
-                        label: 'Price',
-                        format: '${}',
-                        index: 1
-                    },
-                    description: {
-                        variant: 'subtitle2',
-                        defaultValue: 'No description',
-                        align: 'justify',
-                        gutterBottom: true,
-                        index: 2
-                    },
-                    category_code: {
-                        variant: 'caption',
-                        label: 'Category',
-                        format: storage.category,
-                        index: 3
-                    },
-                    quantity: {
-                        variant: 'caption',
-                        label: 'Quantity',
-                        index: 4
-                    },
-                    _id: { visible: false },
-                    __v: { visible: false }
+                dataCardProps={{
+                    onClick: (e, value) => storage.cart.add(value),
+                    onDelete: (e, value) => storage.delete(value),
+                    format: {
+                        name: {
+                            variant: 'title'
+                        },
+                        price: {
+                            variant: 'subheading',
+                            gutterBottom: true,
+                            label: 'Price',
+                            transform: value => `$${value.toFixed(2)}`
+                        },
+                        description: {
+                            variant: 'subtitle2',
+                            defaultValue: 'No description',
+                            align: 'justify'
+                        },
+                        category_code: {
+                            variant: 'subtitle2',
+                            label: 'Category',
+                        },
+                        quantity: {
+                            variant: 'subtitle2',
+                            label: 'Quantity'
+                        },
+                        _id: { visible: false },
+                        __v: { visible: false }
+                    }
                 }}
             />
         )

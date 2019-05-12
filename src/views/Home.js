@@ -5,7 +5,7 @@ import { withStorage } from '../context';
 
 import routes from '../config/routes';
 
-import DataView from '../components/DataView';
+import DataGridView from '../components/DataGridView';
 import View from '../components/View';
 import Button from '../components/Button';
 
@@ -68,7 +68,7 @@ class Checkout extends Component {
                 onRefresh={storage.cart.refresh}
                 ref={ref => this.rootRef = ref}
             >
-                <DataView
+                <DataGridView
                     back={false}
 
                     classes={{
@@ -86,44 +86,40 @@ class Checkout extends Component {
                         message: 'Are you sure you want to delete this item from the cart?'
                     }}
 
-                    emptyMessage='Nothing in cart.'
-
-                    onClick={storage.cart.remove}
-                    onDelete={storage.cart.removeAll}
-
                     data={storage.cart.get()}
-                    dataFormat={{
-                        name: {
-                            variant: 'title',
-                            index: 0
-                        },
-                        price: {
-                            variant: 'subheading',
-                            gutterBottom: true,
-                            label: 'Price',
-                            format: '${}',
-                            index: 1
-                        },
-                        description: {
-                            variant: 'subtitle2',
-                            defaultValue: 'No description',
-                            align: 'justify',
-                            gutterBottom: true,
-                            index: 2
-                        },
-                        category_code: {
-                            variant: 'caption',
-                            label: 'Category',
-                            format: storage.category,
-                            index: 3
-                        },
-                        quantity: {
-                            variant: 'caption',
-                            label: 'Quantity',
-                            index: 4
-                        },
-                        _id: { visible: false },
-                        __v: { visible: false }
+
+                    emptyViewProps={{
+                        message: 'Nothing in cart.'
+                    }}
+
+                    dataCardProps={{
+                        onClick: (e, value) => storage.cart.remove(value),
+                        format: {
+                            name: {
+                                variant: 'title'
+                            },
+                            price: {
+                                variant: 'subheading',
+                                gutterBottom: true,
+                                label: 'Price',
+                                transform: value => `$${value.toFixed(2)}`
+                            },
+                            description: {
+                                variant: 'subtitle2',
+                                defaultValue: 'No description',
+                                align: 'justify'
+                            },
+                            category_code: {
+                                variant: 'subtitle2',
+                                label: 'Category',
+                            },
+                            quantity: {
+                                variant: 'subtitle2',
+                                label: 'Quantity'
+                            },
+                            _id: { visible: false },
+                            __v: { visible: false }
+                        }
                     }}
                 />
                 <div

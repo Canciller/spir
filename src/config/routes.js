@@ -1,7 +1,7 @@
 import Home from '../views/Home';
 import Inventory, { AddItem, EditItem } from '../views/Inventory';
 import Staff, { AddStaff, EditStaff } from '../views/Staff';
-import { AddCard, Cards, Deposit } from '../views/Partners';
+import { EditCard, AddCard, Cards, Deposit } from '../views/Partners';
 import { Reader, Language } from '../views/Settings';
 
 import Test from '../views/Test';
@@ -34,6 +34,10 @@ const routes = {
     addCard: {
         path: '/partners/cards/add',
         component: AddCard
+    },
+    editCard: {
+        path: '/partners/cards/edit',
+        component: EditCard
     },
     deposit: {
         path: '/partners/deposit',

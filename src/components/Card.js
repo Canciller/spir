@@ -65,30 +65,21 @@ const CardStyled = styled.div`
 class Card extends Component {
     state = {}
 
-    componentDidMount() {
-        const {
-            spir,
-            data
-        } = this.props;
-
-        spir.partners.getOne(data.partner)
-            .then(partner => {
-                if(!partner) return;
-                this.setState({ partner });
-            })
-            .catch(this.onError);
-    }
-
     render() {
-        const {
+        let {
+            data,
             classes,
-            data
         } = this.props;
 
-        const { partner } = this.state;
+        data = data || {};
 
-        if(!data || !partner)
-            return ''
+        const {
+            card,
+            partner
+        } = data;
+
+        if(!card || !partner)
+            return ( <Fragment /> )
         else
             return (
                 <CardStyled className={classes.root}>
@@ -114,11 +105,10 @@ class Card extends Component {
                             color='inherit'
                             className={classes.textSeparation}
                         >
-                            {`$${data.balance.toFixed(2)}`}
+                            {`$${card.balance.toFixed(2)}`}
                         </Typography>
                     </div>
                     <div className={classes.bottomLeft}>
-                        <CardIcon className={classes.icon}/>
                     </div>
                     <div className={classes.bottomRight}>
                         <Typography
@@ -126,7 +116,7 @@ class Card extends Component {
                             color='inherit'
                             className={classes.textSeparation}
                         >
-                            {data.tag}
+                            {card.tag}
                         </Typography>
                     </div>
                 </CardStyled>
