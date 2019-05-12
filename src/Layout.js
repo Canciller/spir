@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,11 +12,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CloseIcon from '@material-ui/icons/Close';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 import Nav from './components/Nav';
 import Header from './components/Header';
 
-const drawerWidth = 240;
+var remote = window.require('electron').remote; 
+
+const drawerWidth = 240,
+      controlIconSize = 20,
+      controlSize = 24;
 
 const styles = theme => ({
     root: {
@@ -28,7 +35,9 @@ const styles = theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        boxShadow: 'none'
+        boxShadow: 'none',
+        userSelect: 'none',
+        appRegion: 'drag',
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -38,12 +47,32 @@ const styles = theme => ({
             duration: theme.transitions.duration.enteringScreen,
         })
     },
+    menuButton: {
+        marginRight: theme.spacing.unit,
+        marginLeft: theme.spacing.unit, appRegion: 'no-drag'
+    },
+    windowControls: {
+        appRegion: 'no-drag',
+        position: 'absolute',
+        right: theme.spacing.unit,
+        top: theme.spacing.unit
+    },
+    control: {
+        height: controlSize,
+        width: controlSize,
+        padding: 0,
+        marginLeft: 2
+    },
+    controlIcon: {
+        height: controlIconSize,
+        width: controlIconSize
+    },
     hide: {
         display: 'none'
     },
     drawer: {
         width: drawerWidth,
-        flexShrink: 0
+        flexShrink: 0,
     },
     drawerPaper: {
         width: drawerWidth
@@ -87,7 +116,7 @@ class Layout extends Component {
         this.setState(state => ({ open: true }));
     }
 
-    render()  {
+    render() {
         let { children, classes, theme } = this.props;
         let { open } = this.state;
 
@@ -106,10 +135,38 @@ class Layout extends Component {
                             onClick={this.handleDrawerOpen}
                             className={classNames(classes.menuButton, open && classes.hide)}
                         >
-                            <MenuIcon />
+                            <MenuIcon size={10}/>
                         </IconButton>
                         <Header />
                     </Toolbar>
+                    <div
+                        className={classes.windowControls}
+                    >
+                    <IconButton
+                        color='inherit'
+                        className={classes.control}
+                    >
+                        <RemoveIcon
+                            className={classes.controlIcon}
+                        />
+                    </IconButton>
+                    <IconButton
+                        color='inherit'
+                        className={classes.control}
+                    >
+                        <AddIcon
+                            className={classes.controlIcon}
+                        />
+                    </IconButton>
+                    <IconButton
+                        color='inherit'
+                        className={classes.control}
+                    >
+                        <CloseIcon
+                            className={classes.controlIcon}
+                        />
+                    </IconButton>
+                    </div>
                 </AppBar>
                 <Drawer
                     className={classes.drawer}

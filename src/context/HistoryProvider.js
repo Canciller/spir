@@ -3,7 +3,9 @@ import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import HistoryContext from './HistoryContext';
 
-const history = createBrowserHistory();
+const history = createBrowserHistory({
+    basename: window.location.pathname
+});
 
 export default class HistoryProvider extends Component {
     render() {

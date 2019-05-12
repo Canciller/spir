@@ -34,7 +34,7 @@ const styles = theme => ({
     cartTotal: {
         position: 'absolute',
         bottom: 0,
-        top: -50,
+        top: -30,
         left: theme.spacing.unit * 2,
         zIndex: theme.zIndex.appBar
     }
@@ -148,7 +148,7 @@ class Checkout extends Component {
                     className={classes.actions}
                 >
                     <Typography
-                        variant='display1'
+                        variant='title'
                         className={classes.cartTotal}
                     >
                         Total: ${storage.cart.total().toFixed(2)}

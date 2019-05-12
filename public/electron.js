@@ -25,7 +25,8 @@ function createWindow() {
             nodeIntegrationInWorker: true,
             'web-security': false
         },
-        //title: 'Sistema de Pago por Identificación de Radiofrecuencias'
+        title: 'SPIR',
+        frame: false
     });
     mainWindow.loadURL(
         isDev
