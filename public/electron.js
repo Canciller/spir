@@ -26,7 +26,7 @@ function createWindow() {
             'web-security': false
         },
         title: 'SPIR',
-        icon: __dirname + 'public/favicon.ico',
+        icon: __dirname + './newfav.png',
         titleBarStyle: 'hidden'
     });
     mainWindow.loadURL(
