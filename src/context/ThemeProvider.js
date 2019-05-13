@@ -15,10 +15,13 @@ export default class ThemeProvider extends Component {
             palette: {
                 type: 'dark',
                 background: {
-                    paper: '#21222c',
-                    default: '#1a1b23'
+                    /*paper: '#21222c',
+                    default: '#1a1b23'*/
+                    paper: '#2f3136',
+                    default: '#36393f'
                 },
-                divider: '#282a36',
+                /*divider: '#282a36',*/
+                divider: '#40444b',
                 primary: {
                     main: '#0080ff'
                 }
