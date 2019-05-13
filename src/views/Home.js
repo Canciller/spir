@@ -16,7 +16,7 @@ const styles = theme => ({
     },
     cartRoot: {
         marginBottom: theme.spacing.unit * 2,
-        overflow: 'auto',
+        overflow: 'hidden',
         padding: 0
     },
     cartContent: {

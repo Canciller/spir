@@ -2,7 +2,7 @@ import Home from '../views/Home';
 import Inventory, { AddItem, EditItem } from '../views/Inventory';
 import Staff, { AddStaff, EditStaff } from '../views/Staff';
 import { EditCard, AddCard, Cards, Deposit } from '../views/Partners';
-import { Reader, Language } from '../views/Settings';
+import { Reader, Language, Theme } from '../views/Settings';
 
 import Test from '../views/Test';
 
@@ -66,6 +66,10 @@ const routes = {
     language: {
         path: '/settings/language',
         component: Language
+    },
+    theme: {
+        path: '/settings/theme',
+        component: Theme
     },
     test: {
         path: '/testing',

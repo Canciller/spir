@@ -16,12 +16,15 @@ import Loading from './Loading';
 const styles = theme => ({
     root: {
         flex: 1,
-        minWidth: 300
+        minWidth: 400
     },
     card: {
         boxShadow: 'none',
         border: '1px solid',
         borderColor: theme.palette.divider,
+        minHeight: 200,
+        display: 'flex',
+        flexDirection: 'column'
     },
     cardMedia: {
         objectFit: 'cover'
@@ -34,11 +37,13 @@ const styles = theme => ({
     },
     cardContent: {
         position: 'relative',
-        flex: 1
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
     },
     cardAbsoluteContent: {
         position: 'absolute',
-        top: theme.spacing.unit * 2,
+        bottom: theme.spacing.unit,
         right: theme.spacing.unit * 2,
         zIndex: 1000
     },

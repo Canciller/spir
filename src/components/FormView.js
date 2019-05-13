@@ -132,7 +132,7 @@ class FormView extends Component {
     }
 
     onChange = (e, data, extra) => {
-        const { onChange, fields } = this.props;
+        const { fields } = this.props;
 
         const {
             target,
@@ -145,7 +145,9 @@ class FormView extends Component {
             [target + '_error'] : error,
             [target + '_empty'] : empty
         }, () => {
-            if(onChange instanceof Function) onChange(e, data, extra);
+            if(fields && fields[target])
+            if(fields[target].onChange instanceof Function)
+                fields[target].onChange(e, data, extra);
         });
     }
 

@@ -20,11 +20,15 @@ import Header from './components/Header';
 const drawerWidth = 240;
 
 const styles = theme => ({
+    window: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
     root: {
         display: 'flex',
         minHeight: '100vh',
         background: theme.palette.background.default,
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -32,9 +36,7 @@ const styles = theme => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         boxShadow: 'none',
-        userSelect: 'none',
-        appRegion: 'drag',
-        background: theme.palette.background.paper
+        background: theme.palette.background.paper,
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -63,7 +65,9 @@ const styles = theme => ({
         alignItems: 'center',
         padding: '0 8px',
         ...theme.mixins.toolbar,
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+    },
+    drawerHeaderFix: {
     },
     content: {
         flexGrow: 1,
@@ -109,6 +113,7 @@ class Layout extends Component {
                         [classes.appBarShift]: open,
                     })}
                 >
+                    <Divider />
                     <Toolbar disableGutters={!open}>
                         <IconButton
                             color="action"
@@ -116,11 +121,10 @@ class Layout extends Component {
                             onClick={this.handleDrawerOpen}
                             className={classNames(classes.menuButton, open && classes.hide)}
                         >
-                            <MenuIcon size={10}/>
+                            <MenuIcon size={10} />
                         </IconButton>
                         <Header />
                     </Toolbar>
-                    <WindowControls />
                     <Divider />
                 </AppBar>
                 <Drawer
@@ -132,7 +136,8 @@ class Layout extends Component {
                         paper: classes.drawerPaper
                     }}
                 >
-                    <div className={classes.drawerHeader}>
+                    <Divider />
+                    <div className={classNames(classes.drawerHeader, classes.drawerHeaderFix)}>
                         <IconButton onClick={this.handleDrawerClose}>
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>

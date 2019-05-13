@@ -12,7 +12,9 @@ import withStorage from './withStorage';
 
 import IntlProvider from './IntlProvider';
 
+import ThemeContext from './ThemeContext';
 import ThemeProvider from './ThemeProvider';
+import withTheme from './withTheme';
 
 export {
     HistoryContext,
@@ -29,5 +31,7 @@ export {
 
     IntlProvider,
 
-    ThemeProvider
+    ThemeContext,
+    ThemeProvider,
+    withTheme
 }

@@ -11,6 +11,7 @@ import DepositIcon from '@material-ui/icons/LocalAtm';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ReaderIcon from '@material-ui/icons/Nfc';
 import LanguageIcon from '@material-ui/icons/Translate';
+import ThemeIcon from '@material-ui/icons/InvertColors';
 
 import TestingIcon from '@material-ui/icons/BugReport';
 
@@ -64,6 +65,11 @@ const nav = [
                 name: 'Language',
                 icon: LanguageIcon,
                 path: getPath('language')
+            },
+            {
+                name: 'Theme',
+                icon: ThemeIcon,
+                path: getPath('theme')
             }
         ]
     },

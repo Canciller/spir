@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+import ThemeContext from './ThemeContext';
 export default class ThemeProvider extends Component {
     state = {}
 
@@ -29,15 +30,29 @@ export default class ThemeProvider extends Component {
         super(props);
 
         this.state.theme = createMuiTheme({
-            ...this.themes.defaultDark
+            ...this.themes.defaultLight
         });
     }
 
     render() {
         return (
-            <MuiThemeProvider theme={this.state.theme}>
-                {this.props.children}
-            </MuiThemeProvider>
+            <ThemeContext.Provider value={{
+                setThemeType: type => {
+                    type = type.toLowerCase();
+                    switch(type) {
+                        case 'light':
+                            this.setState({ theme: createMuiTheme({ ...this.themes.defaultLight }) })
+                        break;
+                        case 'dark':
+                            this.setState({ theme: createMuiTheme({ ...this.themes.defaultDark }) })
+                        break;
+                    }
+                }
+            }}>
+                <MuiThemeProvider theme={this.state.theme}>
+                    {this.props.children}
+                </MuiThemeProvider>
+            </ThemeContext.Provider>
         )
     }
 }

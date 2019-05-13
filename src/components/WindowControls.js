@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
 import IconButton from '@material-ui/core/IconButton';
+import Divider from '@material-ui/core/Divider';
 
 import CloseIcon from '@material-ui/icons/Close';
 import MaximizeIcon from '@material-ui/icons/Add';
@@ -14,12 +15,17 @@ const controlIconSize = 25,
 
 const styles = theme => ({
     windowControls: {
-        appRegion: 'no-drag',
-        position: 'absolute',
-        right: theme.spacing.unit,
-        top: theme.spacing.unit
+        height: 30,
+        zIndex: 2000,
+        position: 'fixed',
+        width: '100%',
+        background: theme.palette.background.default,
+        userSelect: 'none',
+        appRegion: 'drag',
+        textAlign: 'right'
     },
     control: {
+        appRegion: 'no-drag',
         height: controlSize,
         width: controlSize,
         padding: 0
@@ -80,6 +86,7 @@ class WindowControls extends Component {
                         className={classes.controlIcon}
                     />
                 </IconButton>
+                <Divider />
             </div>
         )
     }
