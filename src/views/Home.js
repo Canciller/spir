@@ -9,6 +9,7 @@ import DataGridView from '../components/DataGridView';
 import View from '../components/View';
 import Button from '../components/Button';
 import Typography from '@material-ui/core/Typography';
+import EmptyIcon from '@material-ui/icons/ShoppingCart';
 
 const styles = theme => ({
     actions: {
@@ -16,8 +17,9 @@ const styles = theme => ({
     },
     cartRoot: {
         marginBottom: theme.spacing.unit * 2,
-        overflow: 'hidden',
-        padding: 0
+        overflow: 'auto',
+        padding: 0,
+        justifyContent: 'center'
     },
     cartContent: {
         /*
@@ -99,10 +101,12 @@ class Checkout extends Component {
                     data={storage.cart.get()}
 
                     emptyViewProps={{
-                        message: 'Nothing in cart.'
+                        message: 'Cart is empty',
+                        icon: EmptyIcon
                     }}
 
                     dataCardProps={{
+                        width: 400,
                         absolute: value => {
                             return (
                                 <Typography

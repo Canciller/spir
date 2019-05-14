@@ -18,6 +18,14 @@ class StorageProvider extends Component {
         cart: []
     }
 
+    onError = (err) => {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(err.message, { 
+            variant: 'error',
+            ...notificationOptions
+        });
+    }
+
     category = value => {
         let c = this.state.categories[value];
         c = c ? c.name : 'unknown';
@@ -44,17 +52,13 @@ class StorageProvider extends Component {
                         if(index < 0) continue;
 
                         item.quantity -= cart[index].quantity;
-                        if(item.quantity <= 0) {
-                            items.splice(i, 1);
-                            continue;
-                        }
 
                         items[i] = item;
                     }
 
                     this.setState({ items });
                 })
-                .catch(err => console.log(err));
+                .catch(err => this.onError(err));
         }
 
         return this.state.items;
@@ -62,12 +66,15 @@ class StorageProvider extends Component {
 
     delete = item => {
         const { spir } = this.props;
-        const { items } = this.state;
+        const { items, cart } = this.state;
         if(!items) return;
 
         spir.inventory.delete(item._id)
             .then(deleted => {
-                this.setState({ items: items.filter(it => it._id !== item._id) })
+                this.setState({
+                    items: items.filter(it => it._id !== item._id),
+                    cart: cart.filter(it => it._id !== item._id)
+                });
             })
             .catch(err => console.log(err));
     }
@@ -86,32 +93,48 @@ class StorageProvider extends Component {
             const cartIndex = cart.findIndex(it => it._id === item._id),
                   itemsIndex = items.findIndex(it => it._id === item._id);
 
+            let emptyItem = false;
+
             if(itemsIndex >= 0) {
                 let fetched = items[itemsIndex];
 
                 fetched.quantity -= 1;
-                if(fetched.quantity <= 0) items.splice(itemsIndex, 1);
+                if(fetched.quantity < 0) {
+                    fetched.quantity = 0;
+                    emptyItem = true;
+                    //items.splice(itemsIndex, 1);
+                }
             }
 
-            if(cartIndex >= 0) {
-                let found = cart[cartIndex];
-                found.quantity += 1;
-                cart[cartIndex] = found;
-            } else {
-                const {
-                    quantity,
-                    ...other
-                } = item;
+            if(!emptyItem) {
+                if(cartIndex >= 0) {
+                    let found = cart[cartIndex];
+                    found.quantity += 1;
+                    cart[cartIndex] = found;
+                } else {
+                    const {
+                        quantity,
+                        ...other
+                    } = item;
 
-                cart.push({ quantity: 1, ...other });
+                    cart.push({ quantity: 1, ...other });
+                }
             }
 
+            const { enqueueSnackbar } = this.props;
 
-            this.setState({ cart, items }, () =>
-                this.props.enqueueSnackbar(`${item.name} added to cart`, {
-                    variant: 'success',
-                    ...notificationOptions
-                }));
+            this.setState({ cart, items }, () => {
+                if(!emptyItem)
+                    enqueueSnackbar(`${item.name} added to cart`, {
+                        variant: 'success',
+                        ...notificationOptions
+                    });
+                else
+                    enqueueSnackbar(`No more ${item.name} left`, {
+                        variant: 'error',
+                        ...notificationOptions
+                    });
+            });
         },
         remove: item => {
             let cart = this.cart.get();

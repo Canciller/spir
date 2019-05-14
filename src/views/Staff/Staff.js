@@ -29,6 +29,10 @@ class Staff extends Component {
                     delete: value => `${value.first_name} ${value.last_name} successfully deleted from staff`
                 }}
 
+                emptyViewProps={{
+                    message: 'Nothing here'
+                }}
+
                 editPath={routes.editStaff.path}
                 addPath={routes.addStaff.path}
 

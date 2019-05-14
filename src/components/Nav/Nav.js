@@ -16,27 +16,23 @@ export default class Nav extends Component {
                 {nav.map((item, i) => {
                     if(item.nav !== undefined)
                         return (
-                            <Fragment>
-                                <ItemCollapse
-                                    key={i}
-                                    icon={item.icon}
-                                    items={item.nav}
-                                >
-                                    {item.name}
-                                </ItemCollapse>
-                            </Fragment>
+                            <ItemCollapse
+                                key={i}
+                                icon={item.icon}
+                                items={item.nav}
+                            >
+                                {item.name}
+                            </ItemCollapse>
                         )
                     else
                         return (
-                            <Fragment>
-                                <Item
-                                    key={i}
-                                    to={item.path}
-                                    icon={item.icon}
-                                >
-                                    {item.name}
-                                </Item>
-                            </Fragment>
+                            <Item
+                                key={i}
+                                to={item.path}
+                                icon={item.icon}
+                            >
+                                {item.name}
+                            </Item>
                         )
                 })}
             </List>

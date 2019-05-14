@@ -24,7 +24,11 @@ class EditItem extends Component {
 
         spir.categories.get()
             .then(categories => {
-                categories = categories.map(category => category.name);
+                categories = categories.map(category => {
+                    let name = category.name;
+                    name = name.charAt(0).toUpperCase() + name.slice(1);
+                    return name;
+                });
                 this.setState({ categories });
             })
             .catch(err => console.log(err));

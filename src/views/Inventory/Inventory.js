@@ -32,23 +32,28 @@ class Inventory extends Component {
                 }}
 
                 emptyViewProps={{
-                    message: 'Nothing here.'
+                    message: 'Nothing here'
                 }}
 
                 onRefresh={storage.refresh}
 
                 data={storage.items()}
                 dataCardProps={{
+                    width: 400,
                     absolute: value => {
+                        let quantity = value.quantity === 0 ?
+                            undefined : value.quantity;
+
                         return (
                             <Typography
                                 variant='subtitle1'
                                 color='primary'
                             >
-                                {value.quantity}
+                                {quantity}
                             </Typography>
                         )
                     },
+                    disabled: value => value.quantity === 0,
                     onClick: (e, value) => storage.cart.add(value),
                     onDelete: (e, value) => storage.delete(value),
                     format: {

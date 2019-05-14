@@ -42,6 +42,10 @@ class Cards extends Component {
                     }
                 }}
 
+                emptyViewProps={{
+                    message: 'Nothing here'
+                }}
+
                 addPath={routes.addCard.path}
                 editPath={routes.editCard.path}
 

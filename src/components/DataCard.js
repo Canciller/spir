@@ -35,6 +35,9 @@ const styles = theme => ({
         flexDirection: 'column',
         alignItems: 'stretch'
     },
+    cardDisabled: {
+        background: theme.palette.action.disabledBackground
+    },
     cardContent: {
         position: 'relative',
         display: 'flex',
@@ -289,6 +292,7 @@ class DataCard extends Component {
         const {
             children,
             absolute,
+            disabled,
             width,
             title,
             image,
@@ -299,6 +303,10 @@ class DataCard extends Component {
         let actions = this.createCardActions(),
             content = this.createCardContent(),
             absoluteContent = absolute instanceof Function ? absolute(data) : '';
+
+        let isDisabled = disabled;
+        if(disabled instanceof Function)
+            isDisabled = disabled(data) || false;
 
         if(this.state.loading)
             content = (
@@ -320,7 +328,10 @@ class DataCard extends Component {
             >
                 <Card className={classes.card}>
                     <CardActionArea
-                        className={classes.cardActionArea}
+                        disabled={isDisabled}
+                        className={classNames(
+                            classes.cardActionArea,
+                            isDisabled && classes.cardDisabled)}
                         onClick={this.onClick}>
                         {image &&
                             <CardMedia
@@ -341,7 +352,12 @@ class DataCard extends Component {
                         </CardContent>
                     </CardActionArea>
                     {actions &&
-                            <CardActions className={classes.cardActions}>
+                            <CardActions
+                                className={classNames(
+                                    classes.cardActions,
+                                    isDisabled && classes.cardDisabled
+                                )}
+                            >
                                 {actions}
                             </CardActions>
                     }

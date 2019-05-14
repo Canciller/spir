@@ -116,7 +116,6 @@ class Layout extends Component {
                     <Divider />
                     <Toolbar disableGutters={!open}>
                         <IconButton
-                            color="action"
                             aria-label="Open drawer"
                             onClick={this.handleDrawerOpen}
                             className={classNames(classes.menuButton, open && classes.hide)}
