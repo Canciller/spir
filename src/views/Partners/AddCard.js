@@ -4,8 +4,6 @@ import { withSpir } from '../../context';
 import { withSnackbar } from 'notistack';
 
 import FormView from '../../components/FormView';
-import ErrorView from '../../components/ErrorView';
-import LoadingView from '../../components/LoadingView';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 

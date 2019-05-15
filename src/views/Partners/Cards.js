@@ -1,11 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { withSpir } from '../../context';
 import routes from '../../config/routes';
 
 import DatabaseView from '../../components/DatabaseView';
-import Card from '../../components/Card';
-
 
 //const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -20,8 +17,6 @@ function transformEmpty(value) {
 class Cards extends Component {
 
     render() {
-        const { classes } = this.props;
-
         return (
             <DatabaseView
                 title='Cards'

@@ -1,9 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import Item from './Item';
 import ItemCollapse from './ItemCollapse';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import nav from '../../config/nav';
 
 export default class Nav extends Component {

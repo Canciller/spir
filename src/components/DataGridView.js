@@ -5,9 +5,6 @@ import { withHistory } from '../context';
 import View from './View';
 import DataCard from './DataCard';
 
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
-
 const styles = theme => {
     return {
         root: {},
@@ -79,7 +76,7 @@ class DataGridView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps != this.props)
+        if(nextProps !== this.props)
             this.load(nextProps);
     }
 

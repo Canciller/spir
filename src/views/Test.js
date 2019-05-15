@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import View from '../components/View';
-import DataCard from '../components/DataCard';
 import DataGridView from '../components/DataGridView';
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({})
 

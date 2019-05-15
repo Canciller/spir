@@ -45,10 +45,7 @@ class EditCard extends Component {
     }
 
     componentDidMount() {
-        const {
-            history,
-            spir
-        } = this.props;
+        const { history } = this.props;
 
         const location = history.location;
         if(!location || !location.state) return;

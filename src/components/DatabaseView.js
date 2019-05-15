@@ -4,8 +4,6 @@ import { withSpir, withHistory } from '../context';
 import { withSnackbar } from 'notistack';
 
 import DataTransformView from './DataTransformView';
-import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({})
 
@@ -140,7 +138,6 @@ class DatabaseView extends Component {
         let {
             spir,
             collection, as,
-            onDelete,
             enqueueSnackbar
         } = this.props;
 
@@ -182,7 +179,6 @@ class DatabaseView extends Component {
         } = this.props;
 
         dataCardProps = dataCardProps || {}
-        const dataCardActions = dataCardProps.actions || []
 
         return (
             <DataTransformView
@@ -200,8 +196,6 @@ class DatabaseView extends Component {
                     ...dataCardProps,
                     onDelete: this.onDelete
                 }}
-
-                error={error}
             />
         )
     }

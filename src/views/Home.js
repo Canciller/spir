@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { withStorage } from '../context';
@@ -32,12 +32,6 @@ const styles = theme => ({
     cartActions: {
         bottom: 110,
         marginRight: theme.spacing.unit * 2
-    },
-    cartTotal: {
-        position: 'absolute',
-        top: -30,
-        left: theme.spacing.unit,
-        zIndex: theme.zIndex.appBar
     }
 })
 
@@ -75,7 +69,7 @@ class Checkout extends Component {
                     root: classes.root
                 }}
 
-                title='Checkout'
+                title={`Checkout - Total: $${storage.cart.total().toFixed(2)}`}
                 onRefresh={storage.cart.refresh}
                 ref={ref => this.rootRef = ref}
             >
@@ -151,19 +145,13 @@ class Checkout extends Component {
                 <div
                     className={classes.actions}
                 >
-                    <Typography
-                        variant='title'
-                        className={classes.cartTotal}
-                    >
-                        Total: ${storage.cart.total().toFixed(2)}
-                    </Typography>
                     <Button
                         fullWidth
                         variant='contained'
                         onClick={this.onCheckout}
                         ref={ref => this.actionsRef = ref}
                     >
-                        Checkout
+                        Checkout - Total: ${storage.cart.total().toFixed(2)}
                     </Button>
                 </div>
             </View>

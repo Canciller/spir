@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import { withSpir } from '../../context';
 import { withSnackbar } from 'notistack';
+import { withSpir } from '../../context';
 
 import View from '../../components/View';
 import FormView from '../../components/FormView';
@@ -160,6 +159,7 @@ class Deposit extends Component {
                                 placeholder: '0.00',
                                 adorment: '$',
                                 required: true,
+                                autoFocus: true,
                                 valueOptions: {
                                     type: Number,
                                     validate: value => {

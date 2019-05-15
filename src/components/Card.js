@@ -1,11 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import classNames from 'classnames';
 import { withSpir } from '../context';
 
 import Typography from '@material-ui/core/Typography';
-import CardIcon from '@material-ui/icons/Nfc';
 
 const cardWidth = 350,
       cardHeight =  230;
@@ -60,10 +57,6 @@ const styles = theme => {
         }
     }
 }
-
-const CardStyled = styled.div`
-    background: linear-gradient(135deg, rgba(171,171,171,1) 0%, rgba(107,107,107,1) 100%);
-`
 
 class Card extends Component {
     state = {}

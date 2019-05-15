@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { withSpir } from '../../context';
 
 import FormView from '../../components/FormView';
-import ErrorView from '../../components/ErrorView';
 
 const styles = theme => ({})
 
@@ -17,10 +16,6 @@ class AddStaff extends Component {
     }
 
     render() {
-        const {
-            categories
-        } = this.state;
-
         return (
             <FormView
                 title='Create Staff member'

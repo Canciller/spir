@@ -18,11 +18,19 @@ class StorageProvider extends Component {
         cart: []
     }
 
-    onError = (err) => {
+    notify = (obj, variant, callback) => {
         const { enqueueSnackbar } = this.props;
-        enqueueSnackbar(err.message, { 
-            variant: 'error',
-            ...notificationOptions
+        enqueueSnackbar(obj.message || obj, {
+            variant
+        });
+
+        if(callback instanceof Function)
+            callback(obj);
+    }
+
+    onError = (err) => {
+        this.notify(err, 'error', () => {
+            this.setState({ error: true, errorMessage: err.message });
         });
     }
 
@@ -33,10 +41,7 @@ class StorageProvider extends Component {
     }
 
     items = () => {
-        const {
-            spir,
-            enqueueSnackbar
-        } = this.props;
+        const { spir } = this.props;
 
         if(!this.fetching) {
             this.fetching = true;
@@ -74,14 +79,16 @@ class StorageProvider extends Component {
                 this.setState({
                     items: items.filter(it => it._id !== item._id),
                     cart: cart.filter(it => it._id !== item._id)
+                }, () => {
+                    this.notify(`${item.name} successfully deleted from inventory`, 'success');
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => this.notify(err, 'error'));
     }
 
     refresh = () => {
         this.fetching = false;
-        this.setState({ items: undefined });
+        this.setState({ items: undefined, error: false });
     }
 
     cart = {
@@ -182,15 +189,16 @@ class StorageProvider extends Component {
         }
     }
 
+    getErrorMessage = () => this.state.errorMessage;
+
+    hasError = () => this.state.error;
+
     componentDidMount() {
-        const {
-            spir,
-            enqueueSnackbar
-        } = this.props;
+        const { spir } = this.props;
 
         spir.categories.get()
             .then(categories => this.setState({ categories }))
-            .catch(err => console.log(err));
+            .catch(this.onError);
     }
 
     render() {
@@ -202,7 +210,10 @@ class StorageProvider extends Component {
                     cart: this.cart,
                     refresh: this.refresh,
                     delete: this.delete,
-                    add: this.add
+                    add: this.add,
+                    error: this.error,
+                    getErrorMessage: this.getErrorMessage,
+                    hasError: this.hasError
                 }}
             >
                 {this.props.children}

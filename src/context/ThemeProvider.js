@@ -49,6 +49,7 @@ export default class ThemeProvider extends Component {
                         case 'dark':
                             this.setState({ theme: createMuiTheme({ ...this.themes.defaultDark }) })
                         break;
+                        default: break;
                     }
                 }
             }}>

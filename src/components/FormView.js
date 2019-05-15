@@ -320,7 +320,7 @@ class FormView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps != this.props)
+        if(nextProps !== this.props)
             this.loadForm(nextProps);
     }
 

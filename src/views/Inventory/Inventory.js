@@ -16,8 +16,7 @@ class Inventory extends Component {
 
     render() {
         const {
-            classes,
-            storage 
+            storage
         } = this.props;
 
         return (
@@ -35,9 +34,14 @@ class Inventory extends Component {
                     message: 'Nothing here'
                 }}
 
+                errorViewProps={{
+                    message: storage.getErrorMessage()
+                }}
+
                 onRefresh={storage.refresh}
 
                 data={storage.items()}
+                error={storage.hasError()}
                 dataCardProps={{
                     width: 400,
                     absolute: value => {
