@@ -13,7 +13,7 @@ const styles = theme => ({
     cart: {
         display: 'flex',
         flexDirection: 'column',
-        background: theme.palette.background.paper,
+        background: theme.palette.background.default,
         marginTop: theme.spacing.unit * 2,
         borderRadius: theme.shape.borderRadius,
         border: '1px solid',
