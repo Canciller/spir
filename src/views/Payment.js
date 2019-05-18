@@ -74,7 +74,8 @@ class Payment extends Component {
                                 return value > 0;
                             }
                         },
-                        onChange: (e, amount) => this.setState({ amount })
+                        onChange: (e, amount) => this.setState({ amount }),
+                        autoFocus: true
                     }
                 }}
                 actions={{
@@ -98,7 +99,7 @@ class Payment extends Component {
                                 className={classes.infoLabel}
                                 variant='subtitle1'
                             >
-                                {`Change: $${change}`}
+                                {`Change: $${change.toFixed(2)}`}
                             </Typography>
                     }
                 </div>
