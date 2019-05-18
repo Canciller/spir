@@ -76,7 +76,8 @@ export default class SpirProvider extends Component {
                 cards: this.defaultApi('cards'),
                 partners: this.defaultApi('partners'),
                 staff: this.defaultApi('staff'),
-                addresses: this.defaultApi('addresses')
+                addresses: this.defaultApi('addresses'),
+                payments: this.defaultApi('payments')
             }}>
                 {children}
             </SpirContext.Provider>

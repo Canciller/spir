@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withSnackbar } from 'notistack';
-import { withStorage } from '../context';
+import { withHistory, withStorage, withSpir } from '../context';
 
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -22,7 +22,7 @@ const styles = theme => ({
         border: '1px solid',
         borderColor: theme.palette.divider,
         paddingLeft: theme.spacing.unit,
-        paddingRight: theme.spacing.unit
+        paddingRight: theme.spacing.unit,
     },
     cartItem: {
         paddingLeft: theme.spacing.unit,
@@ -45,7 +45,9 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit * 2,
         width: 35,
         height: 35,
-        padding: 0
+        padding: 0,
+        marginTop: 2,
+        marginBottom: 2
     },
     info: {
         display: 'flex',
@@ -61,14 +63,131 @@ class Payment extends Component {
         change: NaN
     }
 
-    onConfirm = (e, { amount }) => {
+    onPayment = callback => {
         const {
-            change
+            enqueueSnackbar,
+            history,
+            storage,
+            spir
+        } = this.props;
+
+        const {
+            partner
         } = this.state;
+
+        const products = storage.cart.get().map(item => item._id);
+
+        spir.payments.add({ products, partner: partner ? partner._id : undefined })
+            .then(added => {
+                const inventory = storage.items();
+                if(inventory === undefined) return;
+
+                let savesInventory = [];
+                for(let i = 0; i < inventory.length; ++i)
+                    savesInventory.push(spir.inventory.update(inventory[i]._id, inventory[i]));
+
+                Promise.all(savesInventory)
+                    .then(() => {
+                        enqueueSnackbar('Updated inventory', { variant: 'info' });
+                        storage.cart.refresh();
+                        if(callback instanceof Function)
+                            callback();
+                        history.push('/');
+                    })
+                    .catch(this.onError);
+            })
+            .catch(this.onError);
 
     }
 
+    onConfirm = (e, { amount }) => {
+        const {
+            payWithCard,
+            card
+        } = this.state;
+
+        const {
+            spir,
+            enqueueSnackbar,
+        } = this.props;
+
+        this.onPayment(() => {
+            if(payWithCard && card)
+                spir.cards.update(card._id, { balance: card.balance - amount })
+                    .then(updated => {
+                        enqueueSnackbar(
+                            `Payment completed, balance left: $${updated.balance.toFixed(2)}`,
+                            { variant: 'success' }
+                        );
+                    })
+                    .catch(this.onError);
+            else enqueueSnackbar('Payment completed', { variant: 'success' });
+        })
+    }
+
+    onError = err => {
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(err.message, { variant: 'error' });
+    }
+
+    clearCardAndPartner = () => {
+        this.setState({
+            card: undefined,
+            partner: undefined,
+            loaded: false
+        });
+    }
+
+    setCardAndPartner = (card, partner) => this.setState({
+        card, partner, loaded: card !== undefined && partner !== undefined
+    });
+
+    findCard = tag => {
+        const {
+            storage
+        } = this.props;
+
+        if(!this.state.payWithCard) return;
+        const total = storage.cart.total();
+
+        const {
+            spir,
+            enqueueSnackbar
+        } = this.props;
+
+        this.clearCardAndPartner();
+
+        spir.cards.get()
+            .then(cards => {
+                const card = cards.find(card => card.tag === tag);
+                if(!card) return this.onError({ message: 'Card doesn\'t exist' });
+
+                spir.partners.getOne(card.partner)
+                    .then(partner => {
+                        if(!partner) return;
+
+                        this.setCardAndPartner(card, partner);
+                        if(card.balance < total)
+                            enqueueSnackbar(
+                                `Not enough balance in card, current balance: $${card.balance.toFixed(2)}`,
+                                { variant: 'error' }
+                            );
+                        else this.setState({ amount: total }, () => {
+                            enqueueSnackbar(
+                                `Card detected, current balance: $${card.balance.toFixed(2)}`,
+                                { variant: 'success' }
+                            )
+                        });
+                    })
+                    .catch(this.onError);
+            })
+            .catch(this.onError);
+    }
+
+    onChangePaymentType = (e, type) => this.setState({ payWithCard: type === 1, amount: undefined });
+
     componentDidMount() {
+        ipcRenderer.on('reader:data', (e, tag) => this.findCard(tag));
     }
 
     componentWillUnmount() {
@@ -84,7 +203,8 @@ class Payment extends Component {
         } = this.props;
 
         const {
-            amount
+            amount,
+            payWithCard
         } = this.state;
 
         const total = storage.cart.total(),
@@ -96,20 +216,22 @@ class Payment extends Component {
             <FormView
                 title={`Payment - Total: $${total.toFixed(2)}`}
                 fields={{
-                    address: {
+                    type: {
                         control: 'select',
                         label: 'Payment Type',
                         items: [
                             'Cash',
                             'SPIR Rewards'
-                        ]
+                        ],
+                        onChange: this.onChangePaymentType
                     },
                     amount: {
                         control: 'textfield',
                         label: 'Pay with',
                         required: true,
-                        adorment: '$',
-                        placeholder: '0.00',
+                        adorment: payWithCard ? (this.state.amount ? '$': undefined) : '$',
+                        placeholder: payWithCard ? 'Waiting for card reading...' : '0.00',
+                        value: amount ? (payWithCard ? amount.toFixed(2) : amount) : undefined,
                         valueOptions: {
                             validate: value => {
                                 if(Number.isNaN(value)) return false;
@@ -117,7 +239,8 @@ class Payment extends Component {
                             }
                         },
                         onChange: (e, amount) => this.setState({ amount }),
-                        autoFocus: true
+                        autoFocus: true,
+                        disabled: payWithCard
                     }
                 }}
                 actions={{
@@ -149,10 +272,10 @@ class Payment extends Component {
                                                 className={classes.cartItemPrice}
                                                 variant='subtitle1'
                                             >
-                                                {`$${item.price.toFixed(2)}`}
+                                                {`$${(item.price * item.quantity).toFixed(2)}`}
                                             </Typography>
                                             <IconButton
-                                                color='action'
+                                                color='primary'
                                                 className={classes.cartItemDelete}
                                                 onClick={e =>  storage.cart.remove(item)}
                                             >
@@ -190,4 +313,4 @@ class Payment extends Component {
     }
 }
 
-export default withStorage(withSnackbar(withStyles(styles)(Payment)));
+export default withHistory(withSpir(withStorage(withSnackbar(withStyles(styles)(Payment)))));
