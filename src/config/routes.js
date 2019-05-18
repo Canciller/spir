@@ -1,5 +1,7 @@
 import Home from '../views/Home';
 import Payment from '../views/Payment';
+import Payments from '../views/Payments';
+
 import Inventory, { AddItem, EditItem } from '../views/Inventory';
 import Staff, { AddStaff, EditStaff } from '../views/Staff';
 import { EditCard, AddCard, Cards, Deposit } from '../views/Partners';
@@ -15,6 +17,10 @@ const routes = {
     payment: {
         path: '/payment',
         component: Payment
+    },
+    payments: {
+        path: '/payments',
+        component: Payments
     },
     inventory: {
         path: '/inventory',

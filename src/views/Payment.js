@@ -106,6 +106,8 @@ class Payment extends Component {
             card
         } = this.state;
 
+        this.setState({ loading: true });
+
         const {
             spir,
             enqueueSnackbar,
@@ -204,7 +206,8 @@ class Payment extends Component {
 
         const {
             amount,
-            payWithCard
+            payWithCard,
+            loading
         } = this.state;
 
         const total = storage.cart.total(),
@@ -214,6 +217,10 @@ class Payment extends Component {
 
         return (
             <FormView
+                loading={loading}
+                loadingViewProps={{
+                    message: 'Processing payment info...'
+                }}
                 title={`Payment - Total: $${total.toFixed(2)}`}
                 fields={{
                     type: {
@@ -299,7 +306,7 @@ class Payment extends Component {
                     >
                         {`Total: $${total.toFixed(2)}`}
                     </Typography>
-                    { (!Number.isNaN(Number(change)) && change >= 0) &&
+                    { (!Number.isNaN(Number(change)) && change >= 0 && !payWithCard) &&
                             <Typography
                                 className={classes.infoLabel}
                                 variant='subtitle1'

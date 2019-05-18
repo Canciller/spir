@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 import { withSpir } from '../../context';
 
 import FormView from '../../components/FormView';
@@ -10,10 +11,18 @@ const styles = theme => ({})
 class EditItem extends Component {
     state = {}
 
+    notify = (obj, variant) => {
+        if(obj === undefined) return;
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(obj.message || obj, {
+            variant
+        });
+    }
+
     onSave = (e, item) => {
         this.props.spir.inventory.update(item.id, item)
-            .then(saved => console.log(saved))
-            .catch(err => console.log(err));
+            .then(saved => this.notify(`${saved.name} successfully saved to inventory`, 'success'))
+            .catch(err => this.notify(err, 'error'));
     }
 
     componentDidMount() {
@@ -31,7 +40,7 @@ class EditItem extends Component {
                 });
                 this.setState({ categories });
             })
-            .catch(err => console.log(err));
+            .catch(err => this.notify(err, 'error'));
 
         const location = history.location;
         if(!location || !location.state) return;
@@ -123,4 +132,4 @@ class EditItem extends Component {
     }
 }
 
-export default withSpir(withStyles(styles)(EditItem));
+export default withSnackbar(withSpir(withStyles(styles)(EditItem)));

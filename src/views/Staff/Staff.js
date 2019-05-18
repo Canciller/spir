@@ -41,6 +41,7 @@ class Staff extends Component {
                 }}
 
                 dataCardProps={{
+                    width: '100%',
                     format: {
                         first_name: {
                             variant: 'title'

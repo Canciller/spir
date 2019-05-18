@@ -3,11 +3,11 @@ import { withStyles } from '@material-ui/core/styles';
 import { withSpir, withHistory } from '../context';
 import { withSnackbar } from 'notistack';
 
-import DataTransformView from './DataTransformView';
+import DataGridView from './DataGridView';
 
 const styles = theme => ({})
 
-class DatabaseView extends Component {
+class DatabaseGridView extends Component {
     state = {}
 
     fetchRecursive = (collection, id, current, as) => {
@@ -41,7 +41,8 @@ class DatabaseView extends Component {
         let {
             collection, as,
             pipeline,
-            spir
+            spir,
+            reverse
         } = this.props;
 
         if(!(pipeline instanceof Object))
@@ -66,8 +67,10 @@ class DatabaseView extends Component {
                             return this.setData(all);
 
                     for(let e of all) {
-                        if(e[next.pass] === undefined)
+                        if(e[next.pass] === undefined) {
+                            fetchAll.push(as !== undefined ? { [as]:e } : e)
                             continue;
+                        }
 
                         let current = e;
                         if(as !== undefined) current = { [as]: e };
@@ -81,7 +84,7 @@ class DatabaseView extends Component {
 
                     Promise.all(fetchAll)
                         .then(data => {
-                            if(this._isMounted) this.setData(data);
+                            if(this._isMounted) this.setData(reverse ? data.reverse() : data);
                         })
                         .catch(this.onError);
                 })
@@ -206,7 +209,7 @@ class DatabaseView extends Component {
         dataCardProps = dataCardProps || {}
 
         return (
-            <DataTransformView
+            <DataGridView
                 data={data}
                 error={error}
                 onRefresh={this.fetchData}
@@ -218,12 +221,12 @@ class DatabaseView extends Component {
                 {...other}
 
                 dataCardProps={{
-                    ...dataCardProps,
-                    onDelete: this.onDelete
+                    ...dataCardProps
                 }}
             />
         )
     }
 }
 
-export default withSnackbar(withSpir(withHistory(withStyles(styles)(DatabaseView))));
+export default withSnackbar(withSpir(withHistory(withStyles(styles)(DatabaseGridView))));
+

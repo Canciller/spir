@@ -44,7 +44,7 @@ class AddCard extends Component {
                     .then(partner => {
                         card.partner = partner._id;
                         spir.cards.add(card)
-                            .then(() => this.onSuccess('Card created'))
+                            .then(() => this.onSuccess('Card successfully created'))
                             .catch(this.onError)
                     })
                     .catch(this.onError)

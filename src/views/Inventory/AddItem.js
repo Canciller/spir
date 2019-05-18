@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { withSnackbar } from 'notistack';
 import { withSpir } from '../../context';
 
 import FormView from '../../components/FormView';
@@ -9,10 +10,18 @@ const styles = theme => ({})
 class AddItem extends Component {
     state = {}
 
+    notify = (obj, variant) => {
+        if(obj === undefined) return;
+        const { enqueueSnackbar } = this.props;
+        enqueueSnackbar(obj.message || obj, {
+            variant
+        });
+    }
+
     onCreate = (e, item) => {
         this.props.spir.inventory.add(item)
-            .then(added => console.log(added))
-            .catch(err => console.log(err));
+            .then(added => this.notify(`${added.name} successfully added to inventory`, 'success'))
+            .catch(err => this.notify(err, 'error'));
     }
 
     componentDidMount() {
@@ -25,7 +34,7 @@ class AddItem extends Component {
                 });
                 this.setState({ categories });
             })
-            .catch(err => console.log(err));
+            .catch(err => this.notify(err, 'error'));
     }
 
     render() {
@@ -93,4 +102,4 @@ class AddItem extends Component {
     }
 }
 
-export default withSpir(withStyles(styles)(AddItem));
+export default withSnackbar(withSpir(withStyles(styles)(AddItem)));

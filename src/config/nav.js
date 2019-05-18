@@ -37,6 +37,11 @@ const nav = [
         path: getPath('staff')
     },
     {
+        name: 'Payments',
+        icon: DepositIcon,
+        path: getPath('payments')
+    },
+    {
         name: 'Partners',
         icon: PartnersIcon,
         nav: [
@@ -61,11 +66,13 @@ const nav = [
                 icon: ReaderIcon,
                 path: getPath('reader')
             },
+            /*
             {
                 name: 'Language',
                 icon: LanguageIcon,
                 path: getPath('language')
             },
+            */
             {
                 name: 'Theme',
                 icon: ThemeIcon,
@@ -73,11 +80,13 @@ const nav = [
             }
         ]
     },
+    /*
     {
         name: 'Testing',
         icon: TestingIcon,
         path: getPath('test')
     }
+    */
 ]
 
 export default nav;

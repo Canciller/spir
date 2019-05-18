@@ -15,10 +15,10 @@ const styles = theme => ({
 })
 
 class AlertDialog extends Component {
-    onAction = callback => {
+    onAction = (e, callback) => {
         const { onClose } = this.props;
-        if(onClose) onClose();
-        if(callback) callback();
+        if(onClose) onClose(e);
+        if(callback) callback(e);
     }
 
     createActions = () => {
@@ -30,7 +30,7 @@ class AlertDialog extends Component {
                     <Button
                         key={i}
                         color='primary'
-                        onClick={e => this.onAction(action.callback)}
+                        onClick={e => this.onAction(e, action.callback)}
                         autoFocus={action.autoFocus}
                     >
                         {action.name}

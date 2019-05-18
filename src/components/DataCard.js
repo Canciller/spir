@@ -182,7 +182,7 @@ class DataCard extends Component {
                 props = format[key] ? format[key].format : undefined,
                 index = format[key] ? format[key].index : undefined;
 
-            if(value instanceof Object || data instanceof Array) {
+            if(value instanceof Object || value instanceof Array) {
                 const divider = this.createCardDivider(format[key], completeKey, value);
 
                 const contentsInner = this.createCardContentRecursive({
@@ -294,6 +294,7 @@ class DataCard extends Component {
             absolute,
             disabled,
             width,
+            height,
             title,
             image,
             data,
@@ -323,7 +324,9 @@ class DataCard extends Component {
             <div className={classes.root}
                 style={{
                     minWidth: width,
-                    maxWidth: width
+                    maxWidth: width,
+                    minHeight: height,
+                    maxHeight: height
                 }}
             >
                 <Card className={classes.card}>
