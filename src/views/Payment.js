@@ -3,9 +3,12 @@ import { withStyles } from '@material-ui/core/styles';
 import { withSnackbar } from 'notistack';
 import { withStorage } from '../context';
 
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import FormView from '../components/FormView';
+
+import ClearIcon from '@material-ui/icons/Clear';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
 
@@ -22,21 +25,34 @@ const styles = theme => ({
         paddingRight: theme.spacing.unit
     },
     cartItem: {
-        padding: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
         display: 'flex'
     },
+    cartItemPrice: {
+        display: 'flex',
+        alignItems: 'center'
+    },
     cartItemName: {
-        flex: 1
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center'
     },
     cartItemQuantity: {
         paddingRight: theme.spacing.unit * 2
+    },
+    cartItemDelete: {
+        marginLeft: theme.spacing.unit * 2,
+        width: 35,
+        height: 35,
+        padding: 0
     },
     info: {
         display: 'flex',
         marginTop: theme.spacing.unit * 2
     },
     infoLabel: {
-        flex: '1'
+        flex: 1
     }
 })
 
@@ -107,40 +123,50 @@ class Payment extends Component {
                 actions={{
                     confirm: {
                         callback: this.onConfirm,
-                        disabled: Number.isNaN(change) || change < 0
+                        disabled: Number.isNaN(change) || change < 0 || cart.length === 0
                     }
                 }}
             >
-                <div
-                    className={classes.cart}
-                >
-                    {cart.map((item, i) => {
-                        return (
-                            <Fragment
-                                key={i}
-                            >
-                                <div
-                                    className={classes.cartItem}
-                                >
-                                    <Typography
-                                        variant='subtitle1'
-                                        className={classes.cartItemName}
+                { cart.length !== 0 &&
+                        <div
+                            className={classes.cart}
+                        >
+                            {cart.map((item, i) => {
+                                return (
+                                    <Fragment
+                                        key={i}
                                     >
-                                        {item.name} x {item.quantity}
-                                    </Typography>
-                                    <Typography
-                                        variant='subtitle1'
-                                    >
-                                        {`$${item.price.toFixed(2)}`}
-                                    </Typography>
-                                </div>
-                                { i !== cart.length - 1 &&
-                                    <Divider />
-                                }
-                            </Fragment>
-                        )
-                    })}
-                </div>
+                                        <div
+                                            className={classes.cartItem}
+                                        >
+                                            <Typography
+                                                variant='subtitle1'
+                                                className={classes.cartItemName}
+                                            >
+                                                {item.name} x {item.quantity}
+                                            </Typography>
+                                            <Typography
+                                                className={classes.cartItemPrice}
+                                                variant='subtitle1'
+                                            >
+                                                {`$${item.price.toFixed(2)}`}
+                                            </Typography>
+                                            <IconButton
+                                                color='action'
+                                                className={classes.cartItemDelete}
+                                                onClick={e =>  storage.cart.remove(item)}
+                                            >
+                                                <ClearIcon />
+                                            </IconButton>
+                                        </div>
+                                        { i !== cart.length - 1 &&
+                                                <Divider />
+                                        }
+                                    </Fragment>
+                                )
+                            })}
+                        </div>
+                }
                 <div
                     className={classes.info}
                 >
