@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { withStyles } from '@material-ui/core/styles';
-import { withStorage } from '../context';
+import { withStorage, withHistory } from '../context';
 
 import routes from '../config/routes';
 
@@ -39,6 +39,8 @@ class Checkout extends Component {
     state = {}
 
     onCheckout = () => {
+        const { history } = this.props;
+        history.push(routes.payment.path);
     }
 
     componentDidMount() {
@@ -150,6 +152,7 @@ class Checkout extends Component {
                         variant='contained'
                         onClick={this.onCheckout}
                         ref={ref => this.actionsRef = ref}
+                        disabled={storage.cart.total() === 0}
                     >
                         Checkout - Total: ${storage.cart.total().toFixed(2)}
                     </Button>
@@ -159,4 +162,4 @@ class Checkout extends Component {
     }
 }
 
-export default withStorage(withStyles(styles)(Checkout));
+export default withHistory(withStorage(withStyles(styles)(Checkout)));

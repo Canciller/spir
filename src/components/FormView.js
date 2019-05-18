@@ -358,8 +358,8 @@ class FormView extends Component {
                     onRefresh={this.onRefresh}
                 >
                     {this.createForm()}
-                    {this.createActions()}
                     {children}
+                    {this.createActions()}
                 </View>
             )
     }
