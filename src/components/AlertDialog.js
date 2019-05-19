@@ -54,7 +54,7 @@ class AlertDialog extends Component {
                 PaperProps={{
                     className: classes.paper
                 }}
-                open={open}
+                open={open === undefined ? false : open}
                 onClose={onClose}
                 aria-labelledby='dialog-title'
                 aria-describedby='dialog-description'

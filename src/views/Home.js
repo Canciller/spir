@@ -9,7 +9,9 @@ import DataGridView from '../components/DataGridView';
 import View from '../components/View';
 import Button from '../components/Button';
 import Typography from '@material-ui/core/Typography';
+
 import EmptyIcon from '@material-ui/icons/ShoppingCart';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
     actions: {
@@ -30,8 +32,8 @@ const styles = theme => ({
         */
     },
     cartActions: {
-        bottom: 110,
-        marginRight: theme.spacing.unit * 2
+        bottom: 85,
+        marginRight: theme.spacing.unit
     }
 })
 
@@ -41,6 +43,11 @@ class Checkout extends Component {
     onCheckout = () => {
         const { history } = this.props;
         history.push(routes.payment.path);
+    }
+
+    onAdd = () => {
+        const { history } = this.props;
+        history.push(routes.inventory.path);
     }
 
     componentDidMount() {
@@ -100,6 +107,15 @@ class Checkout extends Component {
                         message: 'Cart is empty',
                         icon: EmptyIcon
                     }}
+
+                    actions={[
+                        {
+                            name: 'Add',
+                            icon: AddIcon,
+                            callback: this.onAdd,
+                            main: true
+                        }
+                    ]}
 
                     dataCardProps={{
                         width: 400,

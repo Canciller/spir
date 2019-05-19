@@ -1,5 +1,5 @@
 const spir = {
-    url: 'https://spir-development.herokuapp.com/api'
+    url: 'https://spir-server.herokuapp.com/api'
 }
 
 export {

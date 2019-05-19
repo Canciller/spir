@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-import routes from '../config/routes';
-
 import DatabaseGridView from '../components/DatabaseGridView';
 
 const styles = theme => ({})
@@ -32,7 +30,6 @@ class Payments extends Component {
                     message: 'Nothing here'
                 }}
 
-
                 dataCardProps={{
                     width: '100%',
                     format: {
@@ -48,15 +45,32 @@ class Payments extends Component {
                                         return date.toUTCString();
                                     }
                                 },
-                                products: {
-                                    gutterTop: true,
-                                    label: 'Products',
-                                    variant: 'title'
+                                total: {
+                                    variant: 'subheading',
+                                    label: 'Total',
+                                    transform: value => `$${value.toFixed(2)}`
                                 },
                                 _id: { visible: false },
                                 __v: { visible: false },
                                 partner: { visible: false },
-                                updatedAt: { visible: false }
+                                updatedAt: { visible: false },
+                                products: {
+                                    gutterTop: true,
+                                    label: 'Products',
+                                    variant: 'title',
+                                    format: {
+                                        _id: { visible: false },
+                                        product: { visible: false },
+                                        name: {
+                                            variant: 'subheading',
+                                            transform: (name, data) => {
+                                                return `${name} x ${data.quantity} $${data.price.toFixed(2)}`;
+                                            }
+                                        },
+                                        quantity: { visible: false },
+                                        price: { visible: false }
+                                    }
+                                },
                             }
                         },
                         partner: {
@@ -64,6 +78,10 @@ class Payments extends Component {
                             label: 'Partner',
                             gutterTop: true,
                             format: {
+                                __null__: {
+                                    variant: 'caption',
+                                    transform: () => 'Partner does not exist anymore'
+                                },
                                 first_name: {
                                     variant: 'title'
                                 },

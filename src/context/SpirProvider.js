@@ -38,7 +38,8 @@ export default class SpirProvider extends Component {
 
             getOne: id => fetchWrapper(`${url}/${id}`, 'get')
             .then(data => {
-                if(!data) throw new Error('Data fetched from server is null');
+                //if(!data) throw new Error('Data fetched from server is null');
+                if(!data) return { __null__: null }
                 else if(data.errors) throw new Error(data.errors.message);
                 else return data;
             }),

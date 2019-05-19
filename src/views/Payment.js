@@ -75,9 +75,18 @@ class Payment extends Component {
             partner
         } = this.state;
 
-        const products = storage.cart.get().map(item => item._id);
+        const products = storage.cart.get().map(item => ({
+            product: item._id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.quantity * item.price
+        }));
 
-        spir.payments.add({ products, partner: partner ? partner._id : undefined })
+        spir.payments.add({
+            products,
+            partner: partner ? partner._id : undefined,
+            total: storage.cart.total()
+        })
             .then(added => {
                 const inventory = storage.items();
                 if(inventory === undefined) return;
@@ -88,7 +97,7 @@ class Payment extends Component {
 
                 Promise.all(savesInventory)
                     .then(() => {
-                        enqueueSnackbar('Updated inventory', { variant: 'info' });
+                        enqueueSnackbar('Inventory updated', { variant: 'info' });
                         storage.cart.refresh();
                         if(callback instanceof Function)
                             callback();
@@ -228,7 +237,8 @@ class Payment extends Component {
                         label: 'Payment Type',
                         items: [
                             'Cash',
-                            'SPIR Rewards'
+                            'SPIR Rewards',
+                            //'Cash + SPIR Rewards'
                         ],
                         onChange: this.onChangePaymentType
                     },

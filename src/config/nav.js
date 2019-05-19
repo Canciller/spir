@@ -10,10 +10,10 @@ import DepositIcon from '@material-ui/icons/LocalAtm';
 
 import SettingsIcon from '@material-ui/icons/Settings';
 import ReaderIcon from '@material-ui/icons/Nfc';
-import LanguageIcon from '@material-ui/icons/Translate';
+//import LanguageIcon from '@material-ui/icons/Translate';
+import ConstantsIcon from '@material-ui/icons/BorderColor';
 import ThemeIcon from '@material-ui/icons/InvertColors';
 
-import TestingIcon from '@material-ui/icons/BugReport';
 
 function getPath(key) {
     if(routes.hasOwnProperty(key)) return routes[key].path;
@@ -62,6 +62,11 @@ const nav = [
         icon: SettingsIcon,
         nav: [
             {
+                name: 'Constants',
+                icon: ConstantsIcon,
+                path: getPath('test')
+            },
+            {
                 name: 'Reader',
                 icon: ReaderIcon,
                 path: getPath('reader')
@@ -80,13 +85,6 @@ const nav = [
             }
         ]
     },
-    /*
-    {
-        name: 'Testing',
-        icon: TestingIcon,
-        path: getPath('test')
-    }
-    */
 ]
 
 export default nav;

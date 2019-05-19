@@ -10,7 +10,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import AlertDialog from './AlertDialog';
 import Loading from './Loading';
 
 const styles = theme => ({
@@ -62,6 +61,21 @@ const styles = theme => ({
     },
 });
 
+function getProperty( propertyName, object ) {
+    if(propertyName === undefined) return;
+
+    var parts = propertyName.split( "." ),
+        length = parts.length,
+        i,
+        property = object || this;
+
+    for ( i = 0; i < length; i++ ) {
+        property = property[parts[i]];
+    }
+
+    return property;
+}
+
 class DataCard extends Component {
     state = {}
 
@@ -102,7 +116,7 @@ class DataCard extends Component {
         return actions;
     }
 
-    createCardField = (props, key, value) => {
+    createCardField = (props, key, rootKey, value) => {
         props = props || {};
 
         const {
@@ -112,11 +126,13 @@ class DataCard extends Component {
             ...other
         } = props;
 
+        const rootValue = getProperty(rootKey, this.props.data);
+
         if(visible !== undefined && !visible)
             return undefined;
 
         if(transform instanceof Function)
-            value = transform(value);
+            value = transform(value, rootValue);
 
         return (
             <Typography
@@ -167,7 +183,7 @@ class DataCard extends Component {
             )
     }
 
-    createCardContentRecursive = (contents, format, data, rootKey) => {
+    createCardContentRecursive = (contents, format, data, rootKey, rootIsArray = false) => {
         format = format || {};
 
         let {
@@ -182,13 +198,15 @@ class DataCard extends Component {
                 props = format[key] ? format[key].format : undefined,
                 index = format[key] ? format[key].index : undefined;
 
-            if(value instanceof Object || value instanceof Array) {
-                const divider = this.createCardDivider(format[key], completeKey, value);
+            if(value instanceof Object) {
+                let divider = undefined;
+                if(!rootIsArray)
+                    divider = this.createCardDivider(format[key], completeKey, value);
 
                 const contentsInner = this.createCardContentRecursive({
                     contentFormatted: [],
                     contentUnformatted: []
-                }, props, value, completeKey);
+                }, rootIsArray ? format : props, value, completeKey, value instanceof Array);
 
                 const contents = (
                     <Fragment key={completeKey}>
@@ -204,7 +222,7 @@ class DataCard extends Component {
                     contentUnformatted.push(contents);
             }
             else {
-                const field = this.createCardField(format[key], completeKey, value);
+                const field = this.createCardField(format[key], completeKey, rootKey, value);
 
                 if(field === undefined) continue;
 
@@ -246,8 +264,7 @@ class DataCard extends Component {
     createCardContent = () => {
         let {
             data,
-            format,
-            label
+            format
         } = this.props;
 
         if(data === undefined) return undefined;

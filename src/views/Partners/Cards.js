@@ -37,10 +37,6 @@ class Cards extends Component {
                     }
                 }}
 
-                deleteDialog={{
-                    message: 'Are you sure you want to delete this card?'
-                }}
-
                 emptyViewProps={{
                     message: 'Nothing here'
                 }}
