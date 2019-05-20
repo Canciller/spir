@@ -60,7 +60,9 @@ const styles = theme => ({
 
 class Payment extends Component {
     state = {
-        change: NaN
+        change: NaN,
+        payWithCard: false,
+        bothPay: false
     }
 
     onPayment = callback => {
@@ -109,9 +111,10 @@ class Payment extends Component {
 
     }
 
-    onConfirm = (e, { amount }) => {
+    onConfirm = (e, { amount, amount_card }) => {
         const {
             payWithCard,
+            bothPay,
             card
         } = this.state;
 
@@ -123,8 +126,8 @@ class Payment extends Component {
         } = this.props;
 
         this.onPayment(() => {
-            if(payWithCard && card)
-                spir.cards.update(card._id, { balance: card.balance - amount })
+            if((payWithCard || bothPay) && card) {
+                spir.cards.update(card._id, { balance: card.balance - amount_card })
                     .then(updated => {
                         enqueueSnackbar(
                             `Payment completed, balance left: $${updated.balance.toFixed(2)}`,
@@ -132,7 +135,7 @@ class Payment extends Component {
                         );
                     })
                     .catch(this.onError);
-            else enqueueSnackbar('Payment completed', { variant: 'success' });
+            } else enqueueSnackbar('Payment completed', { variant: 'success' });
         })
     }
 
@@ -155,16 +158,23 @@ class Payment extends Component {
 
     findCard = tag => {
         const {
-            storage
-        } = this.props;
-
-        if(!this.state.payWithCard) return;
-        const total = storage.cart.total();
-
-        const {
+            storage,
             spir,
             enqueueSnackbar
         } = this.props;
+
+        let {
+            amount,
+            cardAmount
+        } = this.state;
+
+        amount = Number(amount);
+        amount = Number.isNaN(amount) ? 0 : amount;
+        this.setState({ amount: amount.toFixed(2) })
+
+        if(!this.state.payWithCard && !this.state.bothPay) return;
+        let total = storage.cart.total() - amount;
+        total = total < 0 ? 0 : total;
 
         this.clearCardAndPartner();
 
@@ -183,7 +193,7 @@ class Payment extends Component {
                                 `Not enough balance in card, current balance: $${card.balance.toFixed(2)}`,
                                 { variant: 'error' }
                             );
-                        else this.setState({ amount: total }, () => {
+                        else this.setState({ cardAmount: total }, () => {
                             enqueueSnackbar(
                                 `Card detected, current balance: $${card.balance.toFixed(2)}`,
                                 { variant: 'success' }
@@ -195,7 +205,12 @@ class Payment extends Component {
             .catch(this.onError);
     }
 
-    onChangePaymentType = (e, type) => this.setState({ payWithCard: type === 1, amount: undefined });
+    onChangePaymentType = (e, type) => this.setState({
+        payWithCard: type === 1,
+        bothPay: type === 2,
+        amount: undefined,
+        cardAmount: undefined
+    });
 
     componentDidMount() {
         ipcRenderer.on('reader:data', (e, tag) => this.findCard(tag));
@@ -215,14 +230,28 @@ class Payment extends Component {
 
         const {
             amount,
+            cardAmount,
             payWithCard,
+            bothPay,
             loading
         } = this.state;
 
-        const total = storage.cart.total(),
-              change = amount - total;
-
+        const total = storage.cart.total();
         const cart = storage.cart.get();
+
+        let change = NaN;
+        if(bothPay) {
+            change = Number(amount) + (cardAmount === undefined ? 0 : cardAmount) - total;
+        } else if(!payWithCard) change = amount - total;
+        else change = cardAmount - total;
+
+        const validToConfirm = !Number.isNaN(change) && change >= 0 && cart.length > 0;
+
+        const validateAmount = value => {
+            if(payWithCard && !bothPay) return true;
+            if(Number.isNaN(value)) return false;
+            return value >= 0;
+        }
 
         return (
             <FormView
@@ -238,7 +267,7 @@ class Payment extends Component {
                         items: [
                             'Cash',
                             'SPIR Rewards',
-                            //'Cash + SPIR Rewards'
+                            'Cash + SPIR Rewards'
                         ],
                         onChange: this.onChangePaymentType
                     },
@@ -246,24 +275,33 @@ class Payment extends Component {
                         control: 'textfield',
                         label: 'Pay with',
                         required: true,
-                        adorment: payWithCard ? (this.state.amount ? '$': undefined) : '$',
-                        placeholder: payWithCard ? 'Waiting for card reading...' : '0.00',
-                        value: amount ? (payWithCard ? amount.toFixed(2) : amount) : undefined,
+                        adorment: '$',
+                        placeholder: '0.00',
+                        value: amount,
                         valueOptions: {
-                            validate: value => {
-                                if(Number.isNaN(value)) return false;
-                                return value > 0;
-                            }
+                            validate: validateAmount,
+                            type: Number
                         },
-                        onChange: (e, amount) => this.setState({ amount }),
+                        onChange: (e, amount) => this.setState({ amount, cardAmount: undefined }),
                         autoFocus: true,
-                        disabled: payWithCard
+                        visible: !payWithCard || bothPay
+                    },
+                    amount_card: {
+                        control: 'textfield',
+                        adorment: cardAmount !== undefined ? '$' : undefined,
+                        placeholder: 'Waiting for card reading...',
+                        value: cardAmount !== undefined ? cardAmount.toFixed(2) : undefined,
+                        valueOptions: {
+                            type: Number
+                        },
+                        disabled: true,
+                        visible: payWithCard || bothPay
                     }
                 }}
                 actions={{
                     confirm: {
                         callback: this.onConfirm,
-                        disabled: Number.isNaN(change) || change < 0 || cart.length === 0
+                        disabled: !validToConfirm
                     }
                 }}
             >
@@ -316,7 +354,7 @@ class Payment extends Component {
                     >
                         {`Total: $${total.toFixed(2)}`}
                     </Typography>
-                    { (!Number.isNaN(Number(change)) && change >= 0 && !payWithCard) &&
+                    { (!Number.isNaN(change) && change > 0 && (!payWithCard || bothPay)) &&
                             <Typography
                                 className={classes.infoLabel}
                                 variant='subtitle1'

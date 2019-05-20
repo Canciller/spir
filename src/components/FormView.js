@@ -50,8 +50,13 @@ class FormView extends Component {
         let {
             value,
             valueOptions,
+            visible,
             ...other
         } = props;
+
+        visible = visible === undefined ? true : visible;
+
+        if(!visible) return undefined;
 
         let currentValue = this.getFieldCurrentValue(target);
         let validate = undefined,
