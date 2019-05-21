@@ -98,10 +98,12 @@ class DataTransformView extends Component {
                     }}
 
                     actions={actions.concat([
+                        /*
                         {
                             name: 'Delete',
                             icon: deleteIcon || DeleteIcon,
                         },
+                        */
                         {
                             name: 'Add',
                             icon: addIcon || AddIcon,

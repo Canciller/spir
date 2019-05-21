@@ -4,14 +4,19 @@ import { withSnackbar } from 'notistack';
 
 import FormView from '../../components/FormView';
 
+const storage = window.require('electron-json-storage');
 const ipcRenderer = window.require('electron').ipcRenderer;
 
 const styles = theme => ({})
 
 class Reader extends Component {
+    state = {}
 
-    onConnect = (e, { port, address }) => {
-        ipcRenderer.send('reader:connect', port, address);
+    notify = () => this.state.enqueueSnackbar;
+
+    onConnect = (e, reader) => {
+        ipcRenderer.send('reader:connect', reader.port, reader.address);
+        storage.set('reader', reader, err => err && this.notify(err.message, { variant: 'error' }));
     }
 
     componentDidMount() {
@@ -19,13 +24,18 @@ class Reader extends Component {
 
         ipcRenderer.on('reader:status', (e, status) => enqueueSnackbar(status.message, {
             variant: status.success ? 'success' : 'error',
-            preventDuplicate: true
+            preventDuplicate: true,
         }));
 
         ipcRenderer.send('reader:status', (e, status) => enqueueSnackbar(status.message, {
             variant: status.success ? 'success' : 'error',
-            preventDuplicate: true
+            preventDuplicate: true,
         }));
+
+        storage.get('reader', (err, data) => {
+            if(err) this.notify(err.message, { variant: 'error' });
+            else if(data) this.setState({ port: data.port, address: data.address });
+        });
     }
 
     componentWillUnmount() {
@@ -33,21 +43,27 @@ class Reader extends Component {
     }
 
     render() {
+        const {
+            port, address
+        } = this.state;
+
         return (
             <FormView
                 title='Reader'
                 fields={{
                      address: {
-                        control: 'textfield',
-                        label: 'Address',
-                        placeholder: '127.0.0.1',
-                        defaultValue: '127.0.0.1'
+                         control: 'textfield',
+                         label: 'Address',
+                         placeholder: '127.0.0.1',
+                         defaultValue: '127.0.0.1',
+                         value: address
                     },
                     port: {
                         control: 'textfield',
                         label: 'Port',
                         placeholder: '3334',
-                        defaultValue: '3334'
+                        defaultValue: '3334',
+                        value: port
                     },
                 }}
                 actions={{
