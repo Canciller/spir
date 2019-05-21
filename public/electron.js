@@ -19,7 +19,6 @@ require('update-electron-app')({
 */
 
 function createWindow() {
-    let reader = new Reader(mainWindow);
 
     mainWindow = new BrowserWindow({ 
         width: 900, height: 680,
@@ -36,6 +35,9 @@ function createWindow() {
         ? 'http://localhost:3000'
         : `file://${path.join(__dirname, '../build/index.html')}`
     );
+
+    let reader = new Reader(mainWindow);
+
     mainWindow.on('closed', () => (mainWindow = null));
     mainWindow.on('close', () => {
         if(reader) reader.destroy();
