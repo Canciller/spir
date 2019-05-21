@@ -79,16 +79,6 @@ class Reader {
         try {
             this.socket = net.createConnection(this.port, this.address);
 
-            this.socket.setTimeout(3000);
-
-            this.socket.on('timeout', () => {
-                this.send('reader:status', status(
-                    false,
-                    'Reader connection timeout'
-                ));
-                this.socket.end();
-            });
-
             this.socket.on('connect', () => {
                 this.socket.setEncoding('utf-8');
 
@@ -135,6 +125,10 @@ class Reader {
         this.socket = null;
         this.setPort(port);
         this.setAddress(address);
+    }
+
+    destroy() {
+        if(this.socket) this.socket.destroy();
     }
 }
 

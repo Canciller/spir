@@ -19,6 +19,8 @@ require('update-electron-app')({
 */
 
 function createWindow() {
+    let reader = new Reader(mainWindow);
+
     mainWindow = new BrowserWindow({ 
         width: 900, height: 680,
         webPreferences: {
@@ -35,8 +37,10 @@ function createWindow() {
         : `file://${path.join(__dirname, '../build/index.html')}`
     );
     mainWindow.on('closed', () => (mainWindow = null));
+    mainWindow.on('close', () => {
+        if(reader) reader.destroy();
+    })
 
-    let reader = new Reader(mainWindow);
 }
 
 app.on('ready', createWindow);
