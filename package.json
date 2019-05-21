@@ -10,6 +10,7 @@
     "classnames": "^2.2.6",
     "cross-env": "5.1.6",
     "electron-is-dev": "0.3.0",
+    "electron-json-storage": "^4.1.6",
     "electron-log": "^2.2.6",
     "history": "^4.9.0",
     "node-sass": "^4.11.0",
