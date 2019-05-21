@@ -61,11 +61,13 @@ const nav = [
         name: 'Settings',
         icon: SettingsIcon,
         nav: [
+            /*
             {
                 name: 'Constants',
                 icon: ConstantsIcon,
                 path: getPath('test')
             },
+            */
             {
                 name: 'Reader',
                 icon: ReaderIcon,
